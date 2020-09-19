@@ -1,0 +1,13 @@
+.desktopContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 1fr;
+  grid-template-areas: "search center friends";
+  overflow: hidden;
+
+  .center {
+    grid-area: center;
+    height: calc(100vh - 4.5rem);
+    overflow: auto;
+  }
+}

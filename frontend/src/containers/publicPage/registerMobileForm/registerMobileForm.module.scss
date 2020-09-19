@@ -1,0 +1,33 @@
+@import "../../../styles/colors.scss";
+
+.registerForm {
+  grid-area: register;
+  //  background-color: blue;
+  //  opacity: 0.5;
+
+  display: grid;
+  grid-template-rows: 1fr 4fr;
+
+  grid-template-areas: "text" "form";
+
+  .joinUsText {
+    grid-area: text;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-weight: bold;
+    color: color(primary);
+  }
+
+  .createAccArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &Button {
+      background-color: color(primary);
+      padding: 1.5rem 2.5rem;
+      margin-top: -5rem;
+    }
+  }
+}

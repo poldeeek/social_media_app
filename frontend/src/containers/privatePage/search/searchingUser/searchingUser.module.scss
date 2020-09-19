@@ -1,0 +1,27 @@
+@import "../../../../styles/resolutionMixins.scss";
+@import "../../../../styles//colors.scss";
+
+.searchingUserContainer {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  margin: 1.5rem 0;
+
+  @include desktop {
+    padding: 0.5rem 0rem;
+    margin: 0 1.5rem;
+    border-radius: 5px;
+  }
+
+  .friendPhoto {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 100%;
+    margin: 0 1rem;
+  }
+}
+
+.searchingUserContainer:hover {
+  background-color: color(primary);
+  cursor: pointer;
+}

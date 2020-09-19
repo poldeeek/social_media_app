@@ -1,0 +1,27 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
+.backgroundColor {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100vh);
+  z-index: -100;
+  background-color: color(lighten-primary);
+}
+
+.backgroundPolygon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100vh);
+  z-index: -100;
+  clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 60%);
+  background-color: color(secondary);
+
+  @include desktop {
+    clip-path: polygon(100% 0, 60% 0, 35% 100%, 100% 100%);
+  }
+}

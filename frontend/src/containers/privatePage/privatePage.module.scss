@@ -1,0 +1,13 @@
+@import "../../styles/colors";
+@import "../../styles/resolutionMixins.scss";
+
+.privatePage {
+  width: 100%;
+  height: calc(100vh - 6rem);
+  padding-top: 6rem;
+
+  @include desktop {
+    height: calc(100vh-4.5rem);
+    padding-top: 4.5rem;
+  }
+}

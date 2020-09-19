@@ -1,0 +1,52 @@
+import axios from "axios";
+import { getAccessToken, setAccessToken } from "../accessToken";
+
+const apiHost = "http://localhost:5000";
+
+export const authenticationHeader = () => {
+  return {
+    Authorization: `Bearer ${getAccessToken()}`,
+  };
+};
+
+export const api = axios.create({
+  baseURL: apiHost,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getAccessToken()}`,
+  },
+});
+
+const interceptor = api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const { status } = error.response;
+    const originalRequest = error.config;
+    console.log(error);
+
+    if (status === 401) {
+      originalRequest._retry = true;
+      console.log("test");
+
+      api.interceptors.response.eject(interceptor);
+
+      let res = fetch("http://localhost:5000/api/auth/refresh", {
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          setAccessToken(res.accessToken);
+          console.log(getAccessToken());
+          return api(originalRequest);
+        });
+    }
+    return Promise.reject(error);
+  }
+);

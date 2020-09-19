@@ -1,0 +1,10 @@
+$colors: (
+  primary: #276a39,
+  secondary: #e2e0e1,
+  lighten-primary: #62a373,
+  placeholder: #a9c3b0,
+);
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}

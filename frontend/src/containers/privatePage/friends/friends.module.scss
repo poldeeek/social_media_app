@@ -1,0 +1,70 @@
+@import "../../../styles/resolutionMixins.scss";
+@import "../../../styles/colors.scss";
+
+.friendsContainer {
+  @include desktop {
+    grid-area: friends;
+    height: 100%;
+  }
+
+  .friendList {
+    overflow: auto;
+    height: calc(100vh - 6rem - 4rem);
+    width: 100%;
+    position: relative;
+    top: 4rem;
+
+    @include desktop {
+      position: fixed;
+      padding: 1rem 0 0 0;
+      top: 8.6rem;
+      right: 0;
+      width: calc(100vw / 4.5);
+      height: calc(100vh - 7rem);
+      box-sizing: border-box;
+    }
+  }
+
+  .searchInput {
+    margin: 0;
+    height: 4rem;
+    width: 100%;
+    border: none;
+    background-color: color(secondary);
+    padding: 0 0 0 4rem;
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    font-size: 1.6rem;
+
+    @include desktop {
+      border-bottom: 1px solid gray;
+      width: calc(100% - 4rem);
+      padding: 0.5rem 0 0 4rem;
+
+      position: static;
+      height: 3.5rem;
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    top: 7rem;
+    left: 1rem;
+    height: 0;
+    width: 0;
+    font-size: 2rem;
+    color: gray;
+    z-index: 10000000;
+
+    @include desktop {
+      position: relative;
+      top: 0px;
+      left: 1rem;
+      height: 0;
+      width: 0;
+      font-size: 2rem;
+      color: gray;
+    }
+  }
+}

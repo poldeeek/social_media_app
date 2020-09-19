@@ -1,0 +1,36 @@
+@import "./styles/colors";
+@import "./styles/resolutionMixins.scss";
+
+html {
+  font-size: 62.5%; /* 1 rem = 10px */
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: "Montserrat";
+
+  @include desktop {
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: lightgray;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}

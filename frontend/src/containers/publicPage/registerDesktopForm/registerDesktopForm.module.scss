@@ -1,0 +1,59 @@
+@import "../../../styles/colors.scss";
+
+.registerForm {
+  color: color(primary);
+  grid-area: register;
+  padding: 5vh 15rem 0 0;
+  text-align: right;
+
+  h1 {
+    font-size: 5rem;
+    height: 10vh;
+    box-sizing: border-box;
+    margin: 6vh 0;
+    padding: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: space-between;
+    height: 65vh;
+    padding: 0vh 0 5vh 5vw;
+
+    input {
+      width: calc(100% - 2px - 1rem);
+      border: 1px solid #707070;
+      height: 3rem;
+      padding: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    input::placeholder {
+      color: color(placeholder);
+    }
+
+    .birthInputs {
+      display: flex;
+    }
+
+    & > button {
+      padding: 1rem;
+      border: none;
+      background-color: color(primary);
+      color: white;
+      width: 45%;
+      font-size: 2.2rem;
+      align-self: flex-end;
+      cursor: pointer;
+      border: 2px solid color(primary);
+      transition-duration: 0.4s;
+    }
+
+    & > button:hover {
+      background-color: color(secondary);
+      color: color(primary);
+    }
+  }
+}

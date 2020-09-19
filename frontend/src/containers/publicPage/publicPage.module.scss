@@ -1,0 +1,238 @@
+@import "../../styles/colors.scss";
+@import "../../styles/resolutionMixins.scss";
+
+.publicPage {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: mandatory;
+  scroll-snap-points-y: repeat(100vh);
+  scroll-snap-type: y mandatory;
+  background-color: color(primary);
+  z-index: -1;
+  scroll-behavior: smooth;
+}
+
+section {
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  color: white;
+  z-index: 1;
+
+  .bg {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+  }
+}
+
+.section1 {
+  display: grid;
+  grid-template-rows: 1fr 1fr 3fr 0.5fr 5.5fr;
+  grid-template-areas:
+    "navbar "
+    "logo"
+    "login"
+    "."
+    "register";
+
+  @include desktop {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: 1.5fr 5fr 10fr;
+    grid-template-areas:
+      "navbar register"
+      "logo register"
+      "login register";
+  }
+
+  .navbar {
+    grid-area: navbar;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid color(secondary);
+    @include desktop {
+      border: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+    }
+
+    &Element {
+      cursor: pointer;
+    }
+  }
+  .logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include desktop {
+    }
+
+    .logoPicture {
+      width: 40px;
+      height: 40px;
+
+      @include desktop {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .appName {
+      font-size: 2.4rem;
+      color: color(secondary);
+      margin: 0 1.2rem;
+      @include desktop {
+        font-size: 7rem;
+      }
+    }
+  }
+
+  .bg {
+    clip-path: polygon(0 100%, 100% 100%, 100% 45%, 0 55%);
+    background-color: color(secondary);
+
+    @include desktop {
+      clip-path: polygon(100% 0, 60% 0, 35% 100%, 100% 100%);
+    }
+  }
+}
+
+.section2 {
+  display: grid;
+  grid-template-rows: 40% 15% 45%;
+  grid-template-areas: "." "aboutTitle" "aboutContent";
+
+  @include desktop {
+    grid-template-columns: 55% auto;
+    grid-template-rows: 20% auto;
+    grid-template-areas:
+      "aboutTitle ."
+      "aboutContent .";
+    padding: 0 5rem;
+  }
+
+  .aboutTitle {
+    grid-area: aboutTitle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 0 2rem;
+    font-size: 5rem;
+    font-weight: bold;
+    @include desktop {
+      align-items: center;
+      font-size: 7.5rem;
+      padding: 0 10rem;
+    }
+  }
+
+  .aboutContent {
+    grid-area: aboutContent;
+    padding: 5rem 2rem 3rem 2rem;
+    text-align: left;
+    font-size: 2.5rem;
+    @include desktop {
+      font-size: 5rem;
+    }
+  }
+
+  .bg {
+    clip-path: polygon(0 40%, 100% 50%, 100% 0, 0 0);
+    background-size: 170% 70%;
+    background-repeat: no-repeat;
+    background-position: 90% -40%;
+    background-image: url("../../images/people.jpg");
+    background-color: color(secondary);
+    @include desktop {
+      clip-path: polygon(100% 0, 35% 0, 60% 100%, 100% 100%);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: 100%;
+      background-image: url("../../images/people.jpg");
+      background-color: color(secondary);
+    }
+  }
+}
+
+.section3 {
+  display: grid;
+  grid-template-rows: 15% 30% 65%;
+  grid-template-areas: "contactTitle" "contactContent" ".";
+  @include desktop {
+    grid-template-columns: 55% auto;
+    grid-template-rows: 20% auto;
+    grid-template-areas:
+      "contactTitle ."
+      "contactContent .";
+    padding: 0 5rem;
+  }
+
+  .contactTitle {
+    grid-area: contactTitle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 2rem;
+    font-size: 5rem;
+    font-weight: bold;
+    @include desktop {
+      align-items: center;
+      padding: 0 10rem;
+      font-size: 7.5rem;
+    }
+  }
+
+  .contactContent {
+    grid-area: contactContent;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+    text-align: left;
+    font-size: 2.5rem;
+    @include desktop {
+      font-size: 5rem;
+      margin-top: 5rem;
+    }
+
+    & > p {
+      margin: 3rem 0rem 0 0rem;
+      @include desktop {
+        margin: 5rem 0rem 0 0rem;
+      }
+    }
+  }
+
+  .bg {
+    clip-path: polygon(0 100%, 100% 100%, 100% 45%, 0 55%);
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-position: right -10px bottom -140px;
+    background-image: url("../../images/phone.jpg");
+    background-color: #fff;
+    @include desktop {
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: 0 0;
+      background-image: url("../../images/phone.jpg");
+      background-color: color(secondary);
+      clip-path: polygon(100% 0, 60% 0, 35% 100%, 100% 100%);
+    }
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    color: color(primary);
+    font-size: 1.4rem;
+  }
+}
