@@ -51,7 +51,8 @@
     height: 4rem;
     width: 100%;
     border: none;
-    background-color: color(lighten-primary);
+    background-color: color(secondary);
+    color: black;
     padding: 0 0 0 4rem;
     position: fixed;
     top: 6rem;
@@ -60,11 +61,32 @@
 
     @include desktop {
       border-bottom: 1px solid color(secondary);
+      background-color: color(lighten-primary);
       width: calc(100% - 4rem);
       padding: 0.5rem 0 0 4rem;
       color: color(secondary);
       position: static;
       height: 3.5rem;
     }
+  }
+
+  .spinner {
+    display: flex;
+    justify-content: center;
+    margin: 5rem 0;
+  }
+
+  .showMoreButton {
+    font-size: 1.6rem;
+    margin: 3rem 5rem 1rem 5rem;
+    padding: 1rem 0;
+    background-color: color(secondary);
+    border: 2px solid color(primary);
+    border-radius: 1.5rem;
+    cursor: pointer;
+  }
+
+  .showMoreButton:hover {
+    background-color: color(lighten-primary);
   }
 }

@@ -17,7 +17,7 @@ const MoblieNavBar: React.FC = () => {
       </NavLink>
       <NavLink
         exact
-        to={`/profile/${user?.id}`}
+        to={`/profile/${user?._id}`}
         activeClassName={styles.activeLink}
       >
         <div className={styles.icon}>

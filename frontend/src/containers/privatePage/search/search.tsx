@@ -1,37 +1,70 @@
 import React, { useState, useEffect } from "react";
+import { api, authenticationHeader } from "../../../config/apiHost";
+import useDebounce from "../../../hooks/useDebounce";
 import styles from "./search.module.scss";
 import SearchingUser, { ISearchingUser } from "./searchingUser/searchingUser";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Search: React.FC = () => {
-  useEffect(() => {
-    searchingUser("");
-  }, []);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const searchingUser: Function = (name: string) => {
-    if (name == "") {
-      setModifyFriendsArray(originalFriendsArray);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [results, setResults] = useState([]);
+
+  // pagination
+  const [perPage, setPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+
+  const [showMoreResults, setShowMoreResults] = useState(false);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setPage(0);
+      setIsSearching(true);
+      searchUsers(debouncedSearchTerm, 0).then((results) => {
+        setIsSearching(false);
+        if (results.length === perPage) setShowMoreResults(true);
+        else setShowMoreResults(false);
+        setResults(results);
+      });
+    } else {
+      setShowMoreResults(false);
+
+      setResults([]);
     }
+  }, [debouncedSearchTerm]);
+
+  const searchUsers = (search: string, pageNr: number) => {
+    return api
+      .get(
+        `http://localhost:5000/api/users/search?q=${search}&p=${pageNr}&limit=${perPage}`,
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return [];
+      });
   };
 
-  const [originalFriendsArray, setOriginalFriendsArray] = useState([
-    { _id: 1, name: "lol1", surname: "ha" },
-    { _id: 2, name: "lol2", surname: "ha" },
-    { _id: 3, name: "lol3", surname: "ha" },
-    { _id: 4, name: "lol4", surname: "ha" },
-    { _id: 5, name: "lol5", surname: "ha" },
-    { _id: 6, name: "lol6", surname: "ha" },
-    { _id: 7, name: "lol7", surname: "ha" },
-    { _id: 8, name: "lol8", surname: "ha" },
-    { _id: 9, name: "lol9", surname: "ha" },
-    { _id: 10, name: "lol10", surname: "ha" },
-    { _id: 11, name: "lol5", surname: "ha" },
-    { _id: 12, name: "lol5", surname: "ha" },
-    { _id: 13, name: "lol5", surname: "ha" },
-    { _id: 14, name: "lol5", surname: "ha" },
-    { _id: 15, name: "lol5", surname: "ha" },
-  ]);
+  const moreResults = () => {
+    searchUsers(searchTerm, page + 1).then((moreResults) => {
+      if (moreResults.length === perPage) setShowMoreResults(true);
+      else setShowMoreResults(false);
+      setPage(page + 1);
 
-  const [modifyFriendsArray, setModifyFriendsArray]: any = useState([]);
+      const newResults = results.concat(moreResults);
+
+      setResults(newResults);
+    });
+  };
 
   return (
     <div className={styles.searchContainer}>
@@ -40,14 +73,27 @@ const Search: React.FC = () => {
         className={styles.searchInput}
         type="text"
         placeholder="Szukaj..."
-        onChange={(e) => searchingUser(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-
-      <div className={styles.usersList}>
-        {modifyFriendsArray.map((user: ISearchingUser) => {
-          return <SearchingUser key={user._id} user={user} />;
-        })}
-      </div>
+      {isSearching ? (
+        <div className={styles.spinner}>
+          <ClipLoader color={"#276a39"} />
+        </div>
+      ) : (
+        <div className={styles.usersList}>
+          {results.map((user: ISearchingUser) => {
+            return <SearchingUser key={user._id} user={user} />;
+          })}
+          {showMoreResults && (
+            <div
+              className={styles.showMoreButton}
+              onClick={() => moreResults()}
+            >
+              Pokaż więcej wyników <i className="fas fa-caret-down"></i>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

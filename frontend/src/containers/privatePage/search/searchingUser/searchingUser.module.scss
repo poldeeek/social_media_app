@@ -1,9 +1,15 @@
 @import "../../../../styles/resolutionMixins.scss";
 @import "../../../../styles//colors.scss";
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .searchingUserContainer {
   display: flex;
   align-items: center;
+  text-align: left;
   padding: 0 1rem;
   margin: 1.5rem 0;
 

@@ -18,9 +18,7 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
       },
     })
     .then((response) => {
-      console.log(response);
       setAccessToken(response.data.accessToken);
-      console.log(getAccessToken());
       dispatch({
         type: actions.USER_LOADED,
         user: response.data.user,

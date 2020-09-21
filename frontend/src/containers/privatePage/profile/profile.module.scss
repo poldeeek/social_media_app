@@ -1,3 +1,90 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
 .profileContainer {
   width: 100%;
+  display: grid;
+  grid-template-areas: "userInfo" "buttons" "userData";
+
+  @include desktop {
+    grid-template-columns: 5fr 3.5fr;
+    grid-template-areas:
+      "userInfo buttons"
+      "userData userData";
+  }
+
+  .userInfo {
+    grid-area: userInfo;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 3rem 1rem;
+
+    @include desktop {
+      margin: 3rem 2rem;
+    }
+
+    img {
+      margin: 0 1rem 0 2rem;
+      width: 13rem;
+      height: 13rem;
+      border-radius: 1.5rem;
+
+      @include desktop {
+        width: 15rem;
+        height: 15rem;
+      }
+    }
+
+    .info {
+      text-align: left;
+      margin: 0 0 0 2rem;
+      font-weight: bold;
+      font-size: 1.8rem;
+
+      p {
+        margin: 1rem 0;
+      }
+    }
+  }
+
+  .buttons {
+    grid-area: buttons;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 3rem;
+
+    @include desktop {
+      width: 100%;
+      margin: 3rem 5rem 3rem 0;
+    }
+
+    .button {
+      font-size: 1.6rem;
+      border: 0.2rem solid color(primary);
+      border-radius: 1.5rem;
+      padding: 1rem 2rem;
+      margin: 0.5rem 2rem 0.5rem 0;
+      font-weight: bold;
+
+      @include desktop {
+        width: calc(100% - 7rem);
+        padding: 1rem 0;
+      }
+
+      &Active {
+        background-color: color(primary);
+      }
+    }
+
+    .button:hover {
+      cursor: pointer;
+      background-color: color(primary);
+    }
+  }
+
+  .userData {
+    grid-area: userData;
+  }
 }

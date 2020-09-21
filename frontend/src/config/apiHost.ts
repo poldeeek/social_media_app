@@ -5,25 +5,26 @@ const apiHost = "http://localhost:5000";
 
 export const authenticationHeader = () => {
   return {
-    Authorization: `Bearer ${getAccessToken()}`,
+    authorization: `Bearer ${getAccessToken()}`,
   };
 };
 
 export const api = axios.create({
   baseURL: apiHost,
+  withCredentials: true,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getAccessToken()}`,
   },
 });
 
+// catching 401 status and refresh accessToken
 const interceptor = api.interceptors.response.use(
   (response) => response,
   (error) => {
     const { status } = error.response;
     const originalRequest = error.config;
-    console.log(error);
+    console.log(error.response);
 
     if (status === 401) {
       originalRequest._retry = true;
@@ -31,7 +32,7 @@ const interceptor = api.interceptors.response.use(
 
       api.interceptors.response.eject(interceptor);
 
-      let res = fetch("http://localhost:5000/api/auth/refresh", {
+      fetch("http://localhost:5000/api/auth/refresh", {
         method: "GET",
         mode: "cors",
         credentials: "include",
@@ -43,7 +44,6 @@ const interceptor = api.interceptors.response.use(
         .then((res) => {
           console.log(res);
           setAccessToken(res.accessToken);
-          console.log(getAccessToken());
           return api(originalRequest);
         });
     }

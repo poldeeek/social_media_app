@@ -8,18 +8,21 @@ import { NavLink } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const currentUser = useSelector((state: IRoot) => state.auth.user);
-
-  console.log("user", currentUser);
   return (
     <>
       <div className={styles.back}></div>
       <div className={styles.navBar}>
         <div className={styles.logo}>
-          <img src={logo} width="40px" height="39px" /> GreenSociety
+          <NavLink to="/">
+            <div className={styles.logoLink}>
+              <img src={logo} />
+              <span>GreenSociety</span>
+            </div>
+          </NavLink>
         </div>
         <div className={styles.avatar}>
           {currentUser && (
-            <NavLink to={`/profile/${currentUser.id}`}>
+            <NavLink to={`/profile/${currentUser._id}`}>
               <div className={styles.avatarFrame}>
                 <img
                   className={styles.photo}

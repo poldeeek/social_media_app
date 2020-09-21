@@ -2,4 +2,5 @@
 
 **/.env
 
-/frontend/src/config/firebase.ts
+**/build
+

@@ -15,7 +15,7 @@ const PrivatePage: React.FC = () => {
     minWidth: 1024,
   });
 
-  const userID = useSelector((state: IRoot) => state.auth.user?.id);
+  const userID = useSelector((state: IRoot) => state.auth.user?._id);
 
   // Init sockets for chat and to getting notifications from server
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./searchingUser.module.scss";
 import photo from "../../../../images/avatar.jpg";
+import { NavLink } from "react-router-dom";
 
 export interface ISearchingUser {
   _id: number;
@@ -14,10 +15,12 @@ type props = {
 
 const SearchingUser: React.FC<props> = ({ user }) => {
   return (
-    <div className={styles.searchingUserContainer}>
-      <img className={styles.friendPhoto} src={photo} alt="friend avatar" />
-      {user.name} {user.surname}
-    </div>
+    <NavLink to={`/profile/${user._id}`}>
+      <div className={styles.searchingUserContainer}>
+        <img className={styles.friendPhoto} src={photo} alt="friend avatar" />
+        {user.surname} {user.name}
+      </div>
+    </NavLink>
   );
 };
 

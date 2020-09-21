@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { accessTokenVerify } = require("../../middleware/accessTokenVerify")
 
 const router = express.Router();
 
@@ -64,7 +63,7 @@ router.post('/register', async (req, res) => {
         newUser.save()
             .then(async user => {
                 const user_response = {
-                    id: user._id,
+                    _id: user._id,
                     email: user.email,
                     name: user.name,
                     surname: user.surname,
@@ -106,7 +105,7 @@ router.post('/login', async (req, res) => {
     if (!email || !password) return res.status(400).json({ msg: "Please enter all fields." })
 
     // Check for existing user
-    User.findOne({ email })
+    User.findOne({ email }, '')
         .then(async user => {
             if (!user) return res.status(404).send({ msg: "User does not exist." })
 
@@ -115,7 +114,7 @@ router.post('/login', async (req, res) => {
             if (!compare_password) return res.status(401).send({ msg: "Wrong password." })
 
             const user_response = {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 name: user.name,
                 surname: user.surname,
@@ -153,7 +152,7 @@ router.get('/refresh', (req, res) => {
         User.findById(payload.sub, async (err, person) => {
             if (!person) return res.status(401).send({ msg: "Person not found.", verify: false })
             const user_response = {
-                id: person._id,
+                _id: person._id,
                 email: person.email,
                 name: person.name,
                 surname: person.surname,
@@ -161,7 +160,7 @@ router.get('/refresh', (req, res) => {
                 birth: person.birth,
                 avatar: person.avatar
             }
-            const tokens = await generateTokens(user_response.id);
+            const tokens = await generateTokens(user_response._id);
             res.cookie('refreshToken', tokens.refreshToken, {
                 maxAge: 15 * 24 * 60 * 60 * 1000,
                 httpOnly: true

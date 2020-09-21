@@ -5,7 +5,7 @@ export interface IAuth {
     birth: string;
     city: string;
     email: string;
-    id: string;
+    _id: string;
     name: string;
     surname: string;
     avatar: string;
