@@ -6,12 +6,11 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-// Pairs _id: socket when user connect with socket
-const users_sockets = {};
-
 // Routes
 const userRoutes = require('./routes/api/users')
 const authRoutes = require('./routes/api/auth')
+const friendsRoutes = require('./routes/api/friends')
+const invitationsRoutes = require('./routes/api/invitations')
 
 const app = express();
 const server = http.createServer(app);
@@ -35,21 +34,20 @@ mongoose.connect(process.env.MONGO,
 io.on('connection', socket => {
     const uid = socket.handshake.query.userID;
 
-    socket.on('start', () => {
-        // room for notifications
-        socket.join(`notifications_${uid}`);
+    socket.join(uid);
+})
 
-        // room for notifications about new messages
-        socket.join(`unSeenMessage_${uid}`);
-
-        // room for chat between users
-        socket.join(`chat_${uid}`);
-    })
+// middleware to pass the io object into the routes
+app.use((req, res, next) => {
+    res.io = io;
+    next();
 })
 
 // Use Routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/friends', friendsRoutes);
+app.use('/api/invitations', invitationsRoutes);
 
 const PORT = process.env.PORT || 5000;
 

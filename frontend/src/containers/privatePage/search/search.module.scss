@@ -52,7 +52,6 @@
     width: 100%;
     border: none;
     background-color: color(secondary);
-    color: black;
     padding: 0 0 0 4rem;
     position: fixed;
     top: 6rem;
@@ -64,10 +63,14 @@
       background-color: color(lighten-primary);
       width: calc(100% - 4rem);
       padding: 0.5rem 0 0 4rem;
-      color: color(secondary);
+      color: black;
       position: static;
       height: 3.5rem;
     }
+  }
+
+  .searchInput::placeholder {
+    color: color(secondary);
   }
 
   .spinner {

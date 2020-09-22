@@ -3,6 +3,10 @@ const { isEmail } = require("validator")
 
 const Schema = mongoose.Schema;
 
+const opts = {
+    createdAt: 'created_at'
+};
+
 // Create schema 
 const UserSchema = new Schema({
     name: {
@@ -38,11 +42,8 @@ const UserSchema = new Schema({
     online: {
         type: Boolean,
         default: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, opts
+);
 
 module.exports = mongoose.model('Users', UserSchema);

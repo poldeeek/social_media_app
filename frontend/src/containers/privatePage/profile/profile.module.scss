@@ -2,6 +2,8 @@
 @import "../../../styles/resolutionMixins.scss";
 
 .profileContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   display: grid;
   grid-template-areas: "userInfo" "buttons" "userData";
@@ -44,6 +46,11 @@
 
       p {
         margin: 1rem 0;
+
+        i {
+          text-align: center;
+          width: 3rem;
+        }
       }
     }
   }
@@ -56,8 +63,8 @@
     margin: 0 3rem;
 
     @include desktop {
-      width: 100%;
-      margin: 3rem 5rem 3rem 0;
+      width: 90%;
+      margin: 3rem 5rem 3rem 5rem;
     }
 
     .button {

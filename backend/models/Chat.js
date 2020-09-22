@@ -2,20 +2,20 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const opts = {
+    updatedAt: 'updated_at'
+};
+
 // Create schema 
 const ChatSchema = new Schema({
     users: {
         type: [String, String],
         required: [true, 'Podaj uczestników czatu.'],
     },
-    lase_message_date: {
-        type: Date,
-        default: Date.now
-    },
     seen: {
         type: Boolean,
         default: false
     }
-});
+}, opts);
 
 module.exports = mongoose.model('Chat', ChatSchema);

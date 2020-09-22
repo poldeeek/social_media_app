@@ -21,7 +21,7 @@ router.get('/search', accessTokenVerify, (req, res) => {
 
     let regex = [];
     for (let i = 0; i < search.length; i++) {
-        regex[i] = new RegExp(search[i]);
+        regex[i] = new RegExp(search[i], 'i');
     }
 
     User.find({

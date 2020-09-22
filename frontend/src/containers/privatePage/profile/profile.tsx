@@ -6,6 +6,8 @@ import styles from "./profile.module.scss";
 import { authenticationHeader } from "../../../config/apiHost";
 import ProfilePosts from "./profilePosts/profilePosts";
 import ProfileFriends from "./profileFriends/profileFriends";
+import { useSelector } from "react-redux";
+import { IRoot } from "../../../store/reducers/rootReducer";
 
 interface IUserProfile {
   _id: string;
@@ -29,6 +31,8 @@ const Profile: React.FC = () => {
 
   const [activeButton, setActiveButton] = useState("posts");
 
+  const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
+
   useEffect(() => {
     api
       .get(`http://localhost:5000/api/users/${id}`, {
@@ -38,9 +42,7 @@ const Profile: React.FC = () => {
         setUser(resp.data);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  console.log(user);
+  }, [id]);
 
   return (
     <div className={styles.profileContainer}>
@@ -48,17 +50,17 @@ const Profile: React.FC = () => {
         {user && <img src={user.avatar} alt="user profile photo" />}
         <div className={styles.info}>
           {user && (
-            <p>
+            <p style={{ fontSize: "2.4rem" }}>
               {user.name} {user.surname}
             </p>
           )}
           {user && (
-            <p>
+            <p style={{ fontWeight: "normal" }}>
               <i title="Miasto" className="fas fa-home"></i> {user.city}
             </p>
           )}
           {user && (
-            <p>
+            <p style={{ fontWeight: "normal" }}>
               <i title="Data Urodzenia" className="fas fa-calendar-alt"></i>{" "}
               {user.birth}
             </p>

@@ -1,13 +1,14 @@
 import React from "react";
 import styles from "./navBar.module.scss";
 import logo from "../../../../images/logo.svg";
-import IconsPanel from "./iconsPanel/iconsPanel";
+import NotificationPanel from "./notificationsPanel/notificationPanel";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../../store/reducers/rootReducer";
 import { NavLink } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const currentUser = useSelector((state: IRoot) => state.auth.user);
+
   return (
     <>
       <div className={styles.back}></div>
@@ -34,7 +35,7 @@ const NavBar: React.FC = () => {
             </NavLink>
           )}
         </div>
-        <IconsPanel />
+        <NotificationPanel />
       </div>
     </>
   );

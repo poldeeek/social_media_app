@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const opts = {
+    createdAt: 'created_at'
+};
+
 // Create schema 
 const MessageSchema = new Schema({
     chat_id: {
@@ -19,11 +23,7 @@ const MessageSchema = new Schema({
     photo: {
         type: String,
         required: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
-});
+}, opts);
 
 module.exports = mongoose.model('Message', MessageSchema);

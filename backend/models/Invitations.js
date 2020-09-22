@@ -3,26 +3,26 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create schema 
-const InviteSchema = new Schema({
+const InvitationsSchema = new Schema({
     user_id: {
         type: String,
         required: [true, 'Podaj id użytkownika.'],
     },
-    invites: {
+    invitations: {
         type: [{
             _id: {
                 type: String,
             },
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
             seen: {
                 type: Boolean,
                 default: false
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
             }
         }]
     }
 });
 
-module.exports = mongoose.model('Invites', InviteSchema);
+module.exports = mongoose.model('Invitations', InvitationsSchema);

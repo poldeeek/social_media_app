@@ -8,6 +8,12 @@ const router = express.Router();
 // User model 
 const User = require("../../models/User");
 
+// Invitations model
+const Invitations = require('../../models/Invitations')
+
+// Friends model
+const Friends = require('../../models/Friends')
+
 // Handle errors
 const { registerErrorsHandler } = require("../handleErrors/auth");
 
@@ -71,6 +77,17 @@ router.post('/register', async (req, res) => {
                     birth: user.birth,
                     avatar: user.avatar
                 }
+
+                const invitations = new Invitations({
+                    user_id: user._id
+                })
+
+                const friends = new Friends({
+                    user_id: user._id
+                })
+
+                invitations.save();
+                friends.save();
 
                 const tokens = await generateTokens(user);
 
