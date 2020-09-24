@@ -14,7 +14,7 @@ const ChatSchema = new Schema({
     },
     seen: {
         type: Boolean,
-        default: false
+        default: true
     }
 }, opts);
 

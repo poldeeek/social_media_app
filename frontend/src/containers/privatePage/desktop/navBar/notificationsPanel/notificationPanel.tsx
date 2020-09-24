@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./notificationPanel.module.scss";
 import { useDispatch } from "react-redux";
 import { signOut } from "../../../../../store/actions/authActions";

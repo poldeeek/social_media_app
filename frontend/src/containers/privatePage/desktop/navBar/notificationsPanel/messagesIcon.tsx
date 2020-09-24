@@ -12,7 +12,7 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
     if (socket === null) return;
 
     socket.on("new_message", () => setNotification(true));
-  });
+  }, []);
 
   return (
     <div
@@ -25,6 +25,7 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
       onClick={() => changeActive("messages")}
     >
       <i className="fas fa-comments"></i>
+      {notification && <div className={styles.notificationDot}></div>}
     </div>
   );
 };

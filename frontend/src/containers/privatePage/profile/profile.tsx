@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getAccessToken } from "../../../accessToken";
 import { api } from "../../../config/apiHost";
 import styles from "./profile.module.scss";
 import { authenticationHeader } from "../../../config/apiHost";
@@ -8,6 +7,7 @@ import ProfilePosts from "./profilePosts/profilePosts";
 import ProfileFriends from "./profileFriends/profileFriends";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../store/reducers/rootReducer";
+import FriendshipStatusButton from "./friendshipStatusButton/friendshipStatusButton";
 
 interface IUserProfile {
   _id: string;
@@ -18,6 +18,9 @@ interface IUserProfile {
   city: string;
   birth: string;
   createdAt: string;
+  isFriend: boolean;
+  heInvited: boolean;
+  meInvited: boolean;
 }
 
 export interface IRouterParams {
@@ -34,14 +37,16 @@ const Profile: React.FC = () => {
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
 
   useEffect(() => {
+    console.log("test profile");
     api
       .get(`http://localhost:5000/api/users/${id}`, {
         headers: authenticationHeader(),
       })
       .then((resp) => {
+        console.log("ha");
         setUser(resp.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("fiu", err));
   }, [id]);
 
   return (
@@ -68,12 +73,18 @@ const Profile: React.FC = () => {
         </div>
       </div>
       <div className={styles.buttons}>
-        <div className={styles.button}>
-          <i className="fas fa-user-plus"></i> Zaproś do znajomych
-        </div>
-        <div className={styles.button}>
-          <i className="fas fa-paper-plane"></i> Wyślij wiadomość
-        </div>
+        {currentUserId !== id && (
+          <>
+            <FriendshipStatusButton
+              isFriend={user?.isFriend}
+              meInvited={user?.meInvited}
+              heInvited={user?.heInvited}
+            />
+            <div className={styles.button}>
+              <i className="fas fa-paper-plane"></i> Wyślij wiadomość
+            </div>
+          </>
+        )}
         <div style={{ display: "flex", width: "calc(100% - 4.5rem)" }}>
           <div
             className={

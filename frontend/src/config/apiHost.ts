@@ -24,7 +24,7 @@ const interceptor = api.interceptors.response.use(
   (error) => {
     const { status } = error.response;
     const originalRequest = error.config;
-    console.log(error.response);
+    console.log(originalRequest);
 
     if (status === 401) {
       originalRequest._retry = true;
@@ -41,9 +41,10 @@ const interceptor = api.interceptors.response.use(
         },
       })
         .then((res) => res.json())
-        .then((res) => {
+        .then(async (res) => {
           console.log(res);
-          setAccessToken(res.accessToken);
+          await setAccessToken(res.accessToken);
+          originalRequest.headers = authenticationHeader();
           return api(originalRequest);
         });
     }

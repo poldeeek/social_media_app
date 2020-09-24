@@ -7,7 +7,10 @@ const router = express.Router();
 
 // User model 
 const User = require("../../models/User");
-const { response } = require('express');
+
+// Friends model
+const Friends = require('../../models/Friends');
+const Invitation = require('../../models/Invitation');
 
 // @route   GET api/users/search?q=searchingFraze&p=page&limit=perPage
 // @desc    Getting users by id
@@ -44,16 +47,46 @@ router.get('/search', accessTokenVerify, (req, res) => {
 // @desc    Getting user by id
 // @access  Private
 router.get('/:id', accessTokenVerify, (req, res) => {
-    User.findOne({ _id: req.params.id },
+    const id = req.params.id;;
+    User.findOne({ _id: id },
         'avatar email name surname city birth createdAt')
-        .then(user => {
-            const accessToken = req.headers.authorization.split(' ');
+        .then(async user => {
+            user = JSON.parse(JSON.stringify(user))
+
+            // is my friend ? Did I invite him to friends ? Did he invite me ?
+            let friend, meInvited, heInvited;
 
             // Getting request sender ID
-            jwt.verify(accessToken[1], process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+            const accessToken = req.headers.authorization.split(' ');
+            const { sub } = jwt.verify(accessToken[1], process.env.ACCESS_TOKEN_SECRET)
 
-                res.status(200).json(user)
+            await Friends.countDocuments({ user_id: sub, friends: id }, (err, payload) => {
+                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (payload === 0) friend = false;
+                else friend = true;
             })
+
+            // Did I invite him to friends ?
+            await Invitation.countDocuments({ user_id: sub, invited_user_id: id }, (err, payload) => {
+                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (payload === 0) meInvited = false;
+                else meInvited = true;
+            })
+
+            // Did he invite me ?
+            await Invitation.countDocuments({ user_id: id, invited_user_id: sub }, (err, payload) => {
+                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (payload === 0) heInvited = false;
+                else heInvited = true;
+            })
+
+            user.isFriend = friend;
+            user.meInvited = meInvited;
+            user.heInvited = heInvited;
+
+
+            res.status(200).json(user)
+
         })
         .catch(err => {
             res.status(404).json({ msg: "User does not exist." });

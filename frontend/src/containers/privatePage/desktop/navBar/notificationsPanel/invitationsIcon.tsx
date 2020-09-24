@@ -11,8 +11,10 @@ const InvitationIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   useEffect(() => {
     if (socket === null) return;
 
-    socket.on("invite", () => setNotification(true));
-  });
+    socket.on("invitation", (msg: string) => {
+      setNotification(true);
+    });
+  }, [socket]);
 
   return (
     <div
@@ -25,6 +27,7 @@ const InvitationIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
       onClick={() => changeActive("invitations")}
     >
       <i className="fas fa-envelope"></i>
+      {notification && <div className={styles.notificationDot}></div>}
     </div>
   );
 };
