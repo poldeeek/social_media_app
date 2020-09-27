@@ -31,19 +31,20 @@
     width: 3.5rem;
     margin: 0 1rem;
     border-radius: 150%;
-    background-color: color(primary);
-    color: color(secondary);
+    background-color: color(inputs);
+    color: color(fonts);
     cursor: pointer;
-    transition: color 1s;
+    transition: color 0.3s;
 
     &Active {
-      background-color: color(secondary);
+      background-color: color(hovers);
       color: color(primary);
     }
   }
 
   .icon:hover {
-    background-color: color(secondary);
+    background-color: color(hovers);
     color: color(primary);
+    transition: color 0.3s;
   }
 }

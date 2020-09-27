@@ -6,6 +6,16 @@ html {
   box-sizing: border-box;
   overflow-x: hidden;
   font-family: "Montserrat";
+  color: #c2c2c2;
+
+  a {
+    color: #c2c2c2;
+  }
+
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
 
   @include desktop {
     /* width */

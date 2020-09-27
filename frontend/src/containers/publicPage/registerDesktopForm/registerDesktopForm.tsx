@@ -74,7 +74,10 @@ const RegisterDesktopForm: React.FC = () => {
                 name="birthDay"
                 component={TextInput}
                 placeholder="Dzień"
-                style={{ marginRight: "1rem" }}
+                style={{
+                  marginRight: "1rem",
+                  width: "calc(100% - 2px - 1rem - 3rem)",
+                }}
                 validate={composeValidators(
                   validation.required,
                   validation.isDay
@@ -85,7 +88,10 @@ const RegisterDesktopForm: React.FC = () => {
                 name="birthMonth"
                 component={TextInput}
                 placeholder="Miesiąc"
-                style={{ marginRight: "1rem" }}
+                style={{
+                  marginRight: "1rem",
+                  width: "calc(100% - 2px - 1rem - 3rem)",
+                }}
                 validate={composeValidators(
                   validation.required,
                   validation.isMonth

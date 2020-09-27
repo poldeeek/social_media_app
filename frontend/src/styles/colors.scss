@@ -1,10 +1,22 @@
 $colors: (
-  primary: #276a39,
-  secondary: #e2e0e1,
-  lighten-primary: #62a373,
-  placeholder: #a9c3b0,
+  background1: #1b1b1b,
+  background2: #1a1a1a,
+  primary: #1c1e21,
+  secondary: #242526,
+  inputs: #4d4d4d,
+  placeholder: #cacaca,
+  fonts: #c2c2c2,
+  hovers: #686868,
 );
 
 @function color($color-name) {
   @return map-get($colors, $color-name);
 }
+
+/*
+  primary: #276a39,
+  secondary: #e2e0e1,
+  lighten-primary: #62a373,
+  placeholder: #a9c3b0,
+
+*/

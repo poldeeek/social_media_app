@@ -1,2 +1,81 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
 .invitationsContainer {
+  .loaderConatiner {
+    margin: 5rem auto;
+  }
+
+  @include desktop {
+    position: absolute;
+    background-color: color(secondary);
+    top: 4.5rem;
+    right: 4rem;
+    width: 35rem;
+    border-radius: 1.5rem;
+    border: 2px solid color(hovers);
+    max-height: calc(100vh - 4.5rem - 3rem);
+  }
+}
+
+.noInvitationInfo {
+  padding: 10rem 2rem;
+  @include desktop {
+    padding: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+.invitationContainer {
+  padding: 1rem 0rem;
+  font-size: 1.5rem;
+  margin: 0.5rem 1rem;
+  border-bottom: 1px solid color(inputs);
+
+  @include desktop {
+    margin: 0.5rem 1rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 1.5rem;
+  }
+
+  .invitationMessage {
+    display: flex;
+    align-items: center;
+    text-align: left;
+
+    .invitationInfo {
+      margin: 0 1rem;
+    }
+
+    img {
+      width: 6rem;
+      height: 6rem;
+      border-radius: 15rem;
+    }
+  }
+
+  .buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    .button {
+      text-align: center;
+      font-weight: bold;
+      background-color: green;
+      width: 40%;
+      padding: 0.9rem 0.5rem;
+      border-radius: 1.5rem;
+    }
+    .button:hover {
+      cursor: pointer;
+      background-color: lighten(green, 3%);
+    }
+  }
+}
+
+.invitationContainer:hover {
+  @include desktop {
+    background-color: lighten(color(secondary), 2%);
+  }
 }

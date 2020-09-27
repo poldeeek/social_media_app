@@ -79,7 +79,6 @@ router.post('/register', async (req, res) => {
                     user_id: user._id
                 })
 
-                invitation.save();
                 friends.save();
 
                 const tokens = await generateTokens(user);

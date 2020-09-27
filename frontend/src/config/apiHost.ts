@@ -32,7 +32,7 @@ const interceptor = api.interceptors.response.use(
 
       api.interceptors.response.eject(interceptor);
 
-      fetch("http://localhost:5000/api/auth/refresh", {
+      return fetch("http://localhost:5000/api/auth/refresh", {
         method: "GET",
         mode: "cors",
         credentials: "include",

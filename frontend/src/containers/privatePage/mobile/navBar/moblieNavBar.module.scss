@@ -6,7 +6,6 @@
   margin: 0;
   padding: 0;
   display: flex;
-  background-color: color(lighten-primary);
   position: fixed;
   top: 0;
   left: 0;
@@ -17,30 +16,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid color(lighten-primary);
-    border-radius: 0 0 5px 5px;
+
     &Last {
       border: none;
-      background-color: color(primary);
-      color: black;
+      background-color: color(secondary);
+      color: color(fonts);
     }
 
     img {
-      width: 80%;
-      height: 80%;
+      width: 4rem;
+      height: 4rem;
       border-radius: 100%;
     }
   }
 
   a {
-    color: black;
+    color: color(fonts);
     text-decoration: none;
-    border-radius: 0 0 5px 5px;
-    background-color: color(primary);
+    background-color: color(secondary);
   }
 
   .activeLink {
-    color: color(primary);
-    background-color: color(lighten-primary);
+    color: color(secondary);
+    background-color: color(inputs);
   }
 }

@@ -26,9 +26,13 @@ form {
     }
 
     input {
+      border-radius: 1.5rem;
+      padding: 0.5rem 1.5rem;
       height: 2rem;
-      border: 1px solid #707070;
-      width: 100%;
+      border: none;
+      width: calc(100% - 3rem);
+      background-color: color(inputs);
+      color: color(fonts);
 
       @include desktop {
         flex: 1;
@@ -97,7 +101,7 @@ form {
         text-align: left;
         font-size: 1rem;
         letter-spacing: 1px;
-        color: color(secondary);
+        color: color(fonts);
 
         @include desktop {
           flex: 1;
@@ -111,17 +115,18 @@ form {
       }
 
       &Button {
+        border-radius: 1.5rem;
         box-sizing: border-box;
         flex: 1;
         height: calc(70%);
         margin: 0 0 0 1rem;
         font-size: 1.8rem;
         font-weight: bold;
-        color: color(primary);
+        color: color(fonts);
         padding: 0.5rem;
         cursor: pointer;
-        background-color: #fff;
-        border: 2px solid #fff;
+        background-color: color(inputs);
+        border: 2px solid color(inputs);
         transition-duration: 0.4s;
 
         @include desktop {
@@ -131,7 +136,6 @@ form {
       &Button:hover {
         @include desktop {
           background-color: color(primary);
-          color: #fff;
         }
       }
     }

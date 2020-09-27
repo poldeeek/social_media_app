@@ -10,12 +10,18 @@ type buttonProps = {
   isFriend?: boolean;
   heInvited?: boolean;
   meInvited?: boolean;
+  changeFriendshipStatus: (
+    isFriend: boolean,
+    heInvited: boolean,
+    meInvited: boolean
+  ) => void;
 };
 
 const FriendshipStatusButton: React.FC<buttonProps> = ({
   isFriend,
   meInvited,
   heInvited,
+  changeFriendshipStatus,
 }) => {
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
   const { id } = useParams<IRouterParams>();
@@ -31,7 +37,7 @@ const FriendshipStatusButton: React.FC<buttonProps> = ({
           headers: authenticationHeader(),
         }
       )
-      .then((resp) => console.log(resp))
+      .then((resp) => changeFriendshipStatus(false, false, true))
       .catch((err) => console.log(err));
   };
 
@@ -46,33 +52,58 @@ const FriendshipStatusButton: React.FC<buttonProps> = ({
           headers: authenticationHeader(),
         }
       )
-      .then((resp) => console.log(resp))
+      .then((resp) => changeFriendshipStatus(true, false, false))
       .catch((err) => console.log(err));
   };
 
   const rejectInvitation = () => {
     api
-      .delete(`http://localhost:5000/api/invitations/rejectInvitation/${id}`, {
-        headers: authenticationHeader(),
-        data: { _id: currentUserId },
-      })
-      .then((resp) => console.log(resp))
+      .post(
+        `http://localhost:5000/api/invitations/rejectInvitation/${id}`,
+        {
+          _id: currentUserId,
+        },
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => changeFriendshipStatus(false, false, false))
       .catch((err) => console.log(err));
   };
 
   const cancelInvitation = () => {
     api
-      .delete(`http://localhost:5000/api/invitations/cancelInvitation/${id}`, {
-        headers: authenticationHeader(),
-        data: { _id: currentUserId },
-      })
-      .then((resp) => console.log(resp))
+      .post(
+        `http://localhost:5000/api/invitations/cancelInvitation/${id}`,
+        {
+          _id: currentUserId,
+        },
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => changeFriendshipStatus(false, false, false))
+      .catch((err) => console.log(err));
+  };
+
+  const removeFriend = () => {
+    api
+      .post(
+        `http://localhost:5000/api/friends/removeFriend/${id}`,
+        {
+          _id: currentUserId,
+        },
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => changeFriendshipStatus(false, false, false))
       .catch((err) => console.log(err));
   };
 
   if (isFriend)
     return (
-      <div className={styles.button}>
+      <div className={styles.button} onClick={() => removeFriend()}>
         <i className="fas fa-user-plus"></i> Usuń ze znajomych
       </div>
     );

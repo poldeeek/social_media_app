@@ -2,6 +2,7 @@
 
 .registerForm {
   grid-area: register;
+
   //  background-color: blue;
   //  opacity: 0.5;
 
@@ -11,12 +12,15 @@
   grid-template-areas: "text" "form";
 
   .joinUsText {
+    width: 80%;
+    margin: 0 auto;
+    border-top: 1px solid color(inputs);
     grid-area: text;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     font-weight: bold;
-    color: color(primary);
+    color: color(fonts);
   }
 
   .createAccArea {
@@ -25,7 +29,9 @@
     justify-content: center;
 
     &Button {
-      background-color: color(primary);
+      border-radius: 1.5rem;
+      color: color(fonts);
+      background-color: color(inputs);
       padding: 1.5rem 2.5rem;
       margin-top: -5rem;
     }

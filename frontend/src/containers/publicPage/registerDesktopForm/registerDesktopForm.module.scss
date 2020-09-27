@@ -1,7 +1,7 @@
 @import "../../../styles/colors.scss";
 
 .registerForm {
-  color: color(primary);
+  color: color(fonts);
   grid-area: register;
   padding: 5vh 15rem 0 0;
   text-align: right;
@@ -23,11 +23,14 @@
     padding: 0vh 0 5vh 5vw;
 
     input {
-      width: calc(100% - 2px - 1rem);
-      border: 1px solid #707070;
+      border: none;
+      border-radius: 1.5rem;
+      width: calc(100% - 2px - 1rem - 2rem);
       height: 3rem;
-      padding: 0.5rem;
+      padding: 0.5rem 1.5rem;
       font-size: 1.8rem;
+      background-color: color(inputs);
+      color: color(fonts);
     }
 
     input::placeholder {
@@ -39,21 +42,21 @@
     }
 
     & > button {
+      border-radius: 1.5rem;
       padding: 1rem;
       border: none;
-      background-color: color(primary);
-      color: white;
+      background-color: color(inputs);
+      color: color(fonts);
       width: 45%;
       font-size: 2.2rem;
       align-self: flex-end;
       cursor: pointer;
-      border: 2px solid color(primary);
+      border: 2px solid color(inputs);
       transition-duration: 0.4s;
     }
 
     & > button:hover {
       background-color: color(secondary);
-      color: color(primary);
     }
   }
 }

@@ -68,8 +68,9 @@
     }
 
     .button {
+      background-color: color(inputs);
       font-size: 1.6rem;
-      border: 0.2rem solid color(primary);
+      border: 0.2rem solid color(inputs);
       border-radius: 1.5rem;
       padding: 1rem 2rem;
       margin: 0.5rem 2rem 0.5rem 0;
@@ -81,13 +82,14 @@
       }
 
       &Active {
-        background-color: color(primary);
+        border: 0.2rem solid color(secondary);
+        background-color: color(secondary);
       }
     }
 
     .button:hover {
       cursor: pointer;
-      background-color: color(primary);
+      background-color: #616161;
     }
   }
 

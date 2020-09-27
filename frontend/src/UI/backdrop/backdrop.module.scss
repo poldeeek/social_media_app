@@ -1,0 +1,19 @@
+.Backdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  background-color: black;
+  opacity: 0.7;
+}
+
+.Backdrop_full {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+}

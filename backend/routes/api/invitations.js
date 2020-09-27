@@ -87,7 +87,7 @@ router.post('/acceptInvitation/:id', (req, res) => {
 // @route   POST api/invitations/rejectInvitation/:id
 // @desc    Reject invitation to friends
 // @access  Private
-router.delete('/rejectInvitation/:id', (req, res) => {
+router.post('/rejectInvitation/:id', (req, res) => {
 
     Invitation.deleteOne({
         user_id: req.params.id,
@@ -102,7 +102,7 @@ router.delete('/rejectInvitation/:id', (req, res) => {
 // @route   POST api/invitations/cancelInvitation/:id
 // @desc    Cancel invitation to friends
 // @access  Private
-router.delete('/cancelInvitation/:id', (req, res) => {
+router.post('/cancelInvitation/:id', (req, res) => {
     console.log(req.body)
 
     Invitation.deleteOne({
@@ -115,18 +115,19 @@ router.delete('/cancelInvitation/:id', (req, res) => {
     })
 })
 
-// @route GET api/invitations/getInvitations/:id
+// @route GET api/invitations/getInvitations/:id?page=page&limit=limit
 // @desc Get user invitations 
 // @access Private
 router.get('/getInvitations/:id', (req, res) => {
 
-    const perPage = req.body.perPage;
-    const page = req.body.page;
+    const perPage = req.query.limit;
+    const page = req.query.page;
 
-    Invitation.find({ user_id: req.params.id })
-        .limit(parseInt(perPage))
+    console.log("ga")
+    Invitation.find({ invited_user_id: req.params.id })
         .skip(parseInt(perPage) * parseInt(page))
         .sort({ createdAt: -1 })
+        .limit(parseInt(perPage))
         .then(async results => {
 
             // Parse array to JSON object
@@ -134,7 +135,7 @@ router.get('/getInvitations/:id', (req, res) => {
 
 
             // getting info about users
-            const array = await results.map(user => user.invited_user_id)
+            const array = await results.map(user => user.user_id)
             const users = await User.find({
                 _id: { $in: array }
             }, 'name surname avatar', (err, usersArray) => {
@@ -149,14 +150,12 @@ router.get('/getInvitations/:id', (req, res) => {
 
             results2.forEach(result => {
                 users2.forEach(user => {
-                    if (result.invited_user_id == user._id) {
-                        result.invited_user_id = user
+                    if (result.user_id == user._id) {
+                        result.user_id = user
                         finalData.push(result)
                     }
                 })
             })
-
-            console.log(results)
             res.status(200).json(finalData);
         }).catch(err => {
             console.log(err)

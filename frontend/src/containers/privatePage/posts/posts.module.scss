@@ -1,3 +1,56 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
 .postsContainer {
+  padding: 2rem 2rem 0 2rem;
   overflow: auto;
+  font-size: 1.8rem;
+
+  @include desktop {
+    margin: auto 7rem;
+  }
+
+  .newPostButton {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: color(secondary);
+    border-radius: 1.5rem;
+    padding: 0.5rem 1.5rem;
+    text-align: left;
+    font-size: 1.6rem;
+    cursor: pointer;
+
+    @include desktop {
+      font-size: 1.8rem;
+    }
+
+    img {
+      margin: 0 1rem 0 0;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 15rem;
+    }
+
+    .buttonInput {
+      width: 100%;
+      background-color: #4d4d4d;
+      border-radius: 5rem;
+      padding: 1rem;
+      color: #c2c2c2;
+      @include desktop {
+        padding: 1rem 2rem;
+      }
+    }
+  }
+}
+
+.createNewPost {
+  top: 12rem;
+  right: 30vw;
+  position: absolute;
+  height: 50vh;
+  width: 40vw;
+  background-color: red;
+  z-index: 3000;
 }

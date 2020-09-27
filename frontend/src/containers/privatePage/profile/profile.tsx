@@ -37,17 +37,24 @@ const Profile: React.FC = () => {
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
 
   useEffect(() => {
-    console.log("test profile");
     api
       .get(`http://localhost:5000/api/users/${id}`, {
         headers: authenticationHeader(),
       })
       .then((resp) => {
-        console.log("ha");
         setUser(resp.data);
       })
-      .catch((err) => console.log("fiu", err));
+      .catch((err) => console.log(err));
   }, [id]);
+
+  // change friendship status after action in FriendshipStatusButton
+  const changeFriendshipStatus = (
+    isFriend: boolean,
+    heInvited: boolean,
+    meInvited: boolean
+  ) => {
+    user && setUser({ ...user, isFriend, heInvited, meInvited });
+  };
 
   return (
     <div className={styles.profileContainer}>
@@ -79,6 +86,9 @@ const Profile: React.FC = () => {
               isFriend={user?.isFriend}
               meInvited={user?.meInvited}
               heInvited={user?.heInvited}
+              changeFriendshipStatus={(isFriend, heInvited, meInvited) =>
+                changeFriendshipStatus(isFriend, heInvited, meInvited)
+              }
             />
             <div className={styles.button}>
               <i className="fas fa-paper-plane"></i> Wyślij wiadomość

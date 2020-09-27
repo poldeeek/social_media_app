@@ -22,7 +22,7 @@ const TextInput: React.FC<Props> = ({
       }}
     >
       {meta.error && meta.touched && (
-        <span style={{ fontSize: "1.2rem", color: "#cc0000" }}>
+        <span style={{ fontSize: "1.2rem", color: "#D22E2E" }}>
           * {meta.error}
         </span>
       )}

@@ -7,7 +7,7 @@
   scroll-snap-type: mandatory;
   scroll-snap-points-y: repeat(100vh);
   scroll-snap-type: y mandatory;
-  background-color: color(primary);
+  background-color: color(background1);
   z-index: -1;
   scroll-behavior: smooth;
 }
@@ -16,7 +16,7 @@ section {
   height: 100vh;
   scroll-snap-align: start;
   position: relative;
-  color: white;
+  color: color(fonts);
   z-index: 1;
 
   .bg {
@@ -53,14 +53,14 @@ section {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-bottom: 1px solid color(secondary);
+    border-bottom: 1px solid color(inputs);
     @include desktop {
       border: none;
     }
 
     a {
       text-decoration: none;
-      color: white;
+      color: color(fonts);
     }
 
     &Element {
@@ -72,6 +72,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: color(fonts);
     @include desktop {
     }
 
@@ -87,7 +88,7 @@ section {
 
     .appName {
       font-size: 2.4rem;
-      color: color(secondary);
+      color: color(fonts);
       margin: 0 1.2rem;
       @include desktop {
         font-size: 7rem;
@@ -97,7 +98,7 @@ section {
 
   .bg {
     clip-path: polygon(0 100%, 100% 100%, 100% 45%, 0 55%);
-    background-color: color(secondary);
+    background-color: color(background2);
 
     @include desktop {
       clip-path: polygon(100% 0, 60% 0, 35% 100%, 100% 100%);
@@ -150,14 +151,13 @@ section {
     background-repeat: no-repeat;
     background-position: 90% -40%;
     background-image: url("../../images/people.jpg");
-    background-color: color(secondary);
+    background-color: color(background2);
     @include desktop {
       clip-path: polygon(100% 0, 35% 0, 60% 100%, 100% 100%);
       background-size: 100%;
       background-repeat: no-repeat;
       background-position: 100%;
       background-image: url("../../images/people.jpg");
-      background-color: color(secondary);
     }
   }
 }
@@ -222,7 +222,7 @@ section {
       background-size: 100%;
       background-position: 0 0;
       background-image: url("../../images/phone.jpg");
-      background-color: color(secondary);
+      background-color: color(background2);
       clip-path: polygon(100% 0, 60% 0, 35% 100%, 100% 100%);
     }
   }
