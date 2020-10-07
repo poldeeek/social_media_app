@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./loginForm.module.scss";
 import LoginTextInput from "../../../components/publicPage/form/loginTextInput";
 import { Form, Field } from "react-final-form";

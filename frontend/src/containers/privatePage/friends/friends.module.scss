@@ -9,15 +9,15 @@
 
   .friendList {
     overflow: auto;
-    height: calc(100vh - 6rem - 4rem);
+    height: calc(100vh - 6rem - 5rem);
     width: 100%;
     position: relative;
-    top: 4rem;
+    top: 5rem;
 
     @include desktop {
       position: fixed;
       padding: 1rem 0 0 0;
-      top: 8.6rem;
+      top: 9.6rem;
       right: 0;
       width: calc(100vw / 4.5);
       height: calc(100vh - 7rem);
@@ -26,11 +26,13 @@
   }
 
   .searchInput {
-    margin: 0;
+    border-radius: 1.5rem;
+    color: color(fonts);
+    margin: 1rem 2rem;
     height: 4rem;
-    width: 100%;
+    width: calc(100% - 4rem - 4rem);
     border: none;
-    background-color: color(secondary);
+    background-color: color(inputs);
     padding: 0 0 0 4rem;
     position: fixed;
     top: 6rem;
@@ -38,33 +40,38 @@
     font-size: 1.6rem;
 
     @include desktop {
-      border-bottom: 1px solid gray;
-      width: calc(100% - 4rem);
+      border-bottom: 1px solid color(secondary);
+      background-color: color(lighten-primary);
+      width: calc(100% - 8rem);
       padding: 0.5rem 0 0 4rem;
-
       position: static;
       height: 3.5rem;
     }
   }
 
+  .searchInput::placeholder {
+    color: color(placeholder);
+  }
+
   .searchIcon {
-    position: absolute;
-    top: 7rem;
-    left: 1rem;
+    position: fixed;
+    top: 8rem;
+    left: 3rem;
     height: 0;
     width: 0;
     font-size: 2rem;
-    color: gray;
-    z-index: 10;
+    color: color(placeholder);
+    z-index: 1000;
 
     @include desktop {
       position: relative;
       top: 0px;
-      left: 1rem;
+      left: 3rem;
       height: 0;
       width: 0;
       font-size: 2rem;
-      color: gray;
+      color: color(placeholder);
+      z-index: 500;
     }
   }
 }

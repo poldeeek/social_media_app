@@ -35,7 +35,7 @@ const PublicPage: React.FC = () => {
         </div>
         <div className={styles.logo}>
           <img alt="logo" src={logo} className={styles.logoPicture} />
-          <span className={styles.appName}>GreenSociety</span>
+          <span className={styles.appName}>DarkSociety</span>
         </div>
         <LoginForm />
         {isDesktopOrLaptop && <RegisterDesktopForm />}
@@ -46,7 +46,7 @@ const PublicPage: React.FC = () => {
         <div className={styles.aboutTitle}>O nas</div>
         <div className={styles.aboutContent}>
           Studencki projekt
-          <br /> GreenSociety
+          <br /> DarkSociety
           <br /> jest aplikacją typu
           <br /> social-media zbudowaną
           <br /> przez Pawła Polak

@@ -1,19 +1,11 @@
 require('dotenv').config();
 const express = require("express");
 const { accessTokenVerify } = require("../../middleware/accessTokenVerify");
-const { find } = require('../../models/Invitation');
+const { isInvitationExist } = require('../../middleware/paramsValidations/isInvitationExist');
+const { isUserExistIdParams, isUserExistIdBody } = require('../../middleware/paramsValidations/isUserExist');
 
 // User model 
 const Invitation = require("../../models/Invitation");
-
-// User model 
-const User = require("../../models/User");
-
-// Friends model
-const Friends = require('../../models//Friends');
-
-// Chat model 
-const Chat = require('../../models/Chat');
 
 const router = express.Router();
 
@@ -21,7 +13,7 @@ const router = express.Router();
 // @route   POST api/invitations/sendInvitation/:id
 // @desc    Send invitation to user
 // @access  Private
-router.post('/sendInvitation/:id', (req, res) => {
+router.post('/sendInvitation/:id', isUserExistIdParams, isUserExistIdBody, (req, res) => {
 
     const invitation = new Invitation({
         user_id: req.body._id,
@@ -34,135 +26,76 @@ router.post('/sendInvitation/:id', (req, res) => {
             // Send notification to user about new invitation
             res.io.in(`${req.params.id}`).emit('invitation', 'New invite to friends.')
 
-            res.status(200).json({ msg: "Invitation sent." });
+            return res.status(200).json({ msg: "Invitation sent." });
         }).catch(err => {
-            console.log(err);
-            res.status(500).json({ msg: "Sending invitations went wrong." })
+            res.status(500).json({ error: "Sending invitations went wrong." })
         })
-})
-
-// @route   POST api/invitations/acceptInvitation/:id
-// @desc    Accpet invitation to friends
-// @access  Private
-router.post('/acceptInvitation/:id', (req, res) => {
-
-    Invitation.deleteOne({
-        user_id: req.params.id,
-        invited_user_id: req.body._id
-    }, async (err) => {
-        if (err) res.status(500).json({ msg: "Database problem." })
-
-        await new Chat({
-            users: [
-                req.params.id,
-                req.body._id
-            ]
-        }).save(err => {
-            if (err) res.status(500).json({ msg: "Database problem." })
-        });
-
-        await Friends.updateOne(
-            { user_id: req.params.id },
-            { $addToSet: { friends: req.body._id } }, (err, docs) => {
-                if (err) res.status(500).json({ msg: "Database problem." });
-            }
-        )
-
-        await Friends.updateOne(
-            { user_id: req.body._id },
-            { $addToSet: { friends: req.params.id } }, (err, docs) => {
-                if (err) res.status(500).json({ msg: "Database problem." });
-            }
-        )
-
-
-        // Send notification to user about new invitation
-        res.io.in(`${req.params.id}`).emit('notification', 'New friend.')
-
-        res.status(200).json({ msg: "Friend added." })
-
-    })
 })
 
 // @route   POST api/invitations/rejectInvitation/:id
 // @desc    Reject invitation to friends
 // @access  Private
-router.post('/rejectInvitation/:id', (req, res) => {
+router.post('/rejectInvitation/:id', isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
 
     Invitation.deleteOne({
         user_id: req.params.id,
         invited_user_id: req.body._id
-    }, async (err) => {
-        if (err) res.status(500).json({ msg: "Database problem." })
-
+    }).then(result => {
         res.status(200).json({ msg: "Invitation reject." })
+    }).catch(err => {
+        res.status(500).json({ error: "Database problem. Deleting invitation" })
     })
 })
 
 // @route   POST api/invitations/cancelInvitation/:id
 // @desc    Cancel invitation to friends
 // @access  Private
-router.post('/cancelInvitation/:id', (req, res) => {
-    console.log(req.body)
-
+router.post('/cancelInvitation/:id', isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
     Invitation.deleteOne({
-        user_id: req.body._id,
-        invited_user_id: req.params.id
-    }, async (err) => {
-        if (err) res.status(500).json({ msg: "Database problem." })
-
+        user_id: req.params.id,
+        invited_user_id: req.body._id
+    }).then(result => {
         res.status(200).json({ msg: "Invitation canceled." })
+    }).catch(err => {
+        res.status(500).json({ error: "Databace problem. Deleting invitation." })
     })
 })
 
 // @route GET api/invitations/getInvitations/:id?page=page&limit=limit
 // @desc Get user invitations 
 // @access Private
-router.get('/getInvitations/:id', (req, res) => {
+router.get('/getInvitations/:id', isUserExistIdParams, (req, res) => {
 
     const perPage = req.query.limit;
     const page = req.query.page;
 
-    console.log("ga")
+    if (!perPage || !Number.isInteger(parseInt(perPage))) return res.status(400).json({ error: "Invalid limit parameter." })
+    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." })
+
     Invitation.find({ invited_user_id: req.params.id })
+        .populate({ path: 'user_id', select: 'name surname avatar' })
         .skip(parseInt(perPage) * parseInt(page))
-        .sort({ createdAt: -1 })
+        .sort({ created_at: -1 })
         .limit(parseInt(perPage))
         .then(async results => {
-
-            // Parse array to JSON object
-            let results2 = JSON.parse(JSON.stringify(results))
-
-
-            // getting info about users
-            const array = await results.map(user => user.user_id)
-            const users = await User.find({
-                _id: { $in: array }
-            }, 'name surname avatar', (err, usersArray) => {
-                if (err) res.status(500).json(err)
-                return usersArray;
-            })
-
-            // Parse array to JSON object
-            let users2 = JSON.parse(JSON.stringify(users))
-
-            const finalData = [];
-
-            results2.forEach(result => {
-                users2.forEach(user => {
-                    if (result.user_id == user._id) {
-                        result.user_id = user
-                        finalData.push(result)
-                    }
-                })
-            })
-            res.status(200).json(finalData);
+            console.log(results)
+            res.status(200).json(results);
         }).catch(err => {
-            console.log(err)
-            res.status(500).json({ err });
+            res.status(500).json({ error: "Database problem. Finding invitations." });
         })
-
-
 })
 
+// @Route   /api/invitations/seeAllInvitations/:id
+// @desc    check all invitations as seen
+// @access  Private
+router.post('/seeAllInvitations/:id', isUserExistIdParams, (req, res) => {
+    Invitation.updateMany({ invited_user_id: req.params.id }, { seen: true })
+        .then(async results => {
+
+            res.status(200).json({ msg: "Invitations updated." });
+        }).catch(err => {
+            res.status(500).json({ error: "Database problem. Finding invitations." });
+        })
+})
 module.exports = router;
+

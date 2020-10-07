@@ -5,6 +5,7 @@
   @include desktop {
     grid-area: search;
     height: 100%;
+    font-size: 1.9rem;
   }
 
   .usersList {
@@ -91,6 +92,6 @@
   }
 
   .showMoreButton:hover {
-    background-color: color(lighten-primary);
+    background-color: color(hovers);
   }
 }

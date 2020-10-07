@@ -1,0 +1,11 @@
+@import "../../../../styles/resolutionMixins.scss";
+
+.postsList {
+  padding: 2rem 0.1rem 0 0.1rem;
+  overflow: auto;
+  font-size: 1.8rem;
+  @include desktop {
+    margin: auto 5rem;
+    padding: 2rem 3rem 0 3rem;
+  }
+}

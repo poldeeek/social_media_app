@@ -1,0 +1,9 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
+.comments {
+  border-top: 1px solid color(inputs);
+  margin: 1rem 0 0 0;
+  padding: 1rem 0;
+  width: 100%;
+}

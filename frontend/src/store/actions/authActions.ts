@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as actions from "../actions/actionTypes";
-import { setAccessToken, getAccessToken } from "../../accessToken";
-import { create } from "domain";
+import { setAccessToken } from "../../accessToken";
 import { useHistory } from "react-router";
 
 // Check refresh token and get user
@@ -91,7 +90,7 @@ export const signUp = (creds: ISignUp) => (
 ) => {
   let birthDate;
 
-  if (Math.floor(creds.birthMonth / 10) == 0) {
+  if (Math.floor(creds.birthMonth / 10) === 0) {
     birthDate =
       creds.birthDay +
       "/0" +

@@ -6,15 +6,24 @@ html {
   box-sizing: border-box;
   overflow-x: hidden;
   font-family: "Montserrat";
-  color: #c2c2c2;
+  color: color(fonts);
+
+  textarea {
+    font-family: "Montserrat";
+  }
 
   a {
-    color: #c2c2c2;
+    color: color(fonts);
   }
 
   textarea:focus,
   input:focus {
     outline: none;
+  }
+
+  textarea::placeholder,
+  input::placeholder {
+    color: color(placeholders);
   }
 
   @include desktop {

@@ -4,25 +4,41 @@ import { useSocket } from "../../../../../contexts/socketProvider";
 import { IIconParams } from "./notificationPanel";
 import Invitations from "../../../invitations/invitations";
 import useOnClickOutside from "../../../../../hooks/useOnClickOutside";
+import { useDispatch, useSelector } from "react-redux";
+import { IRoot } from "../../../../../store/reducers/rootReducer";
+import { setNotification } from "../../../../../store/actions/notificationsActions";
 
 const InvitationIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   const socket = useSocket();
+  const dispatch = useDispatch();
 
-  const [notification, setNotification] = useState(false);
+  const inviationRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(
+    inviationRef,
+    () => active === "invitations" && changeActive("")
+  );
 
-  const ref = useRef<HTMLDivElement>(null);
-  useOnClickOutside(ref, () => changeActive(""));
+  const notification = useSelector(
+    (state: IRoot) => state.notifications.invitations
+  );
+  const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   useEffect(() => {
     if (socket === null) return;
-
     socket.on("invitation", (msg: string) => {
-      setNotification(true);
+      currentUser &&
+        dispatch(setNotification("invitations", true, currentUser._id));
     });
   }, [socket]);
 
+  const seeInvitationsHandler = () => {
+    notification &&
+      currentUser &&
+      dispatch(setNotification("invitations", false, currentUser._id));
+  };
+
   return (
-    <div ref={ref}>
+    <div ref={inviationRef} onClick={() => seeInvitationsHandler()}>
       <div
         className={
           active === "invitations"

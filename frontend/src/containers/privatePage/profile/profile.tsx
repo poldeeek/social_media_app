@@ -37,14 +37,22 @@ const Profile: React.FC = () => {
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
 
   useEffect(() => {
+    let mounted = true;
     api
       .get(`http://localhost:5000/api/users/${id}`, {
         headers: authenticationHeader(),
       })
       .then((resp) => {
-        setUser(resp.data);
+        if (mounted) {
+          setUser(resp.data);
+        }
       })
       .catch((err) => console.log(err));
+
+    return () => {
+      mounted = false;
+      return;
+    };
   }, [id]);
 
   // change friendship status after action in FriendshipStatusButton
@@ -59,7 +67,7 @@ const Profile: React.FC = () => {
   return (
     <div className={styles.profileContainer}>
       <div className={styles.userInfo}>
-        {user && <img src={user.avatar} alt="user profile photo" />}
+        {user && <img src={user.avatar} alt="user profile" />}
         <div className={styles.info}>
           {user && (
             <p style={{ fontSize: "2.4rem" }}>
@@ -120,7 +128,7 @@ const Profile: React.FC = () => {
       </div>
       <div className={styles.userData}>
         {activeButton === "posts" ? (
-          <ProfilePosts id={id} />
+          <ProfilePosts />
         ) : (
           <ProfileFriends id={id} />
         )}

@@ -1,22 +1,33 @@
 import React from "react";
 import styles from "./friend.module.scss";
-import photo from "../../../../images/avatar.jpg";
-
-export interface IFriend {
-  _id: number;
-  name: string;
-  surname: string;
-}
+import { IFriend } from "../../../../store/reducers/friendsReducer";
 
 type props = {
   user: IFriend;
 };
 
 const Friend: React.FC<props> = ({ user }) => {
+  console.log(user);
+
   return (
     <div className={styles.friendContainer}>
-      <img className={styles.friendPhoto} src={photo} alt="friend avatar" />
-      {user.name} {user.surname}
+      <div className={styles.userInfo}>
+        <img
+          className={styles.friendPhoto}
+          src={user.avatar}
+          alt="friend avatar"
+        />
+        {user.name} {user.surname}
+      </div>
+      <div className={styles.statusDot}>
+        {user.online ? (
+          <i
+            className={`fas fa-circle ${styles.statusDot} ${styles.statusDotActive}`}
+          ></i>
+        ) : (
+          <i className={`fas fa-circle ${styles.statusDot}`}></i>
+        )}
+      </div>
     </div>
   );
 };

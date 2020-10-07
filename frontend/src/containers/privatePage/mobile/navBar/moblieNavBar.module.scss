@@ -9,6 +9,8 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 5000;
+  background-color: color(background1);
 
   .icon {
     width: calc(100vw / 7);

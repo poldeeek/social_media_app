@@ -13,29 +13,12 @@ const Search: React.FC = () => {
   const [results, setResults] = useState([]);
 
   // pagination
-  const [perPage, setPerPage] = useState(5);
+  const perPage = useState(5);
   const [page, setPage] = useState(0);
 
   const [showMoreResults, setShowMoreResults] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      setPage(0);
-      setIsSearching(true);
-      searchUsers(debouncedSearchTerm, 0).then((results) => {
-        setIsSearching(false);
-        if (results.length === perPage) setShowMoreResults(true);
-        else setShowMoreResults(false);
-        setResults(results);
-      });
-    } else {
-      setShowMoreResults(false);
-
-      setResults([]);
-    }
-  }, [debouncedSearchTerm]);
 
   const searchUsers = (search: string, pageNr: number) => {
     return api
@@ -53,6 +36,23 @@ const Search: React.FC = () => {
         return [];
       });
   };
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setPage(0);
+      setIsSearching(true);
+      searchUsers(debouncedSearchTerm, 0).then((results) => {
+        setIsSearching(false);
+        if (results.length === perPage) setShowMoreResults(true);
+        else setShowMoreResults(false);
+        setResults(results);
+      });
+    } else {
+      setShowMoreResults(false);
+
+      setResults([]);
+    }
+  }, [debouncedSearchTerm]);
 
   const moreResults = () => {
     searchUsers(searchTerm, page + 1).then((moreResults) => {
@@ -75,23 +75,20 @@ const Search: React.FC = () => {
         placeholder="Szukaj..."
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {isSearching ? (
-        <div className={styles.spinner}>
-          <ClipLoader color={"#276a39"} />
-        </div>
-      ) : (
-        <div className={styles.usersList}>
-          {results.map((user: ISearchingUser) => {
+      <div className={styles.usersList}>
+        {results &&
+          results.map((user: ISearchingUser) => {
             return <SearchingUser key={user._id} user={user} />;
           })}
-          {showMoreResults && (
-            <div
-              className={styles.showMoreButton}
-              onClick={() => moreResults()}
-            >
-              Pokaż więcej wyników <i className="fas fa-caret-down"></i>
-            </div>
-          )}
+        {showMoreResults && (
+          <div className={styles.showMoreButton} onClick={() => moreResults()}>
+            Pokaż więcej wyników <i className="fas fa-caret-down"></i>
+          </div>
+        )}
+      </div>
+      {isSearching && (
+        <div className={styles.spinner}>
+          <ClipLoader color={"#276a39"} />
         </div>
       )}
     </div>

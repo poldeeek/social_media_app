@@ -13,7 +13,7 @@ const MoblieNavBar: React.FC = () => {
   return (
     <div className={styles.moblieNavBarContainer}>
       <NavLink exact to="/" activeClassName={styles.activeLink}>
-        <div className={styles.icon}>L</div>
+        <div className={styles.icon}>D</div>
       </NavLink>
       <NavLink
         exact
@@ -21,7 +21,7 @@ const MoblieNavBar: React.FC = () => {
         activeClassName={styles.activeLink}
       >
         <div className={styles.icon}>
-          <img src={user?.avatar} />
+          <img src={user?.avatar} alt="user avatar" />
         </div>
       </NavLink>
       <NavLink exact to="/friends" activeClassName={styles.activeLink}>
@@ -39,7 +39,7 @@ const MoblieNavBar: React.FC = () => {
           <i className="fas fa-envelope"></i>
         </div>
       </NavLink>
-      <NavLink exact to="/notifications" activeClassName={styles.activeLink}>
+      <NavLink exact to="/bells" activeClassName={styles.activeLink}>
         <div className={styles.icon}>
           <i className="fas fa-bell"></i>
         </div>

@@ -12,9 +12,10 @@ const Invitation: React.FC<{
   const acceptInvitation = () => {
     api
       .post(
-        `http://localhost:5000/api/invitations/acceptInvitation/${inv.user_id._id}`,
+        `http://localhost:5000/api/friends/addFriend/${inv.user_id._id}`,
         {
           _id: currentUserId,
+          type: "invitation_accept",
         },
         {
           headers: authenticationHeader(),
@@ -56,7 +57,7 @@ const Invitation: React.FC<{
     >
       <div className={styles.invitationContainer}>
         <div className={styles.invitationMessage}>
-          <img src={inv.user_id.avatar} />
+          <img src={inv.user_id.avatar} alt="user avatar" />
 
           <div className={styles.invitationInfo}>
             <b>

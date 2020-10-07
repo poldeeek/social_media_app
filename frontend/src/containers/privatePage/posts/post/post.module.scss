@@ -1,0 +1,103 @@
+@import "../../../../styles/colors.scss";
+@import "../../../../styles/resolutionMixins.scss";
+
+.post {
+  background-color: color(secondary);
+  margin: 1rem 0;
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 0.7rem 1.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .userInfo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    img {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 15rem;
+      margin: 0 1rem 0 0;
+    }
+
+    &Label {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: left;
+      height: 5rem;
+    }
+
+    &Name {
+      text-align: left;
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+
+    &PostDate {
+      font-size: 1.2rem;
+      color: darken(color(fonts), 40%);
+    }
+  }
+
+  .text {
+    width: 100%;
+    font-size: 2rem;
+    margin: 1.5rem 0 1rem 0;
+    text-align: left;
+  }
+
+  .postPhoto {
+    width: 100%;
+
+    margin: 1rem 0;
+    max-height: 25rem;
+    border-radius: 1.5rem;
+  }
+
+  .interactionInfo {
+    border-top: 1px solid color(inputs);
+    padding: 1rem 1rem 0 0;
+    width: calc(100% - 1rem);
+    display: flex;
+    justify-content: space-between;
+
+    .interactionButtons {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      .button {
+        font-size: 1.5rem;
+        border-radius: 1.5rem;
+        margin: 0 1rem 0 0;
+        padding: 1rem 0rem;
+        width: 5rem;
+        text-align: center;
+        border: 2px solid color(fonts);
+        background-color: lighten(color(secondary), 1%);
+        cursor: pointer;
+
+        &Active {
+          background-color: color(primary);
+
+          color: color(fonts);
+        }
+      }
+
+      .button:hover {
+        @include desktop {
+          background-color: color(hovers);
+        }
+      }
+
+      .likesInfo {
+      }
+    }
+  }
+}

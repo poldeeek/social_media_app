@@ -11,6 +11,9 @@ const userRoutes = require('./routes/api/users')
 const authRoutes = require('./routes/api/auth')
 const friendsRoutes = require('./routes/api/friends')
 const invitationsRoutes = require('./routes/api/invitations')
+const postsRoutes = require('./routes/api/posts')
+const commentsRoutes = require('./routes/api/comments')
+const notificationsRoutes = require('./routes/api/notifications')
 
 const app = express();
 const server = http.createServer(app);
@@ -48,6 +51,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/friends', friendsRoutes);
 app.use('/api/invitations', invitationsRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentsRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./App.module.scss";
 import PublicPage from "./publicPage/publicPage";
 import PrivatePage from "./privatePage/privatePage";
@@ -13,9 +13,7 @@ const App: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: IRoot) => state.auth.isAuthenticated
   );
-  const user = useSelector((state: IRoot) => state.auth);
 
-  console.log(user);
   useEffect(() => {
     dispatch(loadUser());
   }, []);

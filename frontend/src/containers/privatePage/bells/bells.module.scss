@@ -1,0 +1,59 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
+.bellContainer {
+  padding: 1rem 0rem;
+  font-size: 1.8rem;
+  margin: 0.5rem 1rem;
+  border-bottom: 1px solid color(inputs);
+  display: flex;
+  align-items: center;
+
+  @include desktop {
+    margin: 0.5rem 1rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 1.5rem;
+  }
+
+  .bellMessage {
+    text-align: left;
+    margin: 0 1rem;
+  }
+  img {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 15rem;
+  }
+}
+
+.bellContainer:hover {
+  @include desktop {
+    background-color: lighten(color(secondary), 2%);
+  }
+}
+
+.bellsContainer {
+  .loaderConatiner {
+    margin: 5rem auto;
+  }
+
+  @include desktop {
+    position: absolute;
+    background-color: color(secondary);
+    top: 4.5rem;
+    right: 4rem;
+    width: 35rem;
+    border-radius: 1.5rem;
+    border: 2px solid color(hovers);
+    max-height: calc(100vh - 4.5rem - 3rem);
+  }
+}
+
+.noNotificationsInfo {
+  padding: 10rem 2rem;
+  @include desktop {
+    padding: 2rem;
+    font-size: 1.5rem;
+  }
+}

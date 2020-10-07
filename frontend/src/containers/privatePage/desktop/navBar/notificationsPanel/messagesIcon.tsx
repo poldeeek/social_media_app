@@ -9,9 +9,13 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   const [notification, setNotification] = useState(false);
 
   useEffect(() => {
-    if (socket === null) return;
+    const setSocket = () => {
+      if (socket === null) return;
 
-    socket.on("new_message", () => setNotification(true));
+      socket.on("new_message", () => setNotification(true));
+    };
+
+    setSocket();
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./invitations.module.scss";
 import Invitation from "./invitation";
 import { api, authenticationHeader } from "../../../config/apiHost";
@@ -49,7 +49,7 @@ const Invitations: React.FC = ({}) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
         setLoading(false);
       });
   }, []);
@@ -62,7 +62,7 @@ const Invitations: React.FC = ({}) => {
         </div>
       ) : (
         invitations &&
-        (invitations.length == 0 ? (
+        (invitations.length === 0 ? (
           <div className={styles.noInvitationInfo}>
             Nie masz nowych zaproszeń.
           </div>

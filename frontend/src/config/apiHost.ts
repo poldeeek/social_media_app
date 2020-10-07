@@ -24,7 +24,6 @@ const interceptor = api.interceptors.response.use(
   (error) => {
     const { status } = error.response;
     const originalRequest = error.config;
-    console.log(originalRequest);
 
     if (status === 401) {
       originalRequest._retry = true;

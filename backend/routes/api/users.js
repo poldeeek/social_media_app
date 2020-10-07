@@ -11,16 +11,20 @@ const User = require("../../models/User");
 // Friends model
 const Friends = require('../../models/Friends');
 const Invitation = require('../../models/Invitation');
+const { isUserExistIdParams } = require('../../middleware/paramsValidations/isUserExist');
 
 // @route   GET api/users/search?q=searchingFraze&p=page&limit=perPage
 // @desc    Getting users by id
 // @access  Private
 router.get('/search', accessTokenVerify, (req, res) => {
+    if (req.query.q === '') return res.status(400).json({ msg: "Invalid searching fraze." });
+
     const search = req.query.q.split(' ');
     const page = req.query.p;
     const perPage = req.query.limit;
 
-    console.log(page, perPage)
+    if (!perPage || !Number.isInteger(parseInt(perPage))) return res.status(400).json({ error: "Invalid limit parameter." })
+    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." })
 
     let regex = [];
     for (let i = 0; i < search.length; i++) {
@@ -38,15 +42,14 @@ router.get('/search', accessTokenVerify, (req, res) => {
         .sort({ surname: 'asc', name: 'asc' })
         .then(results => res.status(200).json(results))
         .catch(err => {
-            console.log(err)
-            res.status(500).json(err)
+            res.status(500).json({ error: "Database finding users problem." })
         })
 })
 
 // @route   GET api/users/:id
 // @desc    Getting user by id
 // @access  Private
-router.get('/:id', accessTokenVerify, (req, res) => {
+router.get('/:id', isUserExistIdParams, accessTokenVerify, (req, res) => {
     const id = req.params.id;;
     User.findOne({ _id: id },
         'avatar email name surname city birth createdAt')
@@ -61,21 +64,21 @@ router.get('/:id', accessTokenVerify, (req, res) => {
             const { sub } = jwt.verify(accessToken[1], process.env.ACCESS_TOKEN_SECRET)
 
             await Friends.countDocuments({ user_id: sub, friends: id }, (err, payload) => {
-                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (err) return res.status(500).json({ error: "Database problem" });
                 if (payload === 0) friend = false;
                 else friend = true;
             })
 
             // Did I invite him to friends ?
             await Invitation.countDocuments({ user_id: sub, invited_user_id: id }, (err, payload) => {
-                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (err) return res.status(500).json({ error: "Database problem" });
                 if (payload === 0) meInvited = false;
                 else meInvited = true;
             })
 
             // Did he invite me ?
             await Invitation.countDocuments({ user_id: id, invited_user_id: sub }, (err, payload) => {
-                if (err) res.status(500).json({ msg: "Database problem", err });
+                if (err) return res.status(500).json({ error: "Database problem" });
                 if (payload === 0) heInvited = false;
                 else heInvited = true;
             })
@@ -85,11 +88,11 @@ router.get('/:id', accessTokenVerify, (req, res) => {
             user.heInvited = heInvited;
 
 
-            res.status(200).json(user)
+            return res.status(200).json(user)
 
         })
         .catch(err => {
-            res.status(404).json({ msg: "User does not exist." });
+            res.status(500).json({ msg: "Database getting information about user problem." });
         });
 })
 

@@ -1,0 +1,49 @@
+@import "../../../../styles/colors.scss";
+@import "../../../../styles/resolutionMixins.scss";
+
+.friendsList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @include desktop {
+    flex-direction: row;
+  }
+}
+
+.profileFriend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid color(hovers);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  margin: 0.5rem 1rem;
+  width: calc(100% - 4rem - 2px);
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    img {
+      height: 6rem;
+      width: 6rem;
+      border-radius: 20rem;
+    }
+    .friendInfo {
+      margin: 0 0 0 2rem;
+      text-align: left;
+    }
+  }
+  @include desktop {
+    width: calc(33% - 4rem - 2px);
+  }
+}
+
+.profileFriend:hover {
+  @include desktop {
+    background-color: color(inputs);
+    cursor: pointer;
+  }
+}

@@ -3,7 +3,7 @@ import styles from "./notificationPanel.module.scss";
 import { useDispatch } from "react-redux";
 import { signOut } from "../../../../../store/actions/authActions";
 import InvitationIcon from "./invitationsIcon";
-import NotificationIcon from "./notificationIcon";
+import NotificationIcon from "./bellIcon";
 import MessagesIcon from "./messagesIcon";
 
 export interface IIconParams {
@@ -18,7 +18,7 @@ const NotificationPanel: React.FC = () => {
 
   const changeActive = (value: string) => {
     console.log(value);
-    if (active == value) {
+    if (active === value) {
       setActive("");
       return;
     }

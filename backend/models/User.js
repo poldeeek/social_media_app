@@ -4,7 +4,8 @@ const { isEmail } = require("validator")
 const Schema = mongoose.Schema;
 
 const opts = {
-    createdAt: 'created_at'
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 };
 
 // Create schema 
@@ -21,7 +22,7 @@ const UserSchema = new Schema({
         type: String,
         required: [true, 'Podaj adres email.'],
         unique: true,
-        vlidate: [isEmail, 'Niewłaściwy adres email.']
+        validate: [isEmail, 'Niewłaściwy adres email.']
     },
     password: {
         type: String,
@@ -43,7 +44,7 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     }
-}, opts
+}, { timestamps: opts }
 );
 
 module.exports = mongoose.model('Users', UserSchema);

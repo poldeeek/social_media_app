@@ -10,7 +10,8 @@ const opts = {
 // Create schema 
 const PostSchema = new Schema({
     author_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: [true, 'Podaj id autora.'],
     },
     text: {
@@ -22,10 +23,13 @@ const PostSchema = new Schema({
         required: false
     },
     likes: {
-        type: [String]
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
+        }]
     }
 },
-    opts
+    { timestamps: opts }
 );
 
 module.exports = mongoose.model('Posts', PostSchema);

@@ -16,8 +16,8 @@ const NavBar: React.FC = () => {
         <div className={styles.logo}>
           <NavLink to="/">
             <div className={styles.logoLink}>
-              <img src={logo} />
-              <span>GreenSociety</span>
+              <img src={logo} alt="logo" />
+              <span>DarkSociety</span>
             </div>
           </NavLink>
         </div>

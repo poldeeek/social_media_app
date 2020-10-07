@@ -10,15 +10,15 @@ const opts = {
 // Create schema 
 const NotificationSchema = new Schema({
     object_id: {
-        type: String,
-        required: [true, 'Podaj id obiektu.'],
+        type: Schema.Types.ObjectId,
     },
     user_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: [true, 'Podaj id użytkownika.'],
     },
     type: {
-        type: Number,
+        type: String,
         required: false
     },
     seen: {
@@ -26,10 +26,11 @@ const NotificationSchema = new Schema({
         default: false
     },
     who_id: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
     }
 },
-    opts
+    { timestamps: opts }
 );
 
 module.exports = mongoose.model('Notifications', NotificationSchema);

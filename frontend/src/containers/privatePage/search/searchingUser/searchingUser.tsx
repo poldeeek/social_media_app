@@ -7,6 +7,7 @@ export interface ISearchingUser {
   _id: number;
   name: string;
   surname: string;
+  avatar: string;
 }
 
 type props = {
@@ -17,7 +18,11 @@ const SearchingUser: React.FC<props> = ({ user }) => {
   return (
     <NavLink to={`/profile/${user._id}`}>
       <div className={styles.searchingUserContainer}>
-        <img className={styles.friendPhoto} src={photo} alt="friend avatar" />
+        <img
+          className={styles.friendPhoto}
+          src={user.avatar}
+          alt="friend avatar"
+        />
         {user.surname} {user.name}
       </div>
     </NavLink>

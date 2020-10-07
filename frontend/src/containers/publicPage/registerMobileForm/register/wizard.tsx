@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState } from "react";
 import { Form } from "react-final-form";
 import styles from "./register.module.scss";
 import { ISignUp } from "../../../../store/actions/authActions";

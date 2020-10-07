@@ -10,11 +10,12 @@ const opts = {
 // Create schema 
 const CommentSchema = new Schema({
     author_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: [true, 'Podaj id autora.'],
     },
     post_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: [true, 'Podaj id posta.']
     },
     text: {
@@ -22,8 +23,11 @@ const CommentSchema = new Schema({
         required: [true, 'Podaj treść komentarza.'],
     },
     likes: {
-        type: [String]
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
+        }]
     }
-}, opts);
+}, { timestamps: opts });
 
 module.exports = mongoose.model('Comments', CommentSchema);

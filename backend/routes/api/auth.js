@@ -46,8 +46,8 @@ router.post('/register', async (req, res) => {
 
     // Length password validation
     if (password.length < 6) {
-        res.status(400).send({
-            errors: {
+        return res.status(400).send({
+            error: {
                 password: "Hasło musi posiadać co najmniej 6 znaków."
             }
         })
@@ -94,12 +94,11 @@ router.post('/register', async (req, res) => {
                 })
             }).catch(err => {
                 console.log(err)
-                const errors = registerErrorsHandler(err);
-                res.status(400).json({ errors })
+                const error = registerErrorsHandler(err);
+                return res.status(400).json({ error })
             })
     } catch (err) {
-        console.log(err)
-        res.status(500).send({ msg: "Creating user error" })
+        return res.status(500).send({ error: "Creating user error" })
     }
 })
 
@@ -111,16 +110,16 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     // Validation
-    if (!email || !password) return res.status(400).json({ msg: "Please enter all fields." })
+    if (!email || !password) return res.status(400).json({ error: "Please enter all fields." })
 
     // Check for existing user
-    User.findOne({ email }, '')
+    User.findOne({ email })
         .then(async user => {
-            if (!user) return res.status(404).send({ msg: "User does not exist." })
+            if (!user) return res.status(404).send({ error: "User does not exist." })
 
             const compare_password = await bcrypt.compare(password, user.password)
 
-            if (!compare_password) return res.status(401).send({ msg: "Wrong password." })
+            if (!compare_password) return res.status(401).send({ error: "Wrong password." })
 
             const user_response = {
                 _id: user._id,
@@ -134,15 +133,19 @@ router.post('/login', async (req, res) => {
 
             const tokens = await generateTokens(user);
 
-            res.cookie('refreshToken', tokens.refreshToken, {
-                maxAge: 15 * 24 * 60 * 60 * 1000,
-                httpOnly: true
+            User.updateOne({ _id: user._id }, { online: true }).then(resp => {
+                res.cookie('refreshToken', tokens.refreshToken, {
+                    maxAge: 15 * 24 * 60 * 60 * 1000,
+                    httpOnly: true
+                })
+                res.status(200).send({
+                    msg: "User logged in.",
+                    accessToken: tokens.accessToken,
+                    user: user_response
+                })
             })
-            res.status(200).send({
-                msg: "User logged in.",
-                accessToken: tokens.accessToken,
-                user: user_response
-            })
+        }).catch(err => {
+            return res.status(500).send({ error: "Database problem." })
         })
 
 })
@@ -152,14 +155,14 @@ router.post('/login', async (req, res) => {
 // @access  Pubilc
 
 router.get('/refresh', (req, res) => {
-    if (!req.cookies.refreshToken) return res.status(401).send({ msg: "Refresh Token is missing.", verify: false })
+    if (!req.cookies.refreshToken) return res.status(401).send({ error: "Refresh Token is missing.", verify: false })
     const BEARER = 'Bearer';
     const refresh_token = req.cookies.refreshToken.split(' ');
-    if (refresh_token[0] !== BEARER) return res.status(401).send({ msg: "Refresh Token is not complete.", verify: false })
+    if (refresh_token[0] !== BEARER) return res.status(401).send({ error: "Refresh Token is not complete.", verify: false })
     jwt.verify(refresh_token[1], process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
-        if (err) return res.status(401).send({ msg: "Refresh Token is invalid.", verify: false })
+        if (err) return res.status(401).send({ error: "Refresh Token is invalid.", verify: false })
         User.findById(payload.sub, async (err, person) => {
-            if (!person) return res.status(401).send({ msg: "Person not found.", verify: false })
+            if (!person) return res.status(401).send({ error: "Person not found.", verify: false })
             const user_response = {
                 _id: person._id,
                 email: person.email,
@@ -174,7 +177,7 @@ router.get('/refresh', (req, res) => {
                 maxAge: 15 * 24 * 60 * 60 * 1000,
                 httpOnly: true
             })
-            res.status(200).send({
+            return res.status(200).send({
                 accessToken: tokens.accessToken,
                 user: user_response,
                 verify: true
@@ -189,7 +192,8 @@ router.get('/refresh', (req, res) => {
 
 router.post('/logout', (req, res) => {
     res.clearCookie('refreshToken');
-    res.status(200).json({ msg: "User log out." });
+    return res.status(200).json({ error: "User log out." });
+
 })
 
 module.exports = router;

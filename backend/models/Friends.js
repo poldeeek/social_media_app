@@ -5,10 +5,15 @@ const Schema = mongoose.Schema;
 // Create schema 
 const FriendsSchema = new Schema({
     user_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: [true, 'Podaj id użytkownika.'],
     },
-    friends: [String]
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
+        }
+    ]
 });
 
 module.exports = mongoose.model('Friends', FriendsSchema);

@@ -2,12 +2,12 @@
 @import "../../../styles/resolutionMixins.scss";
 
 .postsContainer {
-  padding: 2rem 2rem 0 2rem;
+  padding: 2rem 0.1rem 0 0.1rem;
   overflow: auto;
   font-size: 1.8rem;
-
   @include desktop {
     margin: auto 7rem;
+    padding: 2rem 3rem 0 3rem;
   }
 
   .newPostButton {
@@ -16,13 +16,14 @@
     justify-content: flex-start;
     background-color: color(secondary);
     border-radius: 1.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.7rem 1.5rem;
     text-align: left;
     font-size: 1.6rem;
     cursor: pointer;
 
     @include desktop {
       font-size: 1.8rem;
+      padding: 1rem 1.5rem;
     }
 
     img {
@@ -32,25 +33,210 @@
       border-radius: 15rem;
     }
 
+    a {
+      width: calc(100% - 9rem);
+    }
     .buttonInput {
       width: 100%;
       background-color: #4d4d4d;
       border-radius: 5rem;
-      padding: 1rem;
-      color: #c2c2c2;
+      padding: 1.2rem 1.5rem;
+      color: color(placeholders);
       @include desktop {
         padding: 1rem 2rem;
+      }
+    }
+
+    .buttonInput:hover {
+      @include desktop {
+        color: color(fonts);
+        background-color: color(hovers);
       }
     }
   }
 }
 
-.createNewPost {
-  top: 12rem;
+.desktopNewPost {
+  top: 10rem;
   right: 30vw;
   position: absolute;
-  height: 50vh;
+  height: 72vh;
   width: 40vw;
-  background-color: red;
-  z-index: 3000;
+  background-color: color(secondary);
+  border-radius: 1.5rem;
+  z-index: 5000;
+
+  .close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.5rem;
+    height: 3rem;
+    width: 3rem;
+    background-color: color(inputs);
+    cursor: pointer;
+  }
+  .close:hover {
+    background-color: color(hovers);
+  }
+
+  p {
+    font-size: 2.8rem;
+  }
+}
+
+.mobileNewPost {
+  font-size: 2.6rem;
+  margin: 0 3rem;
+}
+
+.textArea {
+  background-color: color(inputs);
+  color: color(fonts);
+  font-size: 2.2rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  height: 20rem;
+  width: calc(100% - 2rem);
+  resize: none;
+
+  @include desktop {
+    margin: 0 3rem;
+    width: calc(100% - 2rem - 6rem);
+    height: 15rem;
+  }
+}
+
+.textArea:hover {
+  @include desktop {
+    background-color: color(hovers);
+  }
+}
+
+.textArea:focus {
+  @include desktop {
+    background-color: color(hovers);
+  }
+}
+
+.textArea:hover::placeholder {
+  color: color(fonts);
+}
+.addPhoto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 1rem;
+  padding: 1rem;
+  border-top: 0.1rem solid color(inputs);
+  border-bottom: 0.1rem solid color(inputs);
+
+  @include desktop {
+    margin: 1rem 4rem;
+    justify-content: flex-start;
+  }
+
+  &Label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    width: calc(50% - 4rem - 1rem);
+    padding: 2rem;
+    background-color: color(inputs);
+    border-radius: 1.5rem;
+    cursor: pointer;
+
+    @include desktop {
+      width: calc(30% - 4rem - 1rem);
+      font-size: 2.8rem;
+    }
+
+    .cameraIcon {
+      margin: 0 0 0 1rem;
+    }
+  }
+
+  &Label:hover {
+    @include desktop {
+      background-color: color(hovers);
+    }
+  }
+
+  .displayPhoto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7rem;
+    width: calc(50% - 1rem);
+
+    @include desktop {
+      justify-content: flex-start;
+      margin: 0 0 0 4rem;
+      width: calc(70% - 4rem);
+    }
+
+    .removePhoto {
+      top: -3rem;
+      left: -1.5rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: color(inputs);
+      font-size: 1.8rem;
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 500rem;
+      cursor: pointer;
+    }
+
+    .removePhoto:hover {
+      @include desktop {
+        background-color: color(hovers);
+      }
+    }
+
+    .photoError {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #d22e2e;
+    }
+
+    img {
+      position: relative;
+      height: 7rem;
+      max-width: calc(100% - 3rem);
+      border-radius: 1.5rem;
+    }
+  }
+}
+
+.postError {
+  margin: 3rem 0;
+  font-size: 1.8rem;
+  color: #d22e2e;
+}
+
+.submitButton {
+  width: calc(100% - 2rem);
+  margin: 1rem 0;
+  border-radius: 1.5rem;
+  background-color: color(inputs);
+  padding: 1rem;
+  @include desktop {
+    width: calc(100% - 2rem - 6rem);
+    margin: 0 3rem;
+    cursor: pointer;
+  }
+}
+
+.submitButton:hover {
+  @include desktop {
+    background-color: color(hovers);
+  }
 }

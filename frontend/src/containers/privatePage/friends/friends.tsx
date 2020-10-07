@@ -1,39 +1,33 @@
 import React, { useState, useEffect } from "react";
 import styles from "./friends.module.scss";
-import Friend, { IFriend } from "./friend/friend";
+import Friend from "./friend/friend";
+import { useDispatch, useSelector } from "react-redux";
+import { IRoot } from "../../../store/reducers/rootReducer";
+import { loadFriends } from "../../../store/actions/friendsActions";
+import { IFriend } from "../../../store/reducers/friendsReducer";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Friends: React.FC = () => {
+  const currentUser = useSelector((state: IRoot) => state.auth.user);
+
+  const friendsState = useSelector((state: IRoot) => state.friends);
+
+  const dispatch = useDispatch();
+
   const searchingUser: Function = (name: string) => {
     console.log(name);
-    if (name == "") {
-      setModifyFriendsArray(originalFriendsArray);
-      console.log("gdf");
+    if (name === "") {
+      setModifyFriendsArray(friendsState.friends);
     }
   };
 
   useEffect(() => {
+    currentUser && dispatch(loadFriends(currentUser._id));
     searchingUser("");
   }, []);
+  useEffect(() => setModifyFriendsArray(friendsState.friends));
 
-  const [originalFriendsArray, setOriginalFriendsArray] = useState([
-    { _id: 1, name: "lol1", surname: "ha" },
-    { _id: 2, name: "lol2", surname: "ha" },
-    { _id: 3, name: "lol3", surname: "ha" },
-    { _id: 4, name: "lol4", surname: "ha" },
-    { _id: 5, name: "lol5", surname: "ha" },
-    { _id: 6, name: "lol6", surname: "ha" },
-    { _id: 7, name: "lol7", surname: "ha" },
-    { _id: 8, name: "lol8", surname: "ha" },
-    { _id: 9, name: "lol9", surname: "ha" },
-    { _id: 10, name: "lol10", surname: "ha" },
-    { _id: 11, name: "lol5", surname: "ha" },
-    { _id: 12, name: "lol5", surname: "ha" },
-    { _id: 13, name: "lol5", surname: "ha" },
-    { _id: 14, name: "lol5", surname: "ha" },
-    { _id: 15, name: "lol5", surname: "ha" },
-  ]);
-
-  const [modifyFriendsArray, setModifyFriendsArray]: any = useState([]);
+  const [modifyFriendsArray, setModifyFriendsArray] = useState<IFriend[]>([]);
 
   return (
     <div className={styles.friendsContainer}>
@@ -47,9 +41,16 @@ const Friends: React.FC = () => {
       />
 
       <div className={styles.friendList}>
-        {modifyFriendsArray.map((user: IFriend) => {
-          return <Friend key={user._id} user={user} />;
-        })}
+        {friendsState.loading ? (
+          <div className={styles.spinner}>
+            <ClipLoader color={"#276a39"} />
+          </div>
+        ) : (
+          modifyFriendsArray &&
+          modifyFriendsArray.map((user: IFriend) => (
+            <Friend key={user._id} user={user} />
+          ))
+        )}
       </div>
     </div>
   );

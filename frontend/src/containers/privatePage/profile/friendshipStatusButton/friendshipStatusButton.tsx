@@ -44,9 +44,10 @@ const FriendshipStatusButton: React.FC<buttonProps> = ({
   const acceptInvitation = () => {
     api
       .post(
-        `http://localhost:5000/api/invitations/acceptInvitation/${id}`,
+        `http://localhost:5000/api/friends/addFriend/${id}`,
         {
           _id: currentUserId,
+          type: "invitation_accept",
         },
         {
           headers: authenticationHeader(),
@@ -74,16 +75,16 @@ const FriendshipStatusButton: React.FC<buttonProps> = ({
   const cancelInvitation = () => {
     api
       .post(
-        `http://localhost:5000/api/invitations/cancelInvitation/${id}`,
+        `http://localhost:5000/api/invitations/cancelInvitation/${currentUserId}`,
         {
-          _id: currentUserId,
+          _id: id,
         },
         {
           headers: authenticationHeader(),
         }
       )
       .then((resp) => changeFriendshipStatus(false, false, false))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.response));
   };
 
   const removeFriend = () => {

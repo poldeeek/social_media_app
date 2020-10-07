@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const opts = {
-    createdAt: 'created_at'
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 };
 
 // Create schema 
@@ -13,7 +14,8 @@ const MessageSchema = new Schema({
         required: [true, 'Podaj id chatu.'],
     },
     author_id: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: [true, 'Podaj id nadawcy.'],
     },
     text: {
@@ -24,6 +26,6 @@ const MessageSchema = new Schema({
         type: String,
         required: false
     }
-}, opts);
+}, { timestamps: opts });
 
 module.exports = mongoose.model('Message', MessageSchema);
