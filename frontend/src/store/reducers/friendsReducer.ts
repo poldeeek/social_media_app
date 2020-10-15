@@ -36,6 +36,11 @@ const friendsReducer = (state: IFriends = initState, action: any) => {
         ...state,
         loading: false,
       };
+    case actions.FRIEND_STATUS_CHANGE:
+      return {
+        ...state,
+        friends: action.friendsCopy,
+      };
     default:
       return state;
   }

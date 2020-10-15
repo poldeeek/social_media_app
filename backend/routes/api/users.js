@@ -49,7 +49,7 @@ router.get('/search', accessTokenVerify, (req, res) => {
 // @route   GET api/users/:id
 // @desc    Getting user by id
 // @access  Private
-router.get('/:id', isUserExistIdParams, accessTokenVerify, (req, res) => {
+router.get('/:id', accessTokenVerify, isUserExistIdParams, accessTokenVerify, (req, res) => {
     const id = req.params.id;;
     User.findOne({ _id: id },
         'avatar email name surname city birth createdAt')

@@ -1,6 +1,5 @@
 import * as actions from "./actionTypes";
 import { api, authenticationHeader } from "../../config/apiHost";
-import { INotificationReducer } from "../reducers/notificationsReducer";
 
 export const loadNotifications = (id: string) => (
   dispatch: Function,
@@ -29,13 +28,16 @@ export const setNotification = (action: string, value: boolean, id: string) => (
   dispatch: Function,
   getState: Function
 ) => {
-  console.log(action);
   if (action === "invitations") {
     if (!value)
       api
-        .post(`http://localhost:5000/api/invitations/seeAllInvitations/${id}`, {
-          headers: authenticationHeader(),
-        })
+        .post(
+          `http://localhost:5000/api/invitations/seeAllInvitations/${id}`,
+          {},
+          {
+            headers: authenticationHeader(),
+          }
+        )
         .then((resp) => {
           console.log(resp);
           dispatch({
@@ -57,11 +59,14 @@ export const setNotification = (action: string, value: boolean, id: string) => (
   } else if (action === "bell") {
     if (!value)
       api
-        .post(`http://localhost:5000/api/notifications/seeAllBells/${id}`, {
-          headers: authenticationHeader(),
-        })
+        .post(
+          `http://localhost:5000/api/notifications/seeAllBells/${id}`,
+          {},
+          {
+            headers: authenticationHeader(),
+          }
+        )
         .then((resp) => {
-          console.log(resp);
           dispatch({
             type: actions.SET_NOTIFICATION_BELL,
             value,

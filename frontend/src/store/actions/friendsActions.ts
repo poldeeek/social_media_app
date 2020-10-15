@@ -1,7 +1,8 @@
 import * as actions from "../actions/actionTypes";
 
 import { api, authenticationHeader } from "../../config/apiHost";
-import { IRoot } from "../reducers/rootReducer";
+
+import { IFriend } from "../reducers/friendsReducer";
 
 export const loadFriends = (userID: string) => (
   dispatch: Function,
@@ -22,4 +23,31 @@ export const loadFriends = (userID: string) => (
       });
     })
     .catch((err) => dispatch({ type: actions.FRIENDS_LOADED_FAILED }));
+};
+
+export const changeFriendStatus = (uid: string, status: boolean) => (
+  dispatch: Function,
+  getState: Function
+) => {
+  let myState = getState();
+  let friendsCopy = JSON.parse(JSON.stringify(myState.friends.friends));
+
+  for (const friend of friendsCopy) {
+    if (friend._id === uid) {
+      friend.online = status;
+      break;
+    }
+  }
+
+  friendsCopy
+    .sort((a: IFriend, b: IFriend) =>
+      a.online === b.online ? 0 : a.online ? -1 : 1
+    )
+    .sort((a: IFriend, b: IFriend) => a.surname.localeCompare(b.surname))
+    .sort((a: IFriend, b: IFriend) => a.name.localeCompare(b.name));
+
+  dispatch({
+    type: actions.FRIEND_STATUS_CHANGE,
+    friendsCopy,
+  });
 };

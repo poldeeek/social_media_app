@@ -7,8 +7,6 @@ type props = {
 };
 
 const Friend: React.FC<props> = ({ user }) => {
-  console.log(user);
-
   return (
     <div className={styles.friendContainer}>
       <div className={styles.userInfo}>

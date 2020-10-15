@@ -2,17 +2,30 @@ import React, { useEffect, useState } from "react";
 import styles from "./notificationPanel.module.scss";
 import { useSocket } from "../../../../../contexts/socketProvider";
 import { IIconParams } from "./notificationPanel";
+import { useDispatch, useSelector } from "react-redux";
+import { IRoot } from "../../../../../store/reducers/rootReducer";
+import { setNotification } from "../../../../../store/actions/notificationsActions";
 
 const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   const socket = useSocket();
+  const dispatch = useDispatch();
 
-  const [notification, setNotification] = useState(false);
+  const currentUser = useSelector((state: IRoot) => state.auth.user);
+
+  const notification = useSelector(
+    (state: IRoot) => state.notifications.messages
+  );
 
   useEffect(() => {
     const setSocket = () => {
       if (socket === null) return;
 
-      socket.on("new_message", () => setNotification(true));
+      socket.on(
+        "new_message",
+        (msg: string) =>
+          currentUser &&
+          dispatch(setNotification("bell", true, currentUser._id))
+      );
     };
 
     setSocket();

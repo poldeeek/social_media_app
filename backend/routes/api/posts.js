@@ -15,7 +15,7 @@ const Notification = require('../../models/Notification');
 // @route   POST api/posts/addPost/:id
 // @desc    Add new post
 // @access  Private
-router.post('/addPost/:id', isUserExistIdParams, (req, res) => {
+router.post('/addPost/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
 
     if (!req.body.text) return res.status(400).json({ error: "Text field is empty." })
 
@@ -35,15 +35,15 @@ router.post('/addPost/:id', isUserExistIdParams, (req, res) => {
     })
 })
 
-// @route   GET api/posts/getPosts/:id?limit=limit&page=page
+// @route   GET api/posts/getPosts/:id?limit=limit&date=lastPostdate
 // @desc    Get mine and friends posts
 // @access  Private
-router.get('/getPosts/:id', isUserExistIdParams, async (req, res) => {
+router.get('/getPosts/:id', accessTokenVerify, isUserExistIdParams, async (req, res) => {
+
     const { id } = req.params;
-    const { page, limit } = req.query;
+    const { date, limit } = req.query;
     let friendsArray;
 
-    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." });
     if (!limit || !Number.isInteger(parseInt(limit))) return res.status(400).json({ error: "Invalid limit parameter." });
 
     await Friends.find({ user_id: id })
@@ -55,29 +55,59 @@ router.get('/getPosts/:id', isUserExistIdParams, async (req, res) => {
     // adding current user id to array (getting current user and his friends posts)
     friendsArray.push(id);
 
-    Post.find({ author_id: { $in: friendsArray } })
-        .skip(parseInt(limit) * parseInt(page))
+    let options;
+    // options to search, - date=null when this is first fetch
+    if (date) {
+        options = {
+            author_id: { $in: friendsArray },
+            created_at: {
+                $lt: date
+            },
+        }
+    } else {
+        options = {
+            author_id: { $in: friendsArray },
+        }
+    }
+
+    Post.find(options)
         .limit(parseInt(limit))
         .sort({ created_at: -1 })
         .select('_id author_id likes photo text created_at')
         .populate({ path: 'author_id', select: 'surname name avatar' })
         .then(result => {
             res.status(200).json(result);
-        }).catch(err => res.status(500).json({ error: "Database finding posts error." }))
+        }).catch(err => {
+            return res.status(500).json({ error: "Database finding posts error." })
+        })
+
 })
 
-// @route   GET api/posts/getPosts/profile/:id?limit=limit&page=page
+// @route   GET api/posts/getPosts/profile/:id?limit=limit&date=lastPostdate
 // @desc    Get mine and friends posts
 // @access  Private
-router.get('/getPosts/profile/:id', isUserExistIdParams, async (req, res) => {
+router.get('/getPosts/profile/:id', accessTokenVerify, isUserExistIdParams, async (req, res) => {
     const { id } = req.params;
-    const { page, limit } = req.query;
+    const { date, limit } = req.query;
 
-    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." });
     if (!limit || !Number.isInteger(parseInt(limit))) return res.status(400).json({ error: "Invalid limit parameter." });
 
-    Post.find({ author_id: id })
-        .skip(parseInt(limit) * parseInt(page))
+    let options;
+    // options to search, - date=null when this is first fetch
+    if (date) {
+        options = {
+            author_id: id,
+            created_at: {
+                $lt: date
+            },
+        }
+    } else {
+        options = {
+            author_id: id,
+        }
+    }
+
+    Post.find(options)
         .limit(parseInt(limit))
         .sort({ created_at: -1 })
         .select('_id author_id likes photo text created_at')
@@ -90,7 +120,7 @@ router.get('/getPosts/profile/:id', isUserExistIdParams, async (req, res) => {
 // @route   POST api/posts/like/:id
 // @desc    Like post
 // @access  Private
-router.post('/like/:id', isUserExistIdBody, isPostExist, (req, res) => {
+router.post('/like/:id', accessTokenVerify, isUserExistIdBody, isPostExist, (req, res) => {
 
     Post.updateOne(
         { _id: req.params.id },
@@ -100,12 +130,12 @@ router.post('/like/:id', isUserExistIdBody, isPostExist, (req, res) => {
             Notification.findOneAndUpdate({
                 object_id: req.params.id,
                 who_id: req.body.who_id,
-                user_id: req.body.user_id._id,
+                user_id: req.body.user_id,
                 type: req.body.type
             }, {
                 object_id: req.params.id,
                 who_id: req.body.who_id,
-                user_id: req.body.user_id._id,
+                user_id: req.body.user_id,
                 type: req.body.type,
                 seen: false
             }, {
@@ -114,7 +144,7 @@ router.post('/like/:id', isUserExistIdBody, isPostExist, (req, res) => {
             }).then(resp => {
 
                 // Send notification to user about new invitation
-                res.io.in(`${req.body.user_id._id}`).emit('bell', 'New like the post.')
+                res.io.in(`${req.body.user_id}`).emit('bell', 'New like the post.')
 
                 return res.status(200).json({ msg: "Post liked." });
             }).catch(err => {
@@ -129,11 +159,11 @@ router.post('/like/:id', isUserExistIdBody, isPostExist, (req, res) => {
 // @route   POST api/posts/unlike/:id
 // @desc    Unlike post
 // @access  Private
-router.post('/unlike/:id', isUserExistIdBody, isPostExist, (req, res) => {
+router.post('/unlike/:id', accessTokenVerify, isUserExistIdBody, isPostExist, (req, res) => {
 
     Post.updateOne(
         { _id: req.params.id },
-        { $pull: { likes: req.body._id } })
+        { $pull: { likes: req.body.who_id } })
         .then(resp => {
             res.status(200).json({ msg: "Post unliked." })
         }).catch(err => {

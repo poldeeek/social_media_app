@@ -74,6 +74,33 @@
   }
 }
 
+@include desktop {
+  /* width */
+  .invitationsContainer::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 15rem;
+  }
+
+  /* Track */
+  .invitationsContainer::-webkit-scrollbar-track {
+    background: lightgray;
+    border-radius: 15rem;
+    margin: 2rem;
+  }
+
+  /* Handle */
+  .invitationsContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 15rem;
+  }
+
+  /* Handle on hover */
+  .invitationsContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 15rem;
+  }
+}
+
 .invitationContainer:hover {
   @include desktop {
     background-color: lighten(color(secondary), 2%);

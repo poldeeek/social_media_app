@@ -12,14 +12,21 @@
   @include desktop {
     margin: 0.5rem 1rem;
     padding: 1rem;
-    border: none;
-    border-radius: 1.5rem;
+    border-bottom: 1px solid color(inputs);
   }
 
   .bellMessage {
     text-align: left;
     margin: 0 1rem;
   }
+
+  .dateInfo {
+    font-size: 1.2rem;
+    text-align: right;
+    color: color(hovers);
+    padding: 0.5rem 2rem 0 2rem;
+  }
+
   img {
     width: 6rem;
     height: 6rem;
@@ -30,12 +37,14 @@
 .bellContainer:hover {
   @include desktop {
     background-color: lighten(color(secondary), 2%);
+    border-radius: 1.5rem;
   }
 }
 
 .bellsContainer {
+  overflow: auto;
   .loaderConatiner {
-    margin: 5rem auto;
+    margin: 1rem auto;
   }
 
   @include desktop {
@@ -46,7 +55,34 @@
     width: 35rem;
     border-radius: 1.5rem;
     border: 2px solid color(hovers);
-    max-height: calc(100vh - 4.5rem - 3rem);
+    max-height: calc(100vh - 10rem - 3rem);
+  }
+}
+
+@include desktop {
+  /* width */
+  .bellsContainer::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 15rem;
+  }
+
+  /* Track */
+  .bellsContainer::-webkit-scrollbar-track {
+    background: lightgray;
+    border-radius: 15rem;
+    margin: 2rem;
+  }
+
+  /* Handle */
+  .bellsContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 15rem;
+  }
+
+  /* Handle on hover */
+  .bellsContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 15rem;
   }
 }
 

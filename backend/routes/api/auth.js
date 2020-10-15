@@ -133,17 +133,17 @@ router.post('/login', async (req, res) => {
 
             const tokens = await generateTokens(user);
 
-            User.updateOne({ _id: user._id }, { online: true }).then(resp => {
-                res.cookie('refreshToken', tokens.refreshToken, {
-                    maxAge: 15 * 24 * 60 * 60 * 1000,
-                    httpOnly: true
-                })
-                res.status(200).send({
-                    msg: "User logged in.",
-                    accessToken: tokens.accessToken,
-                    user: user_response
-                })
+
+            res.cookie('refreshToken', tokens.refreshToken, {
+                maxAge: 15 * 24 * 60 * 60 * 1000,
+                httpOnly: true
             })
+            return res.status(200).send({
+                msg: "User logged in.",
+                accessToken: tokens.accessToken,
+                user: user_response
+            })
+
         }).catch(err => {
             return res.status(500).send({ error: "Database problem." })
         })

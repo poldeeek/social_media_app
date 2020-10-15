@@ -4,6 +4,7 @@ import { IComment } from "../comments";
 import { api, authenticationHeader } from "../../../../config/apiHost";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../../store/reducers/rootReducer";
+import { NavLink } from "react-router-dom";
 
 type commentProps = {
   comment: IComment;
@@ -50,11 +51,15 @@ const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
   return (
     <div className={styles.comment}>
       <div style={{ display: "flex" }}>
-        <img src={comment.author_id.avatar} alt="user avatar" />
+        <NavLink to={`/profile/${comment.author_id._id}`}>
+          <img src={comment.author_id.avatar} alt="user avatar" />
+        </NavLink>
         <div className={styles.commentText}>
-          <b style={{ fontSize: "1.6rem", marginBottom: "0.4rem" }}>
-            {comment.author_id.name} {comment.author_id.surname}
-          </b>
+          <div className={styles.commentTextAuthor}>
+            <NavLink to={`/profile/${comment.author_id._id}`}>
+              {comment.author_id.name} {comment.author_id.surname}
+            </NavLink>
+          </div>
           {comment.text}
         </div>
       </div>

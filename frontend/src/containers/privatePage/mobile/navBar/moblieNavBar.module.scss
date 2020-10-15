@@ -13,6 +13,7 @@
   background-color: color(background1);
 
   .icon {
+    position: relative;
     width: calc(100vw / 7);
     height: 6rem;
     display: flex;
@@ -41,5 +42,16 @@
   .activeLink {
     color: color(secondary);
     background-color: color(inputs);
+  }
+
+  .notificationDot {
+    position: absolute;
+    right: 30%;
+    top: 20%;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 100%;
+    background-color: #cc0033;
+    z-index: 10000000;
   }
 }

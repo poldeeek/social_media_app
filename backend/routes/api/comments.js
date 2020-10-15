@@ -16,7 +16,7 @@ const Notification = require('../../models/Notification');
 // @route   POST api/comments/addComment/:id
 // @desc    Add comment
 // @access  Private
-router.post('/addComment/:id', isPostExist, isUserExistIdBody, (req, res) => {
+router.post('/addComment/:id', accessTokenVerify, isPostExist, isUserExistIdBody, (req, res) => {
     if (!req.body.text || req.body.text === '') res.status(400).json({ error: "Missing text input." });
 
     new Comment({
@@ -51,7 +51,7 @@ router.post('/addComment/:id', isPostExist, isUserExistIdBody, (req, res) => {
 // @route   GET api/comments/:id?page=page&limit=limit
 // @desc    Get comments from post :id
 // @access  Private
-router.get('/:id', isPostExist, (req, res) => {
+router.get('/:id', accessTokenVerify, isPostExist, (req, res) => {
 
     const perPage = req.query.limit;
     const page = req.query.page;
@@ -73,7 +73,7 @@ router.get('/:id', isPostExist, (req, res) => {
 // @Route   api/comments/likeComment/:id
 // @desc    like the comment
 // @access  Private
-router.post('/like/:id', isUserExistIdBody, isCommentExist, (req, res) => {
+router.post('/like/:id', accessTokenVerify, isUserExistIdBody, isCommentExist, (req, res) => {
 
     // check if comment is already liked
     Comment.findOne(
@@ -118,7 +118,7 @@ router.post('/like/:id', isUserExistIdBody, isCommentExist, (req, res) => {
 // @Route   api/comments/likeComment/:id
 // @desc    like the comment
 // @access  Private
-router.post('/unlike/:id', isUserExistIdBody, isCommentExist, (req, res) => {
+router.post('/unlike/:id', accessTokenVerify, isUserExistIdBody, isCommentExist, (req, res) => {
 
     Comment.updateOne(
         { _id: req.params.id },

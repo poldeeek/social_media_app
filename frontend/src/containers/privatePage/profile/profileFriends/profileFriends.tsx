@@ -15,24 +15,19 @@ export interface IFriend {
 }
 
 const ProfileFriends: React.FC<IRouterParams> = ({ id }) => {
-  const currentUser = useSelector((state: IRoot) => state.auth.user);
-
   const [friendsArray, setFriendsArray] = useState<IFriend[]>([]);
 
   useEffect(() => {
-    currentUser &&
-      api
-        .get(
-          `http://localhost:5000/api/friends/getFriends/profile/${currentUser._id}`,
-          {
-            headers: authenticationHeader(),
-          }
-        )
-        .then((resp) => {
-          setFriendsArray(resp.data.friends);
-        })
-        .catch((err) => console.log(err));
+    api
+      .get(`http://localhost:5000/api/friends/getFriends/profile/${id}`, {
+        headers: authenticationHeader(),
+      })
+      .then((resp) => {
+        setFriendsArray(resp.data.friends);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
   return (
     <>
       <h1>Znajomi</h1>

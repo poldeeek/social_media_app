@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { IRoot } from "../../../../store/reducers/rootReducer";
 import Comments from "../../comments/comments";
 import { api, authenticationHeader } from "../../../../config/apiHost";
+import { NavLink } from "react-router-dom";
 
 const Post: React.FC<{
   post: IPost;
@@ -28,14 +29,13 @@ const Post: React.FC<{
     if (likeActive) action = "unlike";
     else action = "like";
 
-    console.log(`http://localhost:5000/api/posts/${action}/${post._id}`);
     currentUserId &&
       api
         .post(
           `http://localhost:5000/api/posts/${action}/${post._id}`,
           {
             who_id: currentUserId,
-            user_id: post.author_id,
+            user_id: post.author_id._id,
             type: "like",
           },
           {
@@ -53,11 +53,15 @@ const Post: React.FC<{
   return (
     <div className={styles.post}>
       <div className={styles.userInfo}>
-        <img src={post.author_id.avatar} alt="user avatar" />
+        <NavLink to={`/profile/${post.author_id._id}`}>
+          <img src={post.author_id.avatar} alt="user avatar" />
+        </NavLink>
         <div className={styles.userInfoLabel}>
-          <div className={styles.userInfoName}>
-            {post.author_id.name} {post.author_id.surname}
-          </div>
+          <NavLink to={`/profile/${post.author_id._id}`}>
+            <div className={styles.userInfoName}>
+              {post.author_id.name} {post.author_id.surname}
+            </div>
+          </NavLink>
           <div className={styles.userInfoPostDate}>{post.created_at}</div>
         </div>
       </div>

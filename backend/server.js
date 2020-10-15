@@ -13,7 +13,9 @@ const friendsRoutes = require('./routes/api/friends')
 const invitationsRoutes = require('./routes/api/invitations')
 const postsRoutes = require('./routes/api/posts')
 const commentsRoutes = require('./routes/api/comments')
-const notificationsRoutes = require('./routes/api/notifications')
+const notificationsRoutes = require('./routes/api/notifications');
+const Friends = require('./models/Friends');
+const User = require('./models/User');
 
 const app = express();
 const server = http.createServer(app);
@@ -38,7 +40,39 @@ io.on('connection', socket => {
     const uid = socket.handshake.query.userID;
 
     socket.join(uid);
+
+    // send message to friends about user connection
+    Friends.findOne({ user_id: uid }).then(resp => {
+        resp.friends.forEach(friend => {
+            io.in(friend).emit("online", uid);
+        });
+    })
+
+    User.updateOne({
+        _id: uid
+    }, {
+        online: true
+    }).catch(err => console.log("Log in socket error", err))
+
+    // Run when user disconnect
+    socket.on('disconnect', async () => {
+
+        // send message to friends about user disconnection
+        Friends.findOne({ user_id: uid }).then(resp => {
+            resp.friends.forEach(friend => {
+                io.in(friend).emit("offline", uid);
+            });
+        })
+
+        User.updateOne({
+            _id: uid
+        }, {
+            online: false
+        }).catch(err => console.log("Log out socket error", err))
+    })
 })
+
+
 
 // middleware to pass the io object into the routes
 app.use((req, res, next) => {

@@ -13,7 +13,7 @@ const router = express.Router();
 // @route   POST api/invitations/sendInvitation/:id
 // @desc    Send invitation to user
 // @access  Private
-router.post('/sendInvitation/:id', isUserExistIdParams, isUserExistIdBody, (req, res) => {
+router.post('/sendInvitation/:id', accessTokenVerify, isUserExistIdParams, isUserExistIdBody, (req, res) => {
 
     const invitation = new Invitation({
         user_id: req.body._id,
@@ -35,7 +35,7 @@ router.post('/sendInvitation/:id', isUserExistIdParams, isUserExistIdBody, (req,
 // @route   POST api/invitations/rejectInvitation/:id
 // @desc    Reject invitation to friends
 // @access  Private
-router.post('/rejectInvitation/:id', isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
+router.post('/rejectInvitation/:id', accessTokenVerify, isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
 
     Invitation.deleteOne({
         user_id: req.params.id,
@@ -50,7 +50,7 @@ router.post('/rejectInvitation/:id', isUserExistIdParams, isUserExistIdBody, isI
 // @route   POST api/invitations/cancelInvitation/:id
 // @desc    Cancel invitation to friends
 // @access  Private
-router.post('/cancelInvitation/:id', isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
+router.post('/cancelInvitation/:id', accessTokenVerify, isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
     Invitation.deleteOne({
         user_id: req.params.id,
         invited_user_id: req.body._id
@@ -64,7 +64,7 @@ router.post('/cancelInvitation/:id', isUserExistIdParams, isUserExistIdBody, isI
 // @route GET api/invitations/getInvitations/:id?page=page&limit=limit
 // @desc Get user invitations 
 // @access Private
-router.get('/getInvitations/:id', isUserExistIdParams, (req, res) => {
+router.get('/getInvitations/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
 
     const perPage = req.query.limit;
     const page = req.query.page;
@@ -78,7 +78,6 @@ router.get('/getInvitations/:id', isUserExistIdParams, (req, res) => {
         .sort({ created_at: -1 })
         .limit(parseInt(perPage))
         .then(async results => {
-            console.log(results)
             res.status(200).json(results);
         }).catch(err => {
             res.status(500).json({ error: "Database problem. Finding invitations." });
@@ -88,7 +87,7 @@ router.get('/getInvitations/:id', isUserExistIdParams, (req, res) => {
 // @Route   /api/invitations/seeAllInvitations/:id
 // @desc    check all invitations as seen
 // @access  Private
-router.post('/seeAllInvitations/:id', isUserExistIdParams, (req, res) => {
+router.post('/seeAllInvitations/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
     Invitation.updateMany({ invited_user_id: req.params.id }, { seen: true })
         .then(async results => {
 

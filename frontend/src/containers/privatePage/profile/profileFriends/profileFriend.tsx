@@ -8,7 +8,6 @@ type ProfileFriendType = {
 };
 
 const ProfileFriend: React.FC<ProfileFriendType> = ({ friend }) => {
-  console.log(friend);
   return (
     <div className={styles.profileFriend}>
       <NavLink to={`/profile/${friend._id}`} className={styles.link}>

@@ -16,17 +16,24 @@ const Bell: React.FC<BellProps> = ({ notification, currentUserId }) => {
       return " zaakceptował twoje zaproszenie.";
   };
 
-  console.log(notification);
-
   return (
-    <NavLink to={`/posts/${notification.object_id}`}>
+    <NavLink
+      to={
+        notification.type === "invitation_accept"
+          ? `/profile/${notification.who_id._id}`
+          : `/posts/${notification.object_id}`
+      }
+    >
       <div className={styles.bellContainer}>
         <img src={notification.who_id.avatar} alt="avatar" />
-        <div className={styles.bellMessage}>
-          <b>
-            {notification.who_id.name} {notification.who_id.surname}
-          </b>
-          {renderMessage()}
+        <div style={{ width: "100%" }}>
+          <div className={styles.bellMessage}>
+            <b>
+              {notification.who_id.name} {notification.who_id.surname}
+            </b>
+            {renderMessage()}
+          </div>
+          <div className={styles.dateInfo}>{notification.updated_at}</div>
         </div>
       </div>
     </NavLink>

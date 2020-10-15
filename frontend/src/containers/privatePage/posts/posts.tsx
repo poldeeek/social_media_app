@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../store/reducers/rootReducer";
 import styles from "./posts.module.scss";
@@ -30,48 +30,109 @@ const Posts: React.FC = () => {
     minWidth: 1024,
   });
 
-  const [showNewPost, setShowNewPost] = useState(false);
-
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const [perPage, setPerPage] = useState(5);
-  const [page, setPage] = useState(0);
-
-  const addNewPost = (addedPost: IPost) => {
-    console.log(addedPost);
-    const newPosts = [...posts];
-    newPosts.unshift(addedPost);
-    console.log(newPosts);
-    setPosts(newPosts);
-  };
-
   const user = useSelector((state: IRoot) => state.auth.user);
 
-  useEffect(() => {
-    let mounted = true;
+  const [showNewPost, setShowNewPost] = useState(false);
+
+  const [mounted, setMounted] = useState(true);
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const [perPage, setPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [fetchError, setFetchError] = useState("");
+
+  const [lastPostDate, setLastPostDate] = useState<string | null>(null);
+
+  // is any more posts in database
+  const [hasMore, setHasMore] = useState(true);
+
+  // ref to loading div
+  const postLoader = useRef<HTMLDivElement>(null);
+
+  // getting posts from server
+  const fetchPosts = () => {
+    setIsLoading(true);
+    let url;
+    if (lastPostDate)
+      url = `http://localhost:5000/api/posts/getPosts/${user?._id}?limit=${perPage}&date=${lastPostDate}`;
+    else
+      url = `http://localhost:5000/api/posts/getPosts/${user?._id}?limit=${perPage}`;
+
     api
-      .get(
-        `http://localhost:5000/api/posts/getPosts/${user?._id}?limit=${perPage}&page=${page}`,
-        {
-          headers: authenticationHeader(),
-        }
-      )
+      .get(url, {
+        headers: authenticationHeader(),
+      })
       .then((resp) => {
         if (mounted) {
+          if (resp.data.length === 0) {
+            setIsLoading(false);
+            setFetchError("");
+            setHasMore(false);
+            return;
+          }
           setPosts((prevState) => [...prevState, ...resp.data]);
-          setLoading(false);
+          if (resp.data.length < perPage) setHasMore(false);
+          setLastPostDate(resp.data[resp.data.length - 1].created_at);
+          setFetchError("");
+          setIsLoading(false);
         }
       })
       .catch((err) => {
-        mounted && setLoading(false);
+        console.log(err);
+        if (mounted) {
+          setFetchError("Problem z pobraniem postów.");
+          setIsLoading(false);
+        }
       });
+  };
+
+  // getting posts from server with first render
+  useEffect(() => {
+    setMounted(true);
+    fetchPosts();
 
     return () => {
-      mounted = false;
+      setMounted(false);
       return;
     };
   }, []);
+
+  //infinity scroll - intersection observer callback function
+  const loadMore = useCallback(
+    (entries) => {
+      const target = entries.find(
+        (element: IntersectionObserverEntry) =>
+          element.target.id === "postLoader"
+      );
+      if (target.isIntersecting && hasMore && lastPostDate && !isLoading) {
+        fetchPosts();
+      }
+    },
+    [hasMore, lastPostDate, fetchPosts, isLoading]
+  );
+
+  //infinity scroll - intersection observer
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "50px",
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver(loadMore, options);
+
+    if (postLoader && postLoader.current) observer.observe(postLoader.current);
+
+    return () => {
+      if (postLoader.current) observer.unobserve(postLoader.current);
+    };
+  }, [postLoader, loadMore]);
+
+  const addNewPost = (addedPost: IPost) => {
+    const newPosts = [...posts];
+    newPosts.unshift(addedPost);
+    setPosts(newPosts);
+  };
 
   const likePostHandler = (action: string, i: number) => {
     if (!user?._id) return;
@@ -115,7 +176,6 @@ const Posts: React.FC = () => {
           </NavLink>
         )}
       </div>
-      {loading && <ClipLoader color={"#276a39"} />}
       {posts &&
         posts.map((post, i) => (
           <Post
@@ -124,6 +184,10 @@ const Posts: React.FC = () => {
             likePostHandler={(action) => likePostHandler(action, i)}
           />
         ))}
+      <div ref={postLoader} id="postLoader">
+        {hasMore && <ClipLoader color={"#276a39"} />}
+      </div>
+      {fetchError && <div style={{ color: "#D22E2E" }}>{fetchError}</div>}
     </div>
   );
 };

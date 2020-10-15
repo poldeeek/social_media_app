@@ -50,6 +50,7 @@ const Profile: React.FC = () => {
       .catch((err) => console.log(err));
 
     return () => {
+      setActiveButton("posts");
       mounted = false;
       return;
     };

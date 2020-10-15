@@ -149,8 +149,6 @@ export const signUp = (creds: ISignUp) => (
 };
 
 export const signOut = () => (dispatch: Function, getState: Function) => {
-  console.log("logout");
-
   axios
     .post(
       "http://localhost:5000/api/auth/logout",

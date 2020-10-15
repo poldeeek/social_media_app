@@ -3,14 +3,20 @@ import styles from "./friends.module.scss";
 import Friend from "./friend/friend";
 import { useDispatch, useSelector } from "react-redux";
 import { IRoot } from "../../../store/reducers/rootReducer";
-import { loadFriends } from "../../../store/actions/friendsActions";
+import {
+  changeFriendStatus,
+  loadFriends,
+} from "../../../store/actions/friendsActions";
 import { IFriend } from "../../../store/reducers/friendsReducer";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useSocket } from "../../../contexts/socketProvider";
 
 const Friends: React.FC = () => {
+  const socket = useSocket();
   const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   const friendsState = useSelector((state: IRoot) => state.friends);
+  const [modifyFriendsArray, setModifyFriendsArray] = useState<IFriend[]>([]);
 
   const dispatch = useDispatch();
 
@@ -22,12 +28,20 @@ const Friends: React.FC = () => {
   };
 
   useEffect(() => {
+    if (socket === null) return;
+    socket.on("online", (msg: string) =>
+      dispatch(changeFriendStatus(msg, true))
+    );
+    socket.on("offline", (msg: string) =>
+      dispatch(changeFriendStatus(msg, false))
+    );
+  }, [socket]);
+
+  useEffect(() => {
     currentUser && dispatch(loadFriends(currentUser._id));
     searchingUser("");
   }, []);
   useEffect(() => setModifyFriendsArray(friendsState.friends));
-
-  const [modifyFriendsArray, setModifyFriendsArray] = useState<IFriend[]>([]);
 
   return (
     <div className={styles.friendsContainer}>

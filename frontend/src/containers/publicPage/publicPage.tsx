@@ -10,10 +10,8 @@ import RegisterDesktopForm from "./registerDesktopForm/registerDesktopForm";
 
 const PublicPage: React.FC = () => {
   const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-device-width: 1024px)",
+    query: "(min-width: 1024px)",
   });
-
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1023px)" });
 
   return (
     <div className={styles.publicPage}>
@@ -39,7 +37,7 @@ const PublicPage: React.FC = () => {
         </div>
         <LoginForm />
         {isDesktopOrLaptop && <RegisterDesktopForm />}
-        {isTabletOrMobile && <RegisterMobileForm />}
+        {!isDesktopOrLaptop && <RegisterMobileForm />}
       </section>
       <section className={styles.section2} id="about">
         <div className={styles.bg}></div>

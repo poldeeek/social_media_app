@@ -22,7 +22,7 @@ const Notification = require('../../models/Notification');
 // @route   POST api/friends/addFriend/:id
 // @desc    Accpet invitation to friends
 // @access  Private
-router.post('/addFriend/:id', isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
+router.post('/addFriend/:id', accessTokenVerify, isUserExistIdParams, isUserExistIdBody, isInvitationExist, (req, res) => {
 
     Invitation.deleteOne({
         user_id: req.params.id,
@@ -82,7 +82,7 @@ router.post('/addFriend/:id', isUserExistIdParams, isUserExistIdBody, isInvitati
 // @route POST api/friends/removeFriend/:id
 // @desc Remove user from friends 
 // @access Private
-router.post('/removeFriend/:id', isUserExistIdParams, isUserExistIdBody, async (req, res) => {
+router.post('/removeFriend/:id', accessTokenVerify, isUserExistIdParams, isUserExistIdBody, async (req, res) => {
 
     await Friends.updateOne({
         user_id: req.params.id
@@ -115,10 +115,12 @@ router.post('/removeFriend/:id', isUserExistIdParams, isUserExistIdBody, async (
 // @Route   GET /api/friends/getFriends/profile/:id
 // @desc    Getting list of user friends to diplay on profile page
 // @access  Private
-router.get('/getFriends/profile/:id', (req, res) => {
+router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
     Friends.findOne({ user_id: req.params.id })
         .populate({ path: "friends", select: "name surname avatar" })
         .then(result => {
+            console.log(result)
+
             return res.status(200).json(result);
         }).catch(err => res.status(500).json(err))
 
@@ -127,7 +129,7 @@ router.get('/getFriends/profile/:id', (req, res) => {
 // @Route   GET /api/friends/getFriends/:id
 // @desc    Getting list of friends and their status to firendsList
 // @access  Private
-router.get('/getFriends/:id', (req, res) => {
+router.get('/getFriends/:id', accessTokenVerify, (req, res) => {
     Friends.findOne({ user_id: req.params.id })
         .populate({ path: "friends", select: "name surname avatar online" })
         .then(result => {

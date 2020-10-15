@@ -19,13 +19,17 @@ export const SocketProvider: Function = ({
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5000", {
-      query: `userID=${userID}`,
-    });
+    if (userID) {
+      const newSocket = io("http://localhost:5000", {
+        query: `userID=${userID}`,
+      });
+      setSocket(newSocket);
 
-    setSocket(newSocket);
-
-    return () => disconnectSocket(newSocket);
+      return () => {
+        console.log("disconnet");
+        disconnectSocket(newSocket);
+      };
+    }
   }, [userID]);
 
   return (
