@@ -27,7 +27,6 @@ const interceptor = api.interceptors.response.use(
 
     if (status === 401) {
       originalRequest._retry = true;
-      console.log("test");
 
       api.interceptors.response.eject(interceptor);
 
@@ -41,7 +40,6 @@ const interceptor = api.interceptors.response.use(
       })
         .then((res) => res.json())
         .then(async (res) => {
-          console.log(res);
           await setAccessToken(res.accessToken);
           originalRequest.headers = authenticationHeader();
           return api(originalRequest);

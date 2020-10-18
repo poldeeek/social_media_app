@@ -25,7 +25,11 @@ const MessageSchema = new Schema({
     photo: {
         type: String,
         required: false
-    }
+    },
+    seen: {
+        type: Boolean,
+        default: false
+    },
 }, { timestamps: opts });
 
 module.exports = mongoose.model('Message', MessageSchema);

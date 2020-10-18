@@ -5,9 +5,13 @@ import styles from "./profile.module.scss";
 import { authenticationHeader } from "../../../config/apiHost";
 import ProfilePosts from "./profilePosts/profilePosts";
 import ProfileFriends from "./profileFriends/profileFriends";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IRoot } from "../../../store/reducers/rootReducer";
 import FriendshipStatusButton from "./friendshipStatusButton/friendshipStatusButton";
+import { IChat } from "../../../store/reducers/chatsReducers";
+import { useMediaQuery } from "react-responsive";
+import { NavLink } from "react-router-dom";
+import { addChatByChatObject } from "../../../store/actions/messangerActions";
 
 interface IUserProfile {
   _id: string;
@@ -28,9 +32,16 @@ export interface IRouterParams {
 }
 
 const Profile: React.FC = () => {
+  const dispatch = useDispatch();
+  const isDesktopOrLaptop = useMediaQuery({
+    minWidth: 1024,
+  });
   const { id } = useParams<IRouterParams>();
 
   const [user, setUser] = useState<IUserProfile | null>(null);
+
+  // for NavLink to chat with user
+  const [chat, setChat] = useState<IChat>();
 
   const [activeButton, setActiveButton] = useState("posts");
 
@@ -38,6 +49,8 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     let mounted = true;
+
+    // get User information
     api
       .get(`http://localhost:5000/api/users/${id}`, {
         headers: authenticationHeader(),
@@ -45,6 +58,21 @@ const Profile: React.FC = () => {
       .then((resp) => {
         if (mounted) {
           setUser(resp.data);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    // get chat information
+    api
+      .get(
+        `http://localhost:5000/api/chats/getChat/${id}?user_id=${currentUserId}`,
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => {
+        if (mounted) {
+          setChat(resp.data);
         }
       })
       .catch((err) => console.log(err));
@@ -63,6 +91,34 @@ const Profile: React.FC = () => {
     meInvited: boolean
   ) => {
     user && setUser({ ...user, isFriend, heInvited, meInvited });
+  };
+
+  const genereteSendMessageButton = () => {
+    if (isDesktopOrLaptop) {
+      return (
+        chat && (
+          <div
+            className={styles.button}
+            onClick={() => dispatch(addChatByChatObject(chat))}
+          >
+            <i className="fas fa-paper-plane"></i> Wyślij wiadomość
+          </div>
+        )
+      );
+    } else {
+      return (
+        chat && (
+          <NavLink
+            to={{ pathname: `/friends/${chat._id}`, state: chat }}
+            key={chat._id}
+          >
+            <div className={styles.button}>
+              <i className="fas fa-paper-plane"></i> Wyślij wiadomość
+            </div>
+          </NavLink>
+        )
+      );
+    }
   };
 
   return (
@@ -91,6 +147,7 @@ const Profile: React.FC = () => {
       <div className={styles.buttons}>
         {currentUserId !== id && (
           <>
+            {genereteSendMessageButton()}
             <FriendshipStatusButton
               isFriend={user?.isFriend}
               meInvited={user?.meInvited}
@@ -99,9 +156,6 @@ const Profile: React.FC = () => {
                 changeFriendshipStatus(isFriend, heInvited, meInvited)
               }
             />
-            <div className={styles.button}>
-              <i className="fas fa-paper-plane"></i> Wyślij wiadomość
-            </div>
           </>
         )}
         <div style={{ display: "flex", width: "calc(100% - 4.5rem)" }}>

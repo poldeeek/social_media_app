@@ -40,14 +40,61 @@ export const changeFriendStatus = (uid: string, status: boolean) => (
   }
 
   friendsCopy
+    .sort((a: IFriend, b: IFriend) => a.name.localeCompare(b.name))
+    .sort((a: IFriend, b: IFriend) => a.surname.localeCompare(b.surname))
     .sort((a: IFriend, b: IFriend) =>
       a.online === b.online ? 0 : a.online ? -1 : 1
-    )
-    .sort((a: IFriend, b: IFriend) => a.surname.localeCompare(b.surname))
-    .sort((a: IFriend, b: IFriend) => a.name.localeCompare(b.name));
+    );
 
   dispatch({
     type: actions.FRIEND_STATUS_CHANGE,
+    friendsCopy,
+  });
+};
+
+export const addFriend = (uid: string) => (
+  dispatch: Function,
+  getState: Function
+) => {
+  api
+    .get(`http://localhost:5000/api/friends/getFriend/${uid}`, {
+      headers: authenticationHeader(),
+    })
+    .then((resp) => {
+      let myState = getState();
+      let friendsCopy = JSON.parse(JSON.stringify(myState.friends.friends));
+
+      friendsCopy.push(resp);
+
+      friendsCopy
+        .sort((a: IFriend, b: IFriend) => a.name.localeCompare(b.name))
+        .sort((a: IFriend, b: IFriend) => a.surname.localeCompare(b.surname))
+        .sort((a: IFriend, b: IFriend) =>
+          a.online === b.online ? 0 : a.online ? -1 : 1
+        );
+
+      dispatch({
+        type: actions.FRIEND_ADDED,
+        friendsCopy,
+      });
+    });
+};
+
+export const removeFriend = (uid: string) => (
+  dispatch: Function,
+  getState: Function
+) => {
+  const myState = getState();
+  const friendsCopy = JSON.parse(JSON.stringify(myState.friends.friends));
+
+  const index = friendsCopy.findIndex((friend: IFriend) => {
+    return friend._id === uid;
+  });
+
+  friendsCopy.splice(index, 1);
+
+  dispatch({
+    type: actions.FRIEND_REMOVED,
     friendsCopy,
   });
 };

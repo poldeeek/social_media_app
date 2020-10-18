@@ -14,6 +14,10 @@ const invitationsRoutes = require('./routes/api/invitations')
 const postsRoutes = require('./routes/api/posts')
 const commentsRoutes = require('./routes/api/comments')
 const notificationsRoutes = require('./routes/api/notifications');
+const chatsRoutes = require('./routes/api/chats')
+const messagesRoutes = require('./routes/api/messages.js');
+
+// Models
 const Friends = require('./models/Friends');
 const User = require('./models/User');
 
@@ -31,7 +35,8 @@ mongoose.connect(process.env.MONGO,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useFindAndModify: false
     },
     () => { console.log("DB connected.") })
 
@@ -88,6 +93,8 @@ app.use('/api/invitations', invitationsRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/chats', chatsRoutes);
+app.use('/api/message', messagesRoutes);
 
 const PORT = process.env.PORT || 5000;
 

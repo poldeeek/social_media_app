@@ -10,12 +10,18 @@ const opts = {
 // Create schema 
 const ChatSchema = new Schema({
     users: {
-        type: [Schema.Types.ObjectId, Schema.Types.ObjectId],
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
+        }, {
+            type: Schema.Types.ObjectId,
+            ref: 'Users',
+        }],
         required: [true, 'Podaj uczestników czatu.'],
     },
-    seen: {
-        type: Boolean,
-        default: true
+    lastMessage: {
+        type: Schema.Types.ObjectId,
+        ref: 'Message'
     }
 }, { timestamps: opts });
 

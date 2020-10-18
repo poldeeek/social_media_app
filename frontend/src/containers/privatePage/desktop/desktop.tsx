@@ -2,10 +2,11 @@ import React from "react";
 import styles from "./desktop.module.scss";
 import { Switch, Route } from "react-router-dom";
 import NavBar from "./navBar/navBar";
-import Friends from "../friends/friends";
 import Posts from "../posts/posts";
 import Search from "../search/search";
 import Profile from "../profile/profile";
+import Messanger from "./messanger/messanger";
+import Friends from "./friends/friends";
 
 const DesktopContainer: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const DesktopContainer: React.FC = () => {
           </Switch>
         </div>
         <Friends />
+        <Messanger />
       </div>
     </>
   );

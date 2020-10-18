@@ -30,7 +30,7 @@ const MoblieNavBar: React.FC = () => {
       socket.on(
         "new_message",
         (msg: string) =>
-          user && dispatch(setNotification("bell", true, user._id))
+          user && dispatch(setNotification("messages", true, user._id))
       );
 
       socket.on("bell", (msg: string) => {

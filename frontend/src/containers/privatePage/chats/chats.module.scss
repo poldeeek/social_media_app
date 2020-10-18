@@ -1,0 +1,58 @@
+@import "../../../styles/resolutionMixins.scss";
+@import "../../../styles/colors.scss";
+
+.chatsContainer {
+  .chatsList {
+    overflow-y: hidden;
+    overflow-x: auto;
+    max-height: calc(100vh - 6rem - 5rem);
+    width: 100%;
+    position: relative;
+    top: 5rem;
+
+    @include desktop {
+      position: absolute;
+      background-color: color(secondary);
+      top: 4.5rem;
+      right: 4rem;
+      width: 35rem;
+      border-radius: 1.5rem;
+      border: 2px solid color(hovers);
+      max-height: calc(100vh - 10rem - 3rem);
+    }
+
+    .spinner {
+      margin: 5rem auto;
+    }
+  }
+
+  .searchInput {
+    border-radius: 1.5rem;
+    color: color(fonts);
+    margin: 1rem 2rem;
+    height: 4rem;
+    width: calc(100% - 4rem);
+    border: none;
+    background-color: color(inputs);
+    padding: 0 0 0 4rem;
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    font-size: 1.6rem;
+  }
+
+  .searchInput::placeholder {
+    color: color(placeholder);
+  }
+
+  .searchIcon {
+    position: fixed;
+    top: 8rem;
+    left: 3rem;
+    height: 0;
+    width: 0;
+    font-size: 2rem;
+    color: color(placeholder);
+    z-index: 1000;
+  }
+}

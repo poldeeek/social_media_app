@@ -1,0 +1,59 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
+.messageContainer {
+  display: flex;
+  padding: 0 1rem;
+  width: 80%;
+  &CurrentUser {
+    justify-content: flex-end;
+  }
+
+  .userAvatar {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-right: 1rem;
+    padding: 1.3rem 0;
+    img {
+      border-radius: 15rem;
+      height: 4rem;
+      width: 4rem;
+    }
+  }
+
+  .textInfo {
+    text-align: left;
+
+    &CurrentUser {
+    }
+
+    .userName {
+      font-size: 1.2rem;
+      margin: 0 1rem;
+      &CurrentUser {
+      }
+    }
+
+    .text {
+      border-radius: 1.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.6rem;
+      background-color: #532753;
+
+      &CurrentUser {
+        background-color: color(hovers);
+      }
+    }
+
+    .dateInfo {
+      color: color(hovers);
+      font-size: 1rem;
+      margin: 0 1rem;
+      text-align: right;
+      &CurrentUser {
+        text-align: left;
+      }
+    }
+  }
+}

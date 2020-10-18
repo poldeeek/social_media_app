@@ -72,7 +72,6 @@ const Bells: React.FC = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
           if (mounted) {
             setFetchError("Problem z pobraniem powiadomień.");
             setIsLoading(false);
@@ -86,7 +85,6 @@ const Bells: React.FC = () => {
 
     return () => {
       mounted = false;
-      console.log(mounted);
       return;
     };
   }, []);
@@ -145,8 +143,12 @@ const Bells: React.FC = () => {
           )
         ))}
 
-      <div id="bellLoader" ref={bellLoader} className={styles.loaderConatiner}>
-        {hasMore && <ClipLoader color={"#276a39"} />}
+      <div id="bellLoader" ref={bellLoader}>
+        {hasMore && (
+          <div className={styles.loaderConatiner}>
+            <ClipLoader color={"#276a39"} />
+          </div>
+        )}
       </div>
       {fetchError && <div style={{ color: "#D22E2E" }}>{fetchError}</div>}
     </div>

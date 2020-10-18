@@ -31,10 +31,14 @@ const notificationReducer = (
         invitations: action.value,
       };
     case actions.SET_NOTIFICATION_BELL:
-      console.log(state, action.value);
       return {
         ...state,
         bell: action.value,
+      };
+    case actions.SET_NOTIFICATION_MESSAGES:
+      return {
+        ...state,
+        messages: action.value,
       };
     default:
       return state;

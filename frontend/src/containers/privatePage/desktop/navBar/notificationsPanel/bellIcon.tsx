@@ -21,11 +21,9 @@ const BellIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
 
   useEffect(() => {
     if (socket === null) return;
-    socket.on(
-      "bell",
-      (msg: string) =>
-        currentUser && dispatch(setNotification("bell", true, currentUser._id))
-    );
+    socket.on("bell", (msg: string) => {
+      currentUser && dispatch(setNotification("bell", true, currentUser._id));
+    });
   }, [socket]);
 
   const seeBellsHandler = () => {

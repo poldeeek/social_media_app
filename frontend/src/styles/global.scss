@@ -1,6 +1,10 @@
 @import "./colors";
 @import "./resolutionMixins.scss";
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-size: 62.5%; /* 1 rem = 10px */
   box-sizing: border-box;

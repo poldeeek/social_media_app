@@ -1,0 +1,134 @@
+@import "../../../styles/colors.scss";
+@import "../../../styles/resolutionMixins.scss";
+
+.conversationContainer {
+  height: calc(100vh - 6rem);
+  display: grid;
+  grid-template-rows: 5rem auto minmax(6rem, auto);
+
+  @include desktop {
+    border-radius: 1.5rem 1.5rem 0 0;
+    border: 2px solid color(hovers);
+    border-bottom: none;
+    width: 35rem;
+    height: 45rem;
+    position: absolute;
+    bottom: 0;
+    right: 15vw;
+    z-index: 999;
+    grid-template-rows: 5rem minmax(30rem, 35rem) minmax(5rem, 6rem);
+    background-color: color(secondary);
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid color(secondary);
+
+    @include desktop {
+      border-bottom: 1px solid color(hovers);
+    }
+    .backArrow {
+      height: calc(5rem - 1px);
+      width: calc(5rem - 1px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid color(secondary);
+    }
+
+    .exitButton {
+      position: absolute;
+      right: 2rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .memberInfo {
+      position: relative;
+      padding-left: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+      img {
+        height: 3.5rem;
+        width: 3.5rem;
+        border-radius: 15rem;
+        margin-right: 1rem;
+      }
+
+      .statusDot {
+        font-size: 1.2rem;
+        position: absolute;
+        top: 2.5rem;
+        left: 4.5rem;
+        color: #118300;
+      }
+    }
+  }
+
+  .messages {
+    min-height: calc(100vh - 6rem - 5.1rem - 8rem);
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: auto;
+
+    @include desktop {
+      min-height: 100px;
+    }
+  }
+
+  .sendMessage {
+    border-top: 1px solid color(secondary);
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0rem;
+
+    .editorInput {
+      max-height: 7rem;
+      font-size: 1.8rem;
+      border: none;
+      resize: none;
+      text-align: left;
+      width: 100%;
+      padding: 0.7rem 1.5rem;
+      margin: 0 1rem;
+      border-radius: 1.5rem;
+      background-color: color(inputs);
+      color: color(fonts);
+
+      @include desktop {
+        max-height: calc(6rem - 1px);
+      }
+    }
+
+    .editorInput::placeholder {
+      color: color(placeholder);
+    }
+
+    .addImage {
+      font-size: 2.5rem;
+      margin: 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+
+    .sendImage {
+      font-size: 2.5rem;
+      margin: 0 1.5rem 0 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+  }
+}

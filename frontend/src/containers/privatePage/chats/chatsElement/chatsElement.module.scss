@@ -1,0 +1,68 @@
+@import "../../../../styles/resolutionMixins.scss";
+@import "../../../../styles//colors.scss";
+
+.chatElement {
+  display: flex;
+  padding: 0 1rem 0 1rem;
+  margin: 1.7rem 0;
+  font-size: 1.9rem;
+  cursor: pointer;
+
+  @include desktop {
+    margin: 0.5rem 1rem;
+    padding: 1rem 1rem 0 0;
+    border-bottom: 1px solid color(inputs);
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+
+    .statusDot {
+      font-size: 1.5rem;
+      position: absolute;
+      top: 1.8rem;
+      right: 0.4rem;
+      color: #118300;
+    }
+
+    .userPhoto {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 100%;
+      margin: 0 1rem;
+    }
+  }
+
+  .messageInfo {
+    text-align: left;
+    width: 75%;
+
+    .userInfo {
+      color: color(fonts);
+    }
+
+    .lastMessageText {
+      font-size: 1.5rem;
+      max-height: 1.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: color(hovers);
+    }
+
+    .messageDate {
+      font-size: 1rem;
+      color: color(hovers);
+      text-align: right;
+      margin: 1rem 0 0.3rem 0;
+    }
+  }
+}
+
+.chatElement:hover {
+  @include desktop {
+    background-color: lighten(color(secondary), 2%);
+    border-radius: 1.5rem;
+  }
+}

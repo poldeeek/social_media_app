@@ -30,9 +30,11 @@ const Comments: React.FC<{ post_id: string; post_author: string }> = ({
   const currentUser = useSelector((state: IRoot) => state.auth.user);
   const [comments, setComments] = useState<IComment[]>([]);
 
-  const [page, setPage] = useState(0);
+  const [showMore, setShowMore] = useState(true);
+
   const [limit, setLimit] = useState(5);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [lastCommentDate, setLastCommentDate] = useState<string | null>(null);
 
   useEffect(() => {
     getComments();
@@ -40,12 +42,20 @@ const Comments: React.FC<{ post_id: string; post_author: string }> = ({
 
   const getComments = () => {
     setLoading(true);
+
+    let url;
+    if (lastCommentDate)
+      url = `http://localhost:5000/api/comments/${post_id}?limit=${limit}&date=${lastCommentDate}`;
+    else url = `http://localhost:5000/api/comments/${post_id}?limit=${limit}`;
+
     api
-      .get(`http://localhost:5000/api/comments/${post_id}?page=0&limit=5`, {
+      .get(url, {
         headers: authenticationHeader(),
       })
       .then((resp) => {
-        setComments(resp.data);
+        setComments((prevState) => [...prevState, ...resp.data]);
+        if (resp.data.length < limit) setShowMore(false);
+        setLastCommentDate(resp.data[resp.data.length - 1].updated_at);
         setLoading(false);
       })
       .catch((err) => setLoading(false));
@@ -91,6 +101,11 @@ const Comments: React.FC<{ post_id: string; post_author: string }> = ({
           />
         ))}
       {loading && <ClipLoader color={"#276a39"} />}
+      {showMore && (
+        <div className={styles.showMoreButton} onClick={() => getComments()}>
+          Pokaż więcej komentarzy
+        </div>
+      )}
     </div>
   );
 };

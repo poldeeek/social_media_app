@@ -17,7 +17,6 @@ const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
   const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   useEffect(() => {
-    console.log(comment.likes);
     if (currentUser && comment.likes.includes(currentUser._id))
       setLikeActive(true);
     else setLikeActive(false);

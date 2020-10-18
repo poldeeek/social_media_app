@@ -1,24 +1,28 @@
 import { combineReducers } from "redux";
 
-import authReducer from "./authReducer";
+import authReducer, { IAuth } from "./authReducer";
 import friendsReducer from "./friendsReducer";
+import chatsReducer, { IChats } from "./chatsReducers";
+import { IFriends } from "./friendsReducer";
+import messangerReducer, { IMessanger } from "./messangerReducer";
 import notificationReducer, {
   INotificationReducer,
 } from "./notificationsReducer";
 
-import { IAuth } from "./authReducer";
-import { IFriends } from "./friendsReducer";
-
 const rootReducer = combineReducers({
   auth: authReducer,
-  friends: friendsReducer,
+  chats: chatsReducer,
   notifications: notificationReducer,
+  messanger: messangerReducer,
+  friends: friendsReducer,
 });
 
 export default rootReducer;
 
 export interface IRoot {
   auth: IAuth;
-  friends: IFriends;
+  chats: IChats;
   notifications: INotificationReducer;
+  messanger: IMessanger;
+  friends: IFriends;
 }

@@ -29,27 +29,40 @@ router.post('/addFriend/:id', accessTokenVerify, isUserExistIdParams, isUserExis
         invited_user_id: req.body._id
     }).then(async result => {
 
-        await new Chat({
+        const chat = await new Chat({
             users: [
                 req.params.id,
                 req.body._id
             ]
-        }).save().catch(err => { return res.status(500).json({ error: "Database problem." }) });
+        }).save()
+            .then(chat => chat)
+            .catch(err => { return res.status(500).json({ error: "Database chat create problem." }) });
+
+        await new Message({
+            chat_id: chat._id,
+            author_id: req.params.id,
+            text: "Cześć. Jesteśmy teraz znajomymi!"
+        }).save(async (err, mess) => {
+            if (err) return res.status(500).json({ error: 'Database sending message problem.' })
+
+            await Chat.findByIdAndUpdate(chat._id, {
+                lastMessage: mess._id
+            })
+        })
 
         await Friends.updateOne(
             { user_id: req.params.id },
             { $addToSet: { friends: req.body._id } })
             .catch(err =>
-                res.status(500).json({ error: "Database problem." })
+                res.status(500).json({ error: "Database adding friend problem." })
             )
 
         await Friends.updateOne(
             { user_id: req.body._id },
             { $addToSet: { friends: req.params.id } })
             .catch(err =>
-                res.status(500).json({ error: "Database problem." })
+                res.status(500).json({ error: "Database adding friend problem." })
             )
-        console.log(req.body)
         Notification.findOneAndUpdate({
             who_id: req.body._id,
             user_id: req.params.id,
@@ -66,14 +79,18 @@ router.post('/addFriend/:id', accessTokenVerify, isUserExistIdParams, isUserExis
             // Send notification to user about new invitation
             res.io.in(`${req.params.id}`).emit('bell', 'New friend.')
 
+            //set notification about added new friend
+            res.io.in(`${req.params.id}`).emit('friend-added', req.body._id)
+            res.io.in(`${req.body._id}`).emit('friend-added', req.params.id)
+
             return res.status(200).json({ msg: "Friend added." })
         }).catch(err => {
-            res.status(500).json({ error: "Database problem." })
+            res.status(500).json({ error: "Database adding notification problem." })
 
         })
 
     }).catch(err => {
-        res.status(500).json({ error: "Database problem." })
+        res.status(500).json({ error: "Database invitation accept problem." })
 
     })
 
@@ -107,8 +124,12 @@ router.post('/removeFriend/:id', accessTokenVerify, isUserExistIdParams, isUserE
             chat_id: docs._id
         })
     }).catch(err => {
-        res.status(500).json({ error: "Deleting chat error." })
+        return res.status(500).json({ error: "Deleting chat error." })
     })
+    //set notification about removed friend
+    res.io.in(`${req.params.id}`).emit('friend-removed', req.body._id)
+    res.io.in(`${req.body._id}`).emit('friend-removed', req.params.id)
+
     return res.status(200).json("Friend removed.");
 })
 
@@ -130,11 +151,30 @@ router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
 // @desc    Getting list of friends and their status to firendsList
 // @access  Private
 router.get('/getFriends/:id', accessTokenVerify, (req, res) => {
+    console.log("test")
+    Friends.findOne({ user_id: req.params.id })
+        .populate({
+            path: "friends",
+            select: "name surname avatar online",
+            options: { sort: { online: -1, surname: 1, name: 1 } }
+        })
+        .then(result => {
+            return res.status(200).json(result)
+        }).catch(err => res.status(500).json(err))
+})
+
+
+// @Route   GET /api/friends/getFriend/:id
+// @desc    Getting friend info to firendsList
+// @access  Private
+router.get('/getFriend/:id', accessTokenVerify, (req, res) => {
     Friends.findOne({ user_id: req.params.id })
         .populate({ path: "friends", select: "name surname avatar online" })
         .then(result => {
             return res.status(200).json(result)
         }).catch(err => res.status(500).json(err))
 })
+
+
 
 module.exports = router;

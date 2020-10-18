@@ -39,14 +39,12 @@ export const setNotification = (action: string, value: boolean, id: string) => (
           }
         )
         .then((resp) => {
-          console.log(resp);
           dispatch({
             type: actions.SET_NOTIFICATION_INVITATIONS,
             value,
           });
         })
         .catch((err) => {
-          console.log(err);
           dispatch({
             type: actions.SET_NOTIFICATION_ERROR,
           });

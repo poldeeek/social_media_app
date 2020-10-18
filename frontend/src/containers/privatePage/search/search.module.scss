@@ -50,12 +50,12 @@
   .searchInput {
     border-radius: 1.5rem;
     color: color(fonts);
-    margin: 1rem 2rem;
+    margin: 1rem 2rem 1rem 2rem;
     height: 4rem;
-    width: calc(100% - 4rem - 4rem);
+    width: calc(100%);
     border: none;
     background-color: color(inputs);
-    padding: 0 0 0 4rem;
+    padding: 0 1rem 0 4rem;
     position: fixed;
     top: 6rem;
     left: 0;

@@ -48,22 +48,37 @@ router.post('/addComment/:id', accessTokenVerify, isPostExist, isUserExistIdBody
     }).catch(err => res.status(500).json({ msg: "Adding comment failed. Database problem.", err }))
 })
 
-// @route   GET api/comments/:id?page=page&limit=limit
+// @route   GET api/comments/:id?limit=limit&date=lastCommentDate
 // @desc    Get comments from post :id
 // @access  Private
 router.get('/:id', accessTokenVerify, isPostExist, (req, res) => {
 
-    const perPage = req.query.limit;
-    const page = req.query.page;
+    const date = req.query.date
+    const limit = req.query.limit;
 
-    if (!perPage || !Number.isInteger(parseInt(perPage))) return res.status(400).json({ error: "Invalid limit parameter." })
-    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." })
+    if (!limit || !Number.isInteger(parseInt(limit))) return res.status(400).json({ error: "Invalid limit parameter." })
 
-    Comment.find({ post_id: req.params.id })
+    let options;
+    // options to search, - date=null when this is first fetch
+    if (date) {
+        options = {
+            post_id: req.params.id,
+            updated_at: {
+                $lt: date
+            },
+        }
+    } else {
+        options = {
+            post_id: req.params.id
+        }
+    }
+    console.log(options)
+
+
+    Comment.find(options)
         .populate({ path: "author_id", select: "name surname avatar" })
-        .skip(parseInt(perPage) * parseInt(page))
-        .sort({ created_at: -1 })
-        .limit(parseInt(perPage)).then(async results => {
+        .sort({ updated_at: -1 })
+        .limit(parseInt(limit)).then(async results => {
             res.status(200).json(results);
         }).catch(err => {
             res.status(500).json({ error: "Database problem. Finding comments." });
