@@ -2,7 +2,8 @@ import React from "react";
 import styles from "./bells.module.scss";
 import { IBell } from "./bells";
 import { NavLink } from "react-router-dom";
-
+import formatDistance from "date-fns/formatDistance";
+import { pl } from "date-fns/locale";
 type BellProps = {
   notification: IBell;
   currentUserId: string;
@@ -33,7 +34,11 @@ const Bell: React.FC<BellProps> = ({ notification, currentUserId }) => {
             </b>
             {renderMessage()}
           </div>
-          <div className={styles.dateInfo}>{notification.updated_at}</div>
+          <div className={styles.dateInfo}>
+            {formatDistance(new Date(notification.updated_at), new Date(), {
+              locale: pl,
+            })}
+          </div>
         </div>
       </div>
     </NavLink>

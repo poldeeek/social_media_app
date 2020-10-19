@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../store/reducers/rootReducer";
 import styles from "./message.module.scss";
+import format from "date-fns/format";
+import { pl } from "date-fns/locale";
 
 interface IAuthor {
   _id: string;
@@ -56,7 +58,7 @@ const Message: React.FC<IProps> = ({ message }) => {
               {message.text}
             </div>
             <div className={`${styles.dateInfo} ${styles.dateInfoCurrentUser}`}>
-              {message.updated_at}
+              {format(new Date(message.updated_at), "MM/dd/yyyy H:m ")}
             </div>
           </div>
         </div>

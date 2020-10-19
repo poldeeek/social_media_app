@@ -12,12 +12,16 @@ import {
   addFriend,
 } from "../../../../store/actions/friendsActions";
 import { IFriend } from "../../../../store/reducers/friendsReducer";
+import useDebounce from "../../../../hooks/useDebounce";
 
 const Friends: React.FC = () => {
   const socket = useSocket();
   const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   const friends = useSelector((state: IRoot) => state.friends);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const dispatch = useDispatch();
 
@@ -34,8 +38,8 @@ const Friends: React.FC = () => {
   }, [socket]);
 
   useEffect(() => {
-    currentUser && dispatch(loadFriends(currentUser._id));
-  }, []);
+    currentUser && dispatch(loadFriends(currentUser._id, debouncedSearchTerm));
+  }, [debouncedSearchTerm]);
 
   return (
     <div className={styles.friendsContainer}>
@@ -45,6 +49,8 @@ const Friends: React.FC = () => {
         className={styles.searchInput}
         type="text"
         placeholder="Szukaj..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+        value={searchTerm}
       />
 
       <div className={styles.friendList}>

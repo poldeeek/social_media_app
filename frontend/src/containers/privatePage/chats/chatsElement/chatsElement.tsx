@@ -1,3 +1,6 @@
+import { formatDistance } from "date-fns";
+import { pl } from "date-fns/locale";
+
 import React from "react";
 import { IChat } from "../../../../store/reducers/chatsReducers";
 import styles from "./chatsElement.module.scss";
@@ -28,7 +31,11 @@ const ChatsElement: React.FC<props> = ({ chat }) => {
           {chat.member.name} {chat.member.surname}
         </div>
         <div className={styles.lastMessageText}>{chat.lastMessage.text}</div>
-        <div className={styles.messageDate}>{chat.updated_at}</div>
+        <div className={styles.messageDate}>
+          {formatDistance(new Date(chat.updated_at), new Date(), {
+            locale: pl,
+          })}
+        </div>
       </div>
     </div>
   );

@@ -148,21 +148,47 @@ router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
 
 })
 
-// @Route   GET /api/friends/getFriends/:id
+// @Route   GET /api/friends/getFriends/:id?search=search
 // @desc    Getting list of friends and their status to firendsList
 // @access  Private
-router.get('/getFriends/:id', accessTokenVerify, (req, res) => {
+router.get('/getFriends/:id', accessTokenVerify, async (req, res) => {
+    const { search } = req.query;
+
+    console.log(search)
+    let options;
+
+    if (search) {
+        const searchTerm = search.split(" ");
+
+        let searchTermRegex = [];
+
+        for (let i = 0; i < searchTerm.length; i++) {
+            searchTermRegex[i] = new RegExp(searchTerm[i], 'i')
+        }
+        console.log("test")
+        options = {
+            $or: [
+                { name: { $in: searchTermRegex } },
+                { surname: { $in: searchTermRegex } }
+            ]
+        }
+
+    }
+    console.log(options)
+
     Friends.findOne({ user_id: req.params.id })
         .populate({
             path: "friends",
             select: "name surname avatar online",
-            options: { sort: { online: -1, surname: 1, name: 1 } }
+            match: options,
+            options: {
+                sort: { online: -1, name: 1, surname: 1 },
+            }
         })
         .then(result => {
             return res.status(200).json(result)
         }).catch(err => res.status(500).json(err))
 })
-
 
 // @Route   GET /api/friends/getFriend/:id
 // @desc    Getting friend info to firendsList

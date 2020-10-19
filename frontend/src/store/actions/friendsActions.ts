@@ -4,7 +4,7 @@ import { api, authenticationHeader } from "../../config/apiHost";
 
 import { IFriend } from "../reducers/friendsReducer";
 
-export const loadFriends = (userID: string) => (
+export const loadFriends = (userID: string, search: string) => (
   dispatch: Function,
   getState: Function
 ) => {
@@ -12,8 +12,14 @@ export const loadFriends = (userID: string) => (
 
   dispatch({ type: actions.FRIENDS_LOADING });
 
+  let url
+  if(search === "") 
+ url = `http://localhost:5000/api/friends/getFriends/${userID}`
+ else
+ url =`http://localhost:5000/api/friends/getFriends/${userID}?search=${search}`
+
   api
-    .get(`http://localhost:5000/api/friends/getFriends/${userID}`, {
+    .get(url, {
       headers: authenticationHeader(),
     })
     .then((resp) => {

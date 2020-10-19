@@ -55,6 +55,7 @@ router.get('/searchChats/:id', async (req, res) => {
 
     if (!search || search === "") return res.status(400).json({ error: "Invalid search parameter." })
     if (!limit || !Number.isInteger(parseInt(limit))) return res.status(400).json({ error: "Invalid limit parameter." })
+    if (!page || !Number.isInteger(parseInt(page))) return res.status(400).json({ error: "Invalid page parameter." })
 
     const searchTerm = search.split(" ");
 

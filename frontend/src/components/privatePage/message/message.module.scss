@@ -4,6 +4,7 @@
 .messageContainer {
   display: flex;
   padding: 0 1rem;
+  margin: 0.3rem 0;
   width: 80%;
   &CurrentUser {
     justify-content: flex-end;
@@ -37,7 +38,7 @@
 
     .text {
       border-radius: 1.5rem;
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1rem;
       font-size: 1.6rem;
       background-color: #532753;
 
@@ -49,7 +50,7 @@
     .dateInfo {
       color: color(hovers);
       font-size: 1rem;
-      margin: 0 1rem;
+      margin: 0.2rem 1rem;
       text-align: right;
       &CurrentUser {
         text-align: left;

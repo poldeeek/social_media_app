@@ -66,7 +66,6 @@ export const loadMoreChats = (userID: string, search:string) => (
       headers: authenticationHeader(),
     })
     .then((resp) => {
-      console.log(resp, page)
       if(resp.data.length < limit) {
         hasMore = false;
       }

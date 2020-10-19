@@ -32,7 +32,6 @@ const Search: React.FC = () => {
         return resp.data;
       })
       .catch((err) => {
-        console.log(err);
         return [];
       });
   };
@@ -43,7 +42,6 @@ const Search: React.FC = () => {
       setIsSearching(true);
       searchUsers(debouncedSearchTerm, 0).then((results) => {
         setIsSearching(false);
-        console.log(results.length, perPage);
         if (results.length === perPage) setShowMoreResults(true);
         else setShowMoreResults(false);
         setResults(results);
@@ -66,7 +64,6 @@ const Search: React.FC = () => {
       setResults(newResults);
     });
   };
-  console.log(showMoreResults);
 
   return (
     <div className={styles.searchContainer}>

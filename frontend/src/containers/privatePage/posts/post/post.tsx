@@ -6,6 +6,8 @@ import { IRoot } from "../../../../store/reducers/rootReducer";
 import Comments from "../../comments/comments";
 import { api, authenticationHeader } from "../../../../config/apiHost";
 import { NavLink } from "react-router-dom";
+import formatDistance from "date-fns/formatDistance";
+import { pl } from "date-fns/locale";
 
 const Post: React.FC<{
   post: IPost;
@@ -62,7 +64,11 @@ const Post: React.FC<{
               {post.author_id.name} {post.author_id.surname}
             </div>
           </NavLink>
-          <div className={styles.userInfoPostDate}>{post.created_at}</div>
+          <div className={styles.userInfoPostDate}>
+            {formatDistance(new Date(post.created_at), new Date(), {
+              locale: pl,
+            })}
+          </div>
         </div>
       </div>
       <div className={styles.text}>{post.text}</div>
