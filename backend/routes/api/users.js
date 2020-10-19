@@ -31,6 +31,8 @@ router.get('/search', accessTokenVerify, (req, res) => {
         regex[i] = new RegExp(search[i], 'i');
     }
 
+    console.log(regex)
+
     User.find({
         $or: [
             { name: { $in: regex } },

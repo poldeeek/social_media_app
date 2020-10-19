@@ -26,11 +26,15 @@ export interface IChat {
 export interface IChats {
   chats: IChat[];
   loading: boolean;
+  page: number;
+  hasMore: boolean
 }
 
 const initState = {
   chats: [],
   loading: false,
+  page: 0,
+  hasMore: true
 };
 
 const friendsReducer = (state: IChats = initState, action: any) => {
@@ -43,15 +47,25 @@ const friendsReducer = (state: IChats = initState, action: any) => {
     case actions.CHATS_LOADED_SUCCESS:
       return {
         ...state,
-        chats: action.chats,
+        chats: [ ...action.chats],
         loading: false,
+        page: action.page,
+        hasMore: action.hasMore
       };
+      case actions.MORE_CHATS_LOADED_SUCCESS:
+        return {
+          ...state,
+          chats: [...state.chats, ...action.chats],
+          loading: false,
+          hasMore: action.hasMore,
+          page: action.page
+        };
     case actions.CHATS_LOADED_FAILED:
       return {
         ...state,
         loading: false,
       };
-    case actions.FRIEND_STATUS_CHANGE:
+    case actions.CHAT_FRIEND_STATUS_CHANGE:
       return {
         ...state,
         chats: action.chatsCopy,

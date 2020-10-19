@@ -34,7 +34,7 @@ const Posts: React.FC = () => {
 
   const [showNewPost, setShowNewPost] = useState(false);
 
-  const [mounted, setMounted] = useState(true);
+  let mounted = true;
   const [posts, setPosts] = useState<IPost[]>([]);
   const [perPage, setPerPage] = useState(5);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,11 +88,11 @@ const Posts: React.FC = () => {
 
   // getting posts from server with first render
   useEffect(() => {
-    setMounted(true);
+    mounted = true;
     fetchPosts();
 
     return () => {
-      setMounted(false);
+      mounted = false;
       return;
     };
   }, []);

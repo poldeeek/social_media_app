@@ -72,7 +72,6 @@ router.get('/:id', accessTokenVerify, isPostExist, (req, res) => {
             post_id: req.params.id
         }
     }
-    console.log(options)
 
 
     Comment.find(options)

@@ -18,6 +18,7 @@ const Chat = require('../../models/Chat');
 // Message model
 const Message = require('../../models/Message');
 const Notification = require('../../models/Notification');
+const User = require('../../models/User');
 
 // @route   POST api/friends/addFriend/:id
 // @desc    Accpet invitation to friends
@@ -151,7 +152,6 @@ router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
 // @desc    Getting list of friends and their status to firendsList
 // @access  Private
 router.get('/getFriends/:id', accessTokenVerify, (req, res) => {
-    console.log("test")
     Friends.findOne({ user_id: req.params.id })
         .populate({
             path: "friends",
@@ -168,9 +168,10 @@ router.get('/getFriends/:id', accessTokenVerify, (req, res) => {
 // @desc    Getting friend info to firendsList
 // @access  Private
 router.get('/getFriend/:id', accessTokenVerify, (req, res) => {
-    Friends.findOne({ user_id: req.params.id })
-        .populate({ path: "friends", select: "name surname avatar online" })
+    User.findOne({ _id: req.params.id })
+        .select("name surname avatar online")
         .then(result => {
+            console.log(result)
             return res.status(200).json(result)
         }).catch(err => res.status(500).json(err))
 })

@@ -3,8 +3,7 @@
 
 .chatsContainer {
   .chatsList {
-    overflow-y: hidden;
-    overflow-x: auto;
+    overflow: auto;
     max-height: calc(100vh - 6rem - 5rem);
     width: 100%;
     position: relative;
@@ -18,7 +17,7 @@
       width: 35rem;
       border-radius: 1.5rem;
       border: 2px solid color(hovers);
-      max-height: calc(100vh - 10rem - 3rem);
+      max-height: calc(30rem);
     }
 
     .spinner {

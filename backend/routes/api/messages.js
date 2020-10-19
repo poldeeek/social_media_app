@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Chat model
 const Message = require("../../models/Message");
-const { isValidObjectId } = require('mongoose');
+const Chat = require('../../models/Chat');
 
 
 // @route   GET /api/message/getMessages/:chatId?limit=limit&date=lastMessageDate
@@ -61,10 +61,15 @@ router.post('/sendMessage/:chatId', (req, res) => {
         photo
     }).save().then(resp => {
 
-        // send
-        res.io.in(`${recipient}`).emit('new_message', resp)
 
-        res.status(200).json(resp);
+        Chat.findByIdAndUpdate(resp.chat_id, {
+            lastMessage: resp._id
+        }).then(result => {
+            // send
+            res.io.in(`${recipient}`).emit('new_message', resp)
+
+            return res.status(200).json(resp);
+        })
     }).catch(err => res.status(500).json({ error: "Database sending messages problem." }))
 })
 
