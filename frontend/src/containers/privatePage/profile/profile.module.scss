@@ -1,6 +1,13 @@
 @import "../../../styles/colors.scss";
 @import "../../../styles/resolutionMixins.scss";
 
+.loaderContainer {
+  height: 20rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .profileContainer {
   overflow-y: auto;
   overflow-x: hidden;

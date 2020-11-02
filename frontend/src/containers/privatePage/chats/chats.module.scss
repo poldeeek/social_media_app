@@ -17,7 +17,15 @@
       width: 35rem;
       border-radius: 1.5rem;
       border: 2px solid color(hovers);
-      max-height: calc(30rem);
+      max-height: calc(100vh - 10rem - 3rem);
+    }
+
+    .noFriendsInfo {
+      padding: 10rem 2rem;
+      @include desktop {
+        padding: 2rem;
+        font-size: 1.5rem;
+      }
     }
 
     .spinner {

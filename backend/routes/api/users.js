@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const { accessTokenVerify } = require("../../middleware/accessTokenVerify")
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -31,7 +32,6 @@ router.get('/search', accessTokenVerify, (req, res) => {
         regex[i] = new RegExp(search[i], 'i');
     }
 
-    console.log(regex)
 
     User.find({
         $or: [
@@ -51,7 +51,7 @@ router.get('/search', accessTokenVerify, (req, res) => {
 // @route   GET api/users/:id
 // @desc    Getting user by id
 // @access  Private
-router.get('/:id', accessTokenVerify, isUserExistIdParams, accessTokenVerify, (req, res) => {
+router.get('/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
     const id = req.params.id;;
     User.findOne({ _id: id },
         'avatar email name surname city birth createdAt')
@@ -99,4 +99,92 @@ router.get('/:id', accessTokenVerify, isUserExistIdParams, accessTokenVerify, (r
 })
 
 
+// @route   POST api/users/update/photo/:id
+// @desc    Updating user profile photo
+// @access  Private
+router.post('/update/photo/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
+    const photoUrl = req.body.photo;
+    if (!photoUrl) res.status(400).json({ msg: "Missing photo." })
+    User.findByIdAndUpdate(req.params.id, { avatar: photoUrl }, (err, doc) => {
+        if (err) { console.log(err); res.status(500).json({ msg: "Database updating photo problem." }) }
+        res.status(200).json({ msg: "Photo has been updated." })
+    })
+
+})
+
+// @route   POST api/users/update/basic/:id
+// @desc    Updating user basic information
+// @access  Private
+router.post('/update/basic/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
+    const { name, surname, city } = req.body;
+
+    if (!name || !surname || !city) res.status(400).json({ msg: "Please enter all fields." })
+    if (name.length > 30 || surname.length > 30 || city.length > 30) res.status(400).json({ msg: "Max length is 30 marks." })
+    User.findByIdAndUpdate(req.params.id, { name: name, surname: surname, city: city }, (err, doc) => {
+        if (err) { console.log(err); res.status(500).json({ msg: "Database updating basic informations problem." }) }
+        res.status(200).json({ msg: "Informations have been updated." })
+    })
+
+})
+
+// @route   POST api/users/update/password/:id
+// @desc    Updating user password
+// @access  Private
+router.post('/update/password/:id', accessTokenVerify, (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !oldPassword) return res.status(400).json({ error: "Please enter all fields." })
+
+    if (newPassword.length < 6) res.status(400).json({ error: "Password is too short (min 6 marks)." })
+
+
+    // Check for existing user
+    User.findOne({ _id: req.params.id })
+        .then(async user => {
+            if (!user) return res.status(404).send({ error: "User does not exist." })
+
+            const compare_password = await bcrypt.compare(oldPassword, user.password)
+
+            if (!compare_password) return res.status(401).send({ error: "Wrong password." })
+
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+            await User.findByIdAndUpdate(req.params.id, { password: hashedNewPassword }, (err, doc) => {
+                if (err) { res.status(500).json({ msg: "Database updating password problem." }) }
+                res.status(200).json({ msg: "Password has been updated." })
+            })
+
+        }).catch(err => {
+            console.log(err)
+            return res.status(500).send({ error: "Database problem." })
+        })
+})
+
+// @route   POST api/users/update/email/:id
+// @desc    Updating user email
+// @access  Private
+router.post('/update/email/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
+    const { password, email } = req.body
+
+    if (!password || !email) return res.status(400).json({ error: "Please enter all fields." })
+
+    // Check for existing user
+    User.findOne({ _id: req.params.id })
+        .then(async user => {
+            if (!user) return res.status(404).send({ error: "User does not exist." })
+
+            const compare_password = await bcrypt.compare(password, user.password)
+
+            if (!compare_password) return res.status(401).send({ error: "Wrong password." })
+
+            await User.findByIdAndUpdate(req.params.id, { email: email }, (err, doc) => {
+                if (err) { res.status(500).json({ msg: "Database updating e-mail problem." }) }
+                res.status(200).json({ msg: "E-mail has been updated." })
+            })
+
+        }).catch(err => {
+            console.log(err)
+            return res.status(500).send({ error: "Database problem." })
+        })
+
+})
 module.exports = router;

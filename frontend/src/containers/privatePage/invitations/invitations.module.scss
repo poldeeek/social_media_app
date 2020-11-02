@@ -62,14 +62,14 @@
     .button {
       text-align: center;
       font-weight: bold;
-      background-color: green;
+      background-color: color(success);
       width: 40%;
       padding: 0.9rem 0.5rem;
       border-radius: 1.5rem;
     }
     .button:hover {
       cursor: pointer;
-      background-color: lighten(green, 3%);
+      background-color: lighten(color(success), 3%);
     }
   }
 }

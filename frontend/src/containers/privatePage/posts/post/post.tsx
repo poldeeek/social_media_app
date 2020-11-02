@@ -16,6 +16,8 @@ const Post: React.FC<{
   //if I like the post
   const [likeActive, setLikeAcitve] = useState<boolean>();
 
+  const [likeHandlerLoading, setLikeHandlerLoading] = useState(false);
+
   const [commentActive, setCommentActive] = useState(false);
 
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
@@ -27,6 +29,8 @@ const Post: React.FC<{
   }, []);
 
   const likeHanlder = () => {
+    if (likeHandlerLoading) return;
+    setLikeHandlerLoading(true);
     let action: string;
     if (likeActive) action = "unlike";
     else action = "like";
@@ -45,11 +49,11 @@ const Post: React.FC<{
           }
         )
         .then((resp) => {
-          console.log(resp);
           likePostHandler(action);
           setLikeAcitve((prevState) => !prevState);
+          setLikeHandlerLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => setLikeHandlerLoading(false));
   };
 
   return (

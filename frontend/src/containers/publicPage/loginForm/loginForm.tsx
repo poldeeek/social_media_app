@@ -4,9 +4,11 @@ import LoginTextInput from "../../../components/publicPage/form/loginTextInput";
 import { Form, Field } from "react-final-form";
 import { signIn } from "../../../store/actions/authActions";
 import { ILoginCreds } from "../../../store/actions/authActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { IRoot } from "../../../store/reducers/rootReducer";
 
 const LoginForm: React.FC = () => {
+  const authError = useSelector((state: IRoot) => state.auth.authError);
   const dispatch = useDispatch();
 
   const onSubmit = (values: ILoginCreds) => {
@@ -39,6 +41,7 @@ const LoginForm: React.FC = () => {
                 />
               </div>
             </div>
+            {authError && <div className={styles.errorInfo}>{authError}</div>}
             <div className={styles.submit}>
               <div className={styles.submitRemember}>Nie pamiętasz hasła ?</div>
               <button

@@ -1,0 +1,191 @@
+@import "../../../styles/resolutionMixins.scss";
+@import "../../../styles/colors.scss";
+
+.editProfileContainer {
+  overflow: auto;
+  padding: 0 3rem;
+  @include desktop {
+    z-index: 2100;
+    width: 60rem;
+    background-color: color(primary);
+    height: 50vh;
+    position: absolute;
+    top: 8rem;
+    left: calc(50vw - 30rem);
+    height: 80vh;
+  }
+
+  h2 {
+    letter-spacing: 0.1rem;
+    margin: 5rem 0 7rem 0;
+  }
+
+  p {
+    text-align: left;
+    padding: 0 2rem;
+    cursor: pointer;
+  }
+  p:hover {
+    text-decoration: underline;
+  }
+
+  .closeButton {
+    font-size: 3rem;
+    position: absolute;
+    right: 2.5rem;
+    top: 1.5rem;
+    cursor: pointer;
+  }
+
+  .photoChange {
+    border-bottom: 1px solid white;
+
+    img {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 1.5rem;
+    }
+
+    .choosenPhoto {
+      @include desktop {
+        margin-left: 3rem;
+      }
+    }
+
+    .photos {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      @include desktop {
+        justify-content: flex-start;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      margin: 1rem 1.5rem;
+      .button {
+        cursor: pointer;
+        margin: 0 0.5rem;
+
+        label {
+          cursor: pointer;
+        }
+
+        &:hover {
+          background-color: color(hovers);
+        }
+      }
+    }
+  }
+
+  .basicChange {
+    border-bottom: 1px solid white;
+  }
+
+  .passwordChange {
+    border-bottom: 1px solid white;
+  }
+
+  .emailChange {
+    border-bottom: 1px solid white;
+  }
+
+  .button {
+    font-size: 1.8rem;
+    padding: 1rem;
+    border: 2px solid color(fonts);
+    border-radius: 1.5rem;
+    background-color: color(primary);
+    color: color(fonts);
+    cursor: pointer;
+    &:hover {
+      background-color: color(hovers);
+    }
+  }
+
+  .message {
+    color: color(success);
+    margin: 2rem;
+  }
+
+  .error {
+    color: color(warning);
+    margin: 2rem;
+  }
+
+  .deleteAccount {
+    display: flex;
+    flex-direction: column;
+    margin: 5rem;
+    justify-content: center;
+    align-items: center;
+
+    &Button {
+      max-width: 40rem;
+      border: 2px solid color(warning);
+      border-radius: 1.5rem;
+      padding: 1.5rem 4rem;
+      color: color(warning);
+      cursor: pointer;
+    }
+
+    &Button:hover {
+      background-color: color(warning);
+      color: color(fonts);
+    }
+
+    &Warning {
+      margin-top: 3rem;
+      &Button {
+        margin: 2rem;
+        border: 2px solid white;
+        padding: 1rem 3rem;
+        border-radius: 1.5rem;
+        cursor: pointer;
+
+        &Yes:hover {
+          border: 2px solid color(success);
+          color: color(success);
+        }
+
+        &No:hover {
+          border: 2px solid color(warning);
+          color: color(warning);
+        }
+      }
+    }
+  }
+
+  form {
+    padding: 1rem 2rem;
+
+    button {
+      background-color: color(primary);
+      color: color(fonts);
+      font-size: 1.8rem;
+      padding: 1rem;
+      border: 2px solid color(fonts);
+      border-radius: 1.5rem;
+      cursor: pointer;
+      &:hover {
+        background-color: color(hovers);
+      }
+    }
+
+    .inputArea {
+      text-align: left;
+
+      input {
+        margin-top: 0.3rem;
+        border: none;
+        border-radius: 1.5rem;
+        height: 3rem;
+        padding: 2rem 1.5rem;
+        font-size: 1.8rem;
+        background-color: color(inputs);
+        color: color(fonts);
+      }
+    }
+  }
+}

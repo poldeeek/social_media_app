@@ -14,6 +14,8 @@ type commentProps = {
 const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
   const [likeActive, setLikeActive] = useState<boolean>();
 
+  const [likeHandlerLoading, setLikeHandlerLoading] = useState(false);
+
   const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   useEffect(() => {
@@ -23,6 +25,9 @@ const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
   }, []);
 
   const likeHandler = () => {
+    if (likeHandlerLoading) return;
+    setLikeHandlerLoading(true);
+
     let action: string;
     if (likeActive) action = "unlike";
     else action = "like";
@@ -43,8 +48,9 @@ const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
         .then((resp) => {
           likePostHandler(action);
           setLikeActive((prevState) => !prevState);
+          setLikeHandlerLoading(false);
         })
-        .catch((err) => err.resposne);
+        .catch((err) => setLikeHandlerLoading(false));
   };
 
   return (

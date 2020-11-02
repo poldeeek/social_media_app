@@ -10,6 +10,14 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+  .loaderContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+  }
 }
 
 .profileFriend {

@@ -38,8 +38,14 @@ const authReducer = (state: IAuth = initState, action: any) => {
         isAuthenticated: true,
         user: action.user,
       };
+      case actions.SIGN_IN_ERROR:
+        return {
+          user: null,
+          authError: action.error,
+          isLoading: false,
+          isAuthenticated: false,
+        }
     case actions.AUTH_ERROR:
-    case actions.SIGN_IN_ERROR:
     case actions.SIGN_UP_ERROR:
     case actions.SIGN_OUT_SUCCESS:
       return {
@@ -50,6 +56,24 @@ const authReducer = (state: IAuth = initState, action: any) => {
       };
     case actions.SIGN_OUT_ERROR:
       return state;
+    case actions.UPDATE_PROFILE_PHOTO:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          avatar: action.photo,
+        }
+      }
+    case actions.UPDATE_PROFILE_PHOTO:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.name,
+          surname: action.surname,
+          city: action.city,
+        }
+      }
     default:
       return state;
   }

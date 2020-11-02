@@ -60,7 +60,6 @@ router.get('/getBells/:id', accessTokenVerify, isUserExistIdParams, async (req, 
         .populate({ path: "who_id", select: "name surname avatar" })
         .sort({ updated_at: -1 })
         .then(resp => {
-            console.log(resp)
             res.status(200).json(resp)
         })
         .catch(err => res.status(500).json({ error: "Database problem. Finding notifications." }))

@@ -71,6 +71,7 @@ const DesktopNewPost: React.FC<{
         }
       );
     } else {
+      setLoading(false);
       handleUpload(null);
     }
   };

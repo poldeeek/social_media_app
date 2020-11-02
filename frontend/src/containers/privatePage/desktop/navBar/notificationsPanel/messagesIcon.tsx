@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./notificationPanel.module.scss";
 import { useSocket } from "../../../../../contexts/socketProvider";
 import { IIconParams } from "./notificationPanel";
@@ -6,8 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRoot } from "../../../../../store/reducers/rootReducer";
 import { setNotification } from "../../../../../store/actions/notificationsActions";
 import Chats from "../../../chats/chats";
+import useOnClickOutside from "../../../../../hooks/useOnClickOutside";
 
 const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(
+    messageRef,
+    () => active === "messages" && changeActive("")
+  );
   const socket = useSocket();
   const dispatch = useDispatch();
 
@@ -32,7 +39,7 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   }, []);
 
   return (
-    <div>
+    <div ref={messageRef}>
       <div
         className={
           active === "messages"

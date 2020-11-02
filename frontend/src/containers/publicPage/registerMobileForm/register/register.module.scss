@@ -6,14 +6,13 @@
 }
 
 .wizard {
-  flex-grow: 5;
+  flex-grow: 3;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 0 4.5rem;
-  margin: 0;
+  padding: 0 4rem;
   box-sizing: border-box;
 
   label {
@@ -22,13 +21,12 @@
 
   input {
     border-radius: 1.5rem;
-    width: calc(100% - 2px - 1rem - 2rem);
+    width: calc(100%);
     background-color: color(inputs);
     color: color(fonts);
     border: none;
-    margin: 1rem 0;
     height: 2rem;
-    padding: 0.8rem 1rem;
+    padding: 2rem 1rem;
     font-size: 1.8rem;
   }
 
@@ -42,12 +40,12 @@
 }
 
 .buttons {
-  flex-grow: 1;
+  flex-grow: 3;
   display: flex;
   justify-content: space-between;
-
+  align-items: flex-start;
   width: 100%;
-  padding: 0 4.5rem;
+  padding: 0 4rem;
 
   box-sizing: border-box;
 

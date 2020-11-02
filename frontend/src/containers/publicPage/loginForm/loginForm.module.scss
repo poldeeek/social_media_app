@@ -7,30 +7,32 @@ form {
     display: grid;
     font-size: 1.8rem;
 
-    grid-template-rows: 1fr 1fr 1fr 0.5fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 0.5fr;
     grid-template-areas:
       "email"
       "password"
+      "errorInfo"
       "submit"
       ".";
 
     @include desktop {
       grid-template-columns: 1.2fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 0.2fr 1fr 1fr;
       grid-template-areas:
         "email ."
         "password ."
+        "errorInfo ."
         "submit ."
         ". .";
-      padding: 3rem 4.5rem 0 10rem;
+      padding: 1rem 4.5rem 0 10rem;
     }
 
     input {
       border-radius: 1.5rem;
-      padding: 0.5rem 1.5rem;
+      padding: 1.6rem 1.5rem;
       height: 2rem;
       border: none;
-      width: calc(100% - 3rem);
+      width: calc(100%);
       background-color: color(inputs);
       color: color(fonts);
 
@@ -38,6 +40,8 @@ form {
         flex: 1;
         height: 3rem;
         font-size: 2rem;
+        margin-top: 1rem;
+        padding: 2rem 1.5rem;
       }
     }
 
@@ -82,6 +86,17 @@ form {
         @include desktop {
           font-size: 2.4rem;
         }
+      }
+    }
+
+    .errorInfo {
+      grid-area: errorInfo;
+      color: #d22e2e;
+      display: flex;
+      align-items: center;
+      font-size: 1.6rem;
+      @include desktop {
+        font-size: 1.6rem;
       }
     }
 

@@ -24,7 +24,6 @@ export const loadUser = () => (dispatch: Function, getState: Function) => {
       });
     })
     .catch((err) => {
-      console.log("error", err);
       dispatch({
         type: actions.AUTH_ERROR,
       });
@@ -58,7 +57,6 @@ export const signIn = (creds: ILoginCreds) => (
       }
     )
     .then((response) => {
-      console.log(response);
       setAccessToken(response.data.accessToken);
       dispatch({
         type: actions.SIGN_IN_SUCCESS,
@@ -66,9 +64,9 @@ export const signIn = (creds: ILoginCreds) => (
       });
     })
     .catch((err) => {
-      console.log("error", err.response);
       dispatch({
         type: actions.SIGN_IN_ERROR,
+        error: err.response.data.error
       });
     });
 };
@@ -133,7 +131,6 @@ export const signUp = (creds: ISignUp) => (
       }
     )
     .then((response) => {
-      console.log(response);
       setAccessToken(response.data.accessToken);
       dispatch({
         type: actions.SIGN_UP_SUCCESS,
@@ -161,7 +158,6 @@ export const signOut = () => (dispatch: Function, getState: Function) => {
       }
     )
     .then((resp) => {
-      console.log(resp);
       setAccessToken("");
       dispatch({
         type: actions.SIGN_OUT_SUCCESS,
@@ -170,9 +166,22 @@ export const signOut = () => (dispatch: Function, getState: Function) => {
       history.push("/");
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: actions.SIGN_OUT_ERROR,
       });
     });
 };
+
+export const updateProfilePhoto = (photoUrl: string) => (dispatch: Function, getState: Function) => {
+  dispatch({
+    type: actions.UPDATE_PROFILE_PHOTO,
+    photo: photoUrl
+  })
+}
+
+export const updateProfileBasic = (name: string, surname: string, city: string) => (dispatch: Function, getState: Function) => {
+  dispatch({
+    type: actions.UPDATE_PROFILE_BASIC,
+    name, surname, city
+  })
+}

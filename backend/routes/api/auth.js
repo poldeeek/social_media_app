@@ -14,6 +14,9 @@ const Friends = require('../../models/Friends')
 // Handle errors
 const { registerErrorsHandler } = require("../handleErrors/auth");
 
+
+const cookieMaxAge = 15 * 24 * 60 * 60 * 1000;
+
 // Generate tokens
 const generateTokens = userID => {
     const ACCESS_TOKEN = jwt.sign({
@@ -84,7 +87,7 @@ router.post('/register', async (req, res) => {
                 const tokens = await generateTokens(user);
 
                 res.cookie('refreshToken', tokens.refreshToken, {
-                    maxAge: 15 * 24 * 60 * 60 * 1000,
+                    maxAge: cookieMaxAge,
                     httpOnly: true
                 })
                 res.status(200).send({
@@ -93,7 +96,6 @@ router.post('/register', async (req, res) => {
                     user: user_response
                 })
             }).catch(err => {
-                console.log(err)
                 const error = registerErrorsHandler(err);
                 return res.status(400).json({ error })
             })
@@ -135,7 +137,7 @@ router.post('/login', async (req, res) => {
 
 
             res.cookie('refreshToken', tokens.refreshToken, {
-                maxAge: 15 * 24 * 60 * 60 * 1000,
+                maxAge: cookieMaxAge,
                 httpOnly: true
             })
             return res.status(200).send({
@@ -174,7 +176,7 @@ router.get('/refresh', (req, res) => {
             }
             const tokens = await generateTokens(user_response._id);
             res.cookie('refreshToken', tokens.refreshToken, {
-                maxAge: 15 * 24 * 60 * 60 * 1000,
+                maxAge: cookieMaxAge,
                 httpOnly: true
             })
             return res.status(200).send({

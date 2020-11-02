@@ -71,9 +71,11 @@ section {
     grid-area: logo;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     color: color(fonts);
+    padding: 2rem 0 0 4rem;
     @include desktop {
+      margin-left: 10rem;
     }
 
     .logoPicture {

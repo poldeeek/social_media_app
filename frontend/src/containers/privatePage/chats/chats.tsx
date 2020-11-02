@@ -120,8 +120,11 @@ const Chats: React.FC = () => {
       )}
 
       <div className={styles.chatsList}>
-        {chatsState.chats &&
-          chatsState.chats.map((chat: IChat) => chatElementRender(chat))}
+        {chatsState.chats.length > 0 ? (
+          chatsState.chats.map((chat: IChat) => chatElementRender(chat))
+        ) : (
+          <div className={styles.noFriendsInfo}>Brak znajomych.</div>
+        )}
         {chatsState.hasMore && (
           <div ref={chatsLoader} id="chatsLoader" className={styles.spinner}>
             <ClipLoader color={"#276a39"} />

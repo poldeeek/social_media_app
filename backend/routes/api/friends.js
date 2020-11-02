@@ -141,7 +141,6 @@ router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
     Friends.findOne({ user_id: req.params.id })
         .populate({ path: "friends", select: "name surname avatar" })
         .then(result => {
-            console.log(result)
 
             return res.status(200).json(result);
         }).catch(err => res.status(500).json(err))
@@ -154,7 +153,6 @@ router.get('/getFriends/profile/:id', accessTokenVerify, (req, res) => {
 router.get('/getFriends/:id', accessTokenVerify, async (req, res) => {
     const { search } = req.query;
 
-    console.log(search)
     let options;
 
     if (search) {
@@ -165,7 +163,6 @@ router.get('/getFriends/:id', accessTokenVerify, async (req, res) => {
         for (let i = 0; i < searchTerm.length; i++) {
             searchTermRegex[i] = new RegExp(searchTerm[i], 'i')
         }
-        console.log("test")
         options = {
             $or: [
                 { name: { $in: searchTermRegex } },
@@ -174,7 +171,6 @@ router.get('/getFriends/:id', accessTokenVerify, async (req, res) => {
         }
 
     }
-    console.log(options)
 
     Friends.findOne({ user_id: req.params.id })
         .populate({
@@ -197,7 +193,6 @@ router.get('/getFriend/:id', accessTokenVerify, (req, res) => {
     User.findOne({ _id: req.params.id })
         .select("name surname avatar online")
         .then(result => {
-            console.log(result)
             return res.status(200).json(result)
         }).catch(err => res.status(500).json(err))
 })

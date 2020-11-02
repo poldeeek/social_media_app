@@ -85,7 +85,6 @@ const Register: React.FC = () => {
             name="birthDay"
             component={TextInput}
             placeholder="Dzień"
-            style={{ marginRight: "1rem" }}
             validate={composeValidators(validation.required, validation.isDay)}
           />
           <Field<string>
@@ -93,7 +92,6 @@ const Register: React.FC = () => {
             name="birthMonth"
             component={TextInput}
             placeholder="Miesiąc"
-            style={{ marginRight: "1rem" }}
             validate={composeValidators(
               validation.required,
               validation.isMonth

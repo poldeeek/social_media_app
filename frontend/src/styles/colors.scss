@@ -7,6 +7,8 @@ $colors: (
   placeholder: #cacaca,
   fonts: #e2e2e2,
   hovers: #686868,
+  warning: #d22e2e,
+  success: #228b22,
 );
 
 @function color($color-name) {

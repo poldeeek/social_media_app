@@ -22,13 +22,13 @@ export const api = axios.create({
 const interceptor = api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const { status } = error.response;
+    const { code } = error.response.data;
     const originalRequest = error.config;
 
-    if (status === 401) {
+    if (code && code === 'accessToken/error') {
       originalRequest._retry = true;
 
-      api.interceptors.response.eject(interceptor);
+      //api.interceptors.response.eject(interceptor);
 
       return fetch("http://localhost:5000/api/auth/refresh", {
         method: "GET",

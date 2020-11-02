@@ -63,6 +63,13 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
 
         setMessages((prevState) => [newmessage, ...prevState]);
       });
+
+      socket.on("online", (msg: string) =>
+        setMember({ ...member, online: true })
+      );
+      socket.on("offline", (msg: string) =>
+        setMember({ ...member, online: false })
+      );
     };
 
     setSocket();
