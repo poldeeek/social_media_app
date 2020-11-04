@@ -26,6 +26,11 @@
   .textInfo {
     text-align: left;
 
+    .messagePhoto {
+      width: 100%;
+      height: auto;
+    }
+
     &CurrentUser {
     }
 

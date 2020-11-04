@@ -20,6 +20,7 @@ export interface IMessage {
   photo?: string;
   seen: boolean;
   updated_at: string;
+  created_at: string;
 }
 
 type IProps = {
@@ -36,14 +37,22 @@ const Message: React.FC<IProps> = ({ message }) => {
           <img src={message.author_id.avatar} alt="user avatar" />
         </div>
         <div className={styles.textInfo}>
-          <div className={styles.userName}>{message.author_id.name}</div>
-          {message.text && <div className={styles.text}> {message.text}</div>}
-          {message.photo && (
+          <div className={styles.userName}>
+            {message.author_id.name}
             <div className={styles.text}>
-              <img src={message.photo} alt="message photo" />
+              {message.text && <>{message.text}</>}
+              {message.photo && (
+                <img
+                  src={message.photo}
+                  alt="message photo"
+                  className={styles.messagePhoto}
+                />
+              )}
             </div>
-          )}
-          <div className={styles.dateInfo}>{message.updated_at}</div>
+          </div>
+          <div className={styles.dateInfo}>
+            {format(new Date(message.created_at), "MM/dd/yyyy H:m ")}
+          </div>
         </div>
       </div>
     );
@@ -61,10 +70,16 @@ const Message: React.FC<IProps> = ({ message }) => {
           <div className={`${styles.textInfo} ${styles.textInfoCurrentUser}`}>
             <div className={`${styles.text} ${styles.textCurrentUser}`}>
               {message.text && <>{message.text}</>}
-              {message.photo && <img src={message.photo} alt="message photo" />}
+              {message.photo && (
+                <img
+                  src={message.photo}
+                  alt="message photo"
+                  className={styles.messagePhoto}
+                />
+              )}
             </div>
             <div className={`${styles.dateInfo} ${styles.dateInfoCurrentUser}`}>
-              {format(new Date(message.updated_at), "MM/dd/yyyy H:m ")}
+              {format(new Date(message.created_at), "MM/dd/yyyy H:m ")}
             </div>
           </div>
         </div>

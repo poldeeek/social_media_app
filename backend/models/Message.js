@@ -20,7 +20,7 @@ const MessageSchema = new Schema({
     },
     text: {
         type: String,
-        required: [true, 'Podaj treść wiadomości.']
+        required: false
     },
     photo: {
         type: String,

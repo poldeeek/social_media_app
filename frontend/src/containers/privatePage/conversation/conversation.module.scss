@@ -83,6 +83,33 @@
     }
   }
 
+  .messagePhoto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .removePhotoButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15rem;
+      height: 4rem;
+      width: 4rem;
+      background-color: color(hovers);
+      margin-left: 1rem;
+      color: color(fonts);
+      cursor: pointer;
+
+      &:hover {
+        color: color(placeholder);
+      }
+    }
+  }
+
+  .messageChoosenPhoto {
+    height: 10rem;
+    width: auto;
+  }
+
   .sendMessage {
     border-top: 1px solid color(secondary);
     display: flex;

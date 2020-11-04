@@ -26,7 +26,7 @@ router.get('/getMessages/:chatId', accessTokenVerify, (req, res) => {
     if (date) {
         options = {
             chat_id: chatId,
-            updated_at: {
+            created_at: {
                 $lt: date
             },
         }
@@ -40,8 +40,9 @@ router.get('/getMessages/:chatId', accessTokenVerify, (req, res) => {
         .find(options)
         .populate({ path: "author_id", select: "name surname avatar" })
         .limit(parseInt(limit))
-        .sort({ updated_at: -1 })
+        .sort({ created_at: -1 })
         .then(results => {
+            console.log(results)
             res.status(200).json(results)
         }).catch(err => {
             return res.status(500).json({ error: "Database getting messages problem." })
@@ -54,6 +55,7 @@ router.get('/getMessages/:chatId', accessTokenVerify, (req, res) => {
 router.post('/sendMessage/:chatId', accessTokenVerify, (req, res) => {
     const { chatId } = req.params;
     const { author_id, text, photo, recipient } = req.body;
+    console.log(photo)
     new Message({
         chat_id: chatId,
         author_id,
@@ -70,7 +72,10 @@ router.post('/sendMessage/:chatId', accessTokenVerify, (req, res) => {
 
             return res.status(200).json(resp);
         })
-    }).catch(err => res.status(500).json({ error: "Database sending messages problem." }))
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({ error: "Database sending messages problem." })
+    })
 })
 
 // @route   POST /api/message/seeMessages/:id

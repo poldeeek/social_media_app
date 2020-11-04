@@ -12,6 +12,8 @@ import { useMediaQuery } from "react-responsive";
 import { removeChat } from "../../../store/actions/messangerActions";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useSocket } from "../../../contexts/socketProvider";
+import firebase, { storage } from "../../../config/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 interface IParams {
   chat: IChat;
@@ -41,6 +43,12 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
   const [member, setMember] = useState({ ...chat.member });
 
   const currentUser = useSelector((state: IRoot) => state.auth.user);
+
+  const [choosenPhotoUrl, setChoosenPhotoUrl] = useState<string | null>(null);
+  const [choosenPhoto, setChoosenPhoto] = useState<File | null>(null);
+  const [choosePhotoError, setChoosePhotoError] = useState("");
+  const [loadingPhoto, setLoadingPhoto] = useState(false);
+  const [sendingPhotoUrl, setSendingPhotoUrl] = useState<string | null>(null);
 
   // receipt new message
   useEffect(() => {
@@ -100,7 +108,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           }
           setMessages((prevState) => [...prevState, ...resp.data]);
           if (resp.data.length < perPage) setHasMore(false);
-          setLastMessageDate(resp.data[resp.data.length - 1].updated_at);
+          setLastMessageDate(resp.data[resp.data.length - 1].created_at);
           setFetchError("");
           setIsLoading(false);
         }
@@ -146,12 +154,63 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
   // "enter" button handler
   const onChangeHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      sendMessage();
+      sendMessageHandler();
     }
   };
 
-  const sendMessage = () => {
-    if (text === "") return;
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const fileType = file["type"];
+      const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+      if (validImageTypes.includes(fileType)) {
+        setChoosePhotoError("");
+        setChoosenPhoto(file);
+        setChoosenPhotoUrl(URL.createObjectURL(file));
+      } else {
+        setChoosePhotoError("Zły format pliku!");
+        setChoosenPhoto(null);
+        setChoosenPhotoUrl(null);
+      }
+    }
+  };
+
+  const handlePhotoUpload = async () => {
+    if (choosenPhoto) {
+      const fileName = `${uuidv4()}`;
+      const uploadTask = storage.ref(`images/${fileName}`).put(choosenPhoto);
+      await uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        null,
+        (err) => {},
+        async () => {
+          await storage
+            .ref("images")
+            .child(fileName)
+            .getDownloadURL()
+            .then(async (url) => {
+              sendMessage(url);
+            });
+        }
+      );
+    }
+  };
+
+  const removePhoto = () => {
+    setChoosenPhotoUrl("");
+    setChoosenPhoto(null);
+  };
+
+  const sendMessageHandler = () => {
+    if (choosenPhotoUrl) {
+      handlePhotoUpload();
+    } else {
+      if (text === "") return;
+      else sendMessage(null);
+    }
+  };
+
+  const sendMessage = (photoUrl: string | null) => {
     //delete new line marks from text
     const newText = text.replace(/(\r\n|\n|\r)/gm, "");
     currentUser &&
@@ -161,7 +220,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           {
             author_id: currentUser._id,
             text: newText,
-            photo: null,
+            photo: photoUrl ? photoUrl : null,
             recipient: chat.member._id,
           },
           {
@@ -182,6 +241,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
 
           setMessages((prevState) => [newmessage, ...prevState]);
           setText("");
+          removePhoto();
         });
   };
 
@@ -254,7 +314,16 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
       </div>
       <div className={styles.sendMessage}>
         <div className={styles.addImage}>
-          <i className="fas fa-image"></i>
+          <input
+            id="message-photo-upload"
+            type="file"
+            style={{ display: "none" }}
+            accept="image/png, image/jpeg, image/jpg"
+            onChange={(e) => handlePhotoChange(e)}
+          />
+          <label htmlFor="message-photo-upload">
+            <i className="fas fa-image"></i>
+          </label>
         </div>
         <TextareaAutosize
           onFocus={() => seeMessages()}
@@ -265,7 +334,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           onChange={(e) => setText(e.target.value)}
           onKeyUp={(e) => onChangeHandler(e)}
         />
-        <div className={styles.sendImage} onClick={() => sendMessage()}>
+        <div className={styles.sendImage} onClick={() => sendMessageHandler()}>
           <i className="fas fa-paper-plane"></i>
         </div>
       </div>
