@@ -10,6 +10,9 @@ import MoblieNewPost from "../posts/moblieNewPost";
 import Bells from "../bells/bells";
 import ConversationHoc from "./hoc/conversationHoc";
 import EditProfile from "../editProfile/editProfile";
+import Post from "../posts/post/post";
+import PostHoc from "../../../hoc/postHoc";
+import ShowImage from "../showImage/showImage";
 const MoblieContainer: React.FC = () => {
   return (
     <>
@@ -21,6 +24,8 @@ const MoblieContainer: React.FC = () => {
         <Route path="/bells" component={Bells} />
         <Route exact path="/friends" component={Chats} />
         <Route path="/search" component={Search} />
+        <Route path="/showImage" component={ShowImage} />
+        <Route path="/posts/:id" component={PostHoc} />
         <Route path="/editProfile/:id" component={EditProfile} />
         <Route path="/friends/:id" component={ConversationHoc} />
         <Route path="/profile/:id" component={Profile} />

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { IRoot } from "../../../../store/reducers/rootReducer";
 import Comments from "../../comments/comments";
 import { api, authenticationHeader } from "../../../../config/apiHost";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import formatDistance from "date-fns/formatDistance";
 import { pl } from "date-fns/locale";
 
@@ -21,6 +21,8 @@ const Post: React.FC<{
   const [commentActive, setCommentActive] = useState(false);
 
   const currentUserId = useSelector((state: IRoot) => state.auth.user?._id);
+
+  const location = useLocation();
 
   useEffect(() => {
     if (currentUserId && post.likes.includes(currentUserId))
@@ -50,7 +52,7 @@ const Post: React.FC<{
         )
         .then((resp) => {
           likePostHandler(action);
-          setLikeAcitve((prevState) => !prevState);
+          setLikeAcitve(!likeActive);
           setLikeHandlerLoading(false);
         })
         .catch((err) => setLikeHandlerLoading(false));
@@ -77,7 +79,14 @@ const Post: React.FC<{
       </div>
       <div className={styles.text}>{post.text}</div>
       {post.photo && (
-        <img src={post.photo} className={styles.postPhoto} alt="post pic" />
+        <NavLink
+          to={{
+            pathname: `/showImage`,
+            state: { photo: post.photo, prevUrl: location.pathname },
+          }}
+        >
+          <img src={post.photo} className={styles.postPhoto} alt="post pic" />
+        </NavLink>
       )}
       <div className={styles.interactionInfo}>
         <div className={styles.interactionButtons}>

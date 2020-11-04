@@ -40,11 +40,24 @@
 
     .userInfo {
       color: color(fonts);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .messageUnseenDot {
+        margin-left: 1rem;
+        position: relative;
+        height: 1.5rem;
+        width: 1.5rem;
+        border-radius: 15rem;
+        background-color: color(basic);
+      }
     }
 
     .lastMessageText {
+      margin-top: 0.3rem;
       font-size: 1.5rem;
-      max-height: 1.5rem;
+      max-height: 2rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

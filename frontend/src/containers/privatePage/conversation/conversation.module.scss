@@ -67,7 +67,7 @@
         position: absolute;
         top: 2.5rem;
         left: 4.5rem;
-        color: #118300;
+        color: color(success);
       }
     }
   }
@@ -119,6 +119,10 @@
       justify-content: center;
       width: 4.5rem;
       height: 4.5rem;
+      cursor: pointer;
+      &:hover {
+        color: color(hovers);
+      }
     }
 
     .sendImage {
@@ -129,6 +133,10 @@
       justify-content: center;
       width: 4.5rem;
       height: 4.5rem;
+      cursor: pointer;
+      &:hover {
+        color: color(hovers);
+      }
     }
   }
 }

@@ -15,7 +15,7 @@ const Chat = require('../../models/Chat');
 // @route   GET /api/message/getMessages/:chatId?limit=limit&date=lastMessageDate
 // @desc    get all messages from chat by chatId
 // @access  Private
-router.get('/getMessages/:chatId', (req, res) => {
+router.get('/getMessages/:chatId', accessTokenVerify, (req, res) => {
     const { chatId } = req.params;
     const { limit, date } = req.query;
 
@@ -51,7 +51,7 @@ router.get('/getMessages/:chatId', (req, res) => {
 // @route   POST /api/message/sendMessage/:id
 // @desc    save message in database
 // @access  Private
-router.post('/sendMessage/:chatId', (req, res) => {
+router.post('/sendMessage/:chatId', accessTokenVerify, (req, res) => {
     const { chatId } = req.params;
     const { author_id, text, photo, recipient } = req.body;
     new Message({
@@ -71,6 +71,21 @@ router.post('/sendMessage/:chatId', (req, res) => {
             return res.status(200).json(resp);
         })
     }).catch(err => res.status(500).json({ error: "Database sending messages problem." }))
+})
+
+// @route   POST /api/message/seeMessages/:id
+// @desc    set message status as seen
+// @access  private
+router.post('/seeMessages/:id', accessTokenVerify, isUserExistIdBody, (req, res) => {
+    const chatId = req.params.id;
+    const userId = req.body.user_id;
+    console.log("ga")
+    Message.updateMany({ chat_id: chatId, author_id: { $ne: userId } }, {
+        seen: true
+    }).then((result) =>
+        res.status(200).json({ msg: "Messages set as seen." }))
+        .catch(err => res.status(500).json({ msg: "Database see messages problem." }))
+
 })
 
 module.exports = router;

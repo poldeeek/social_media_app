@@ -11,11 +11,12 @@ const router = express.Router();
 const Chat = require("../../models/Chat");
 const Friends = require("../../models/Friends");
 const User = require('../../models/User');
+const Message = require('../../models/Message');
 
 // @route   /api/chats/getChats/:id?limit=limit&page=page
 // @desc    get all chats by user id
 // @access  private
-router.get('/getChats/:id', (req, res) => {
+router.get('/getChats/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
     const { limit, page, search } = req.query;
 
     if (search && search !== "") return res.status(400).json({ error: "Invalid search parameter." })
@@ -50,7 +51,7 @@ router.get('/getChats/:id', (req, res) => {
 // @route   GET /api/chats/searchChats/:id?search=search&limit=limit&page=page
 // @desc    get all chats by user id
 // @access  private
-router.get('/searchChats/:id', async (req, res) => {
+router.get('/searchChats/:id', accessTokenVerify, isUserExistIdParams, async (req, res) => {
     const { limit, page, search } = req.query;
 
     if (!search || search === "") return res.status(400).json({ error: "Invalid search parameter." })
@@ -117,7 +118,7 @@ router.get('/searchChats/:id', async (req, res) => {
 // @route   /api/chats/getChat/:id&user_id=user_id
 // @desc    get chat between two users
 // @access  private
-router.get('/getChat/:id', isUserExistIdParams, (req, res) => {
+router.get('/getChat/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
 
     Chat.findOne({
         users: { $all: [req.query.user_id, req.params.id] }

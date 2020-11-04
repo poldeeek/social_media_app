@@ -169,6 +169,19 @@ router.post('/unlike/:id', accessTokenVerify, isUserExistIdBody, isPostExist, (r
         }).catch(err => {
             return res.status(500).json({ error: "Database unlike post problem." })
         })
+})
 
+// @route   GET api/posts/getPosts/:id
+// @desc    Get mine and friends posts
+// @access  Private
+router.get('/getPost/:id', accessTokenVerify, isPostExist, async (req, res) => {
+    const { id } = req.params;
+
+    Post.findById(id)
+        .select('_id author_id likes photo text created_at')
+        .populate({ path: 'author_id', select: 'surname name avatar' })
+        .then(result => {
+            res.status(200).json(result);
+        }).catch(err => res.status(500).json({ error: "Database finding posts error." }))
 })
 module.exports = router;

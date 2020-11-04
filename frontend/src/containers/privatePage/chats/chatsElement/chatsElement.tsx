@@ -2,7 +2,9 @@ import { formatDistance } from "date-fns";
 import { pl } from "date-fns/locale";
 
 import React from "react";
+import { useSelector } from "react-redux";
 import { IChat } from "../../../../store/reducers/chatsReducers";
+import { IRoot } from "../../../../store/reducers/rootReducer";
 import styles from "./chatsElement.module.scss";
 
 type props = {
@@ -10,6 +12,8 @@ type props = {
 };
 
 const ChatsElement: React.FC<props> = ({ chat }) => {
+  const userId = useSelector((state: IRoot) => state.auth.user?._id);
+
   return (
     <div className={styles.chatElement}>
       <div className={styles.avatar}>
@@ -29,8 +33,14 @@ const ChatsElement: React.FC<props> = ({ chat }) => {
       <div className={styles.messageInfo}>
         <div className={styles.userInfo}>
           {chat.member.name} {chat.member.surname}
+          {userId !== chat.lastMessage.author_id && !chat.lastMessage.seen && (
+            <div className={styles.messageUnseenDot}></div>
+          )}
         </div>
-        <div className={styles.lastMessageText}>{chat.lastMessage.text}</div>
+        <div className={styles.lastMessageText}>
+          {chat.lastMessage.author_id === userId && "Ty: "}
+          {chat.lastMessage.text}
+        </div>
         <div className={styles.messageDate}>
           {formatDistance(new Date(chat.updated_at), new Date(), {
             locale: pl,

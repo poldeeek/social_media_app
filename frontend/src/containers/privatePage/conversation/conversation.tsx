@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useParams, useLocation } from "react-router";
 import { IChat } from "../../../store/reducers/chatsReducers";
 import styles from "./conversation.module.scss";
 import TextareaAutosize from "react-textarea-autosize";
@@ -186,6 +185,23 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
         });
   };
 
+  // change unseen messages status as seen
+  const seeMessages = () => {
+    api
+      .post(
+        `http://localhost:5000/api/message/seeMessages/${chat._id}`,
+        {
+          user_id: currentUser?._id,
+        },
+        {
+          headers: authenticationHeader(),
+        }
+      )
+      .then((resp) => {
+        console.log("wiadomosci odczytane");
+      });
+  };
+
   return (
     <div
       className={styles.conversationContainer}
@@ -241,7 +257,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           <i className="fas fa-image"></i>
         </div>
         <TextareaAutosize
-          onFocus={() => console.log("test")}
+          onFocus={() => seeMessages()}
           autoFocus
           className={styles.editorInput}
           placeholder="Napisz wiadomość..."

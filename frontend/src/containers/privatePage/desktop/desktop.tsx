@@ -7,6 +7,8 @@ import Search from "../search/search";
 import Profile from "../profile/profile";
 import Messanger from "./messanger/messanger";
 import Friends from "./friends/friends";
+import PostHoc from "../../../hoc/postHoc";
+import ShowImage from "../showImage/showImage";
 
 const DesktopContainer: React.FC = () => {
   return (
@@ -17,7 +19,9 @@ const DesktopContainer: React.FC = () => {
         <div className={styles.center}>
           <Switch>
             <Route exact path="/" component={Posts} />
+            <Route path="/showImage" component={ShowImage} />
             <Route path="/profile/:id" component={Profile} />
+            <Route path="/posts/:id" component={PostHoc} />
           </Switch>
         </div>
         <Friends />
