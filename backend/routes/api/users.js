@@ -3,16 +3,19 @@ const express = require("express");
 const { accessTokenVerify } = require("../../middleware/accessTokenVerify")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { isUserExistIdParams } = require('../../middleware/paramsValidations/isUserExist');
 
 const router = express.Router();
 
-// User model 
+// Models
 const User = require("../../models/User");
-
-// Friends model
 const Friends = require('../../models/Friends');
 const Invitation = require('../../models/Invitation');
-const { isUserExistIdParams } = require('../../middleware/paramsValidations/isUserExist');
+const Chat = require('../../models/Chat');
+const Comment = require('../../models/Comment');
+const Message = require('../../models/Message');
+const Notification = require('../../models/Notification');
+const Post = require('../../models/Post');
 
 // @route   GET api/users/search?q=searchingFraze&p=page&limit=perPage
 // @desc    Getting users by id
@@ -186,5 +189,20 @@ router.post('/update/email/:id', accessTokenVerify, isUserExistIdParams, (req, r
             return res.status(500).send({ error: "Database problem." })
         })
 
+})
+
+// @route   DELETE api/users/delete/me
+// @desc    Delete user
+// @access  Private
+router.delete('/delete/me', accessTokenVerify, (req, res) => {
+    const BEARER = 'Bearer';
+    const auth_token = req.headers.authorization.split(' ');
+
+    jwt.verify(auth_token[1], process.env.ACCESS_TOKEN_SECRET, async (err, payload) => {
+        const id = payload.sub;
+
+
+
+    })
 })
 module.exports = router;

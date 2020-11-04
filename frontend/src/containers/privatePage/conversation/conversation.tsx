@@ -241,6 +241,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           <i className="fas fa-image"></i>
         </div>
         <TextareaAutosize
+          onFocus={() => console.log("test")}
           autoFocus
           className={styles.editorInput}
           placeholder="Napisz wiadomość..."

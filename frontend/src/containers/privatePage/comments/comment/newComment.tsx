@@ -71,6 +71,7 @@ const NewComment: React.FC<newCommentProps> = ({
           onKeyUp={(e) => onChangeHandler(e)}
           value={text}
         />
+        <i className="fas fa-paper-plane" onClick={() => addComent()}></i>
       </div>
     )
   );

@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { api, authenticationHeader } from "../../../config/apiHost";
 import { IRoot } from "../../../store/reducers/rootReducer";
 import styles from "./editProfile.module.scss";
 
 const DeleteAcc: React.FC = () => {
   const [showWarning, setShowWarning] = useState(false);
+
+  const deleteAccount = () => {
+    api
+      .delete(`http://localhost:5000/api/users/delete/me`, {
+        headers: authenticationHeader(),
+      })
+      .then((resp) => console.log(resp))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className={styles.deleteAccount}>
@@ -26,6 +36,7 @@ const DeleteAcc: React.FC = () => {
           >
             <div
               className={`${styles.deleteAccountWarningButton} ${styles.deleteAccountWarningButtonYes}`}
+              onClick={() => deleteAccount()}
             >
               Tak
             </div>

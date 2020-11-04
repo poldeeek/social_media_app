@@ -5,6 +5,8 @@ import { api, authenticationHeader } from "../../../../config/apiHost";
 import { useSelector } from "react-redux";
 import { IRoot } from "../../../../store/reducers/rootReducer";
 import { NavLink } from "react-router-dom";
+import formatDistance from "date-fns/formatDistance";
+import { pl } from "date-fns/locale";
 
 type commentProps = {
   comment: IComment;
@@ -76,7 +78,11 @@ const Comment: React.FC<commentProps> = ({ comment, likePostHandler }) => {
           ></i>{" "}
           {comment.likes.length}
         </div>
-        <div>{comment.created_at}</div>
+        <div>
+          {formatDistance(new Date(comment.created_at), new Date(), {
+            locale: pl,
+          })}
+        </div>
       </div>
     </div>
   );

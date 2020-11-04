@@ -3,12 +3,17 @@
 
 .newComment {
   display: flex;
-  width: 100%;
+  width: calc(100% - 2rem);
   justify-content: flex-start;
   align-items: center;
+  margin: 0 1rem;
+
+  i {
+    cursor: pointer;
+  }
 
   img {
-    margin: 0 1rem;
+    margin-right: 1rem;
     width: 4rem;
     height: 4rem;
     border-radius: 15rem;
