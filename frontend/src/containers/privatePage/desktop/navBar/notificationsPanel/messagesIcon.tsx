@@ -26,17 +26,23 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
 
   useEffect(() => {
     const setSocket = () => {
+      console.log(socket);
       if (socket === null) return;
 
       socket.on("new_message", (msg: string) => {
-        console.log("test", msg);
         currentUser &&
           dispatch(setNotification("messages", true, currentUser._id));
       });
     };
 
     setSocket();
-  }, []);
+  }, [socket]);
+
+  const onIconClickHandler = () => {
+    currentUser &&
+      dispatch(setNotification("messages", false, currentUser._id));
+    changeActive("messages");
+  };
 
   return (
     <div ref={messageRef}>
@@ -47,7 +53,7 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
             : styles.icon
         }
         title="Wiadomości"
-        onClick={() => changeActive("messages")}
+        onClick={() => onIconClickHandler()}
       >
         <i className="fas fa-comments"></i>
         {notification && <div className={styles.notificationDot}></div>}

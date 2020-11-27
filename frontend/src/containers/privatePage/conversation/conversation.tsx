@@ -159,6 +159,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
   };
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("test");
     if (event.target.files) {
       const file = event.target.files[0];
       const fileType = file["type"];
@@ -197,8 +198,9 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
   };
 
   const removePhoto = () => {
-    setChoosenPhotoUrl("");
+    setChoosenPhotoUrl(null);
     setChoosenPhoto(null);
+    setChoosePhotoError("");
   };
 
   const sendMessageHandler = () => {
@@ -304,6 +306,14 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
         )}
       </div>
       <div className={styles.messages}>
+        {choosenPhotoUrl && (
+          <div className={styles.messagePhoto}>
+            <img src={choosenPhotoUrl} />
+            <div className={styles.removePhotoButton}>
+              <i className="fas fa-times" onClick={() => removePhoto()}></i>
+            </div>
+          </div>
+        )}
         {messages &&
           messages.map((message) => (
             <Message message={message} key={message._id} />
@@ -319,7 +329,10 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
             type="file"
             style={{ display: "none" }}
             accept="image/png, image/jpeg, image/jpg"
-            onChange={(e) => handlePhotoChange(e)}
+            onChange={(e) => {
+              console.log("lol");
+              handlePhotoChange(e);
+            }}
           />
           <label htmlFor="message-photo-upload">
             <i className="fas fa-image"></i>

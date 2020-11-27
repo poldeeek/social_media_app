@@ -5,7 +5,6 @@ export const loadNotifications = (id: string) => (
   dispatch: Function,
   getState: Function
 ) => {
-  console.log("gdf");
   api
     .get(
       `http://localhost:5000/api/notifications/getNotificationsStatus/${id}`,

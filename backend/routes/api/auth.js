@@ -110,7 +110,6 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
     // Validation
     if (!email || !password) return res.status(400).json({ error: "Please enter all fields." })
 

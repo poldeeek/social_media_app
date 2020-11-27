@@ -87,6 +87,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem 0;
+    img {
+      width: auto;
+      height: 5rem;
+      border-radius: 1.5rem;
+    }
+
     .removePhotoButton {
       display: flex;
       justify-content: center;

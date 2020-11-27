@@ -58,6 +58,7 @@ export const signIn = (creds: ILoginCreds) => (
     )
     .then((response) => {
       setAccessToken(response.data.accessToken);
+      console.log("Zalogowany")
       dispatch({
         type: actions.SIGN_IN_SUCCESS,
         user: response.data.user,

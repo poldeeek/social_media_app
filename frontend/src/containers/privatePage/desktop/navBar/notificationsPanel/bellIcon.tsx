@@ -20,6 +20,7 @@ const BellIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
   const currentUser = useSelector((state: IRoot) => state.auth.user);
 
   useEffect(() => {
+    console.log(socket, "bell");
     if (socket === null) return;
     socket.on("bell", (msg: string) => {
       currentUser && dispatch(setNotification("bell", true, currentUser._id));

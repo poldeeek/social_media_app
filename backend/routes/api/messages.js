@@ -84,7 +84,6 @@ router.post('/sendMessage/:chatId', accessTokenVerify, (req, res) => {
 router.post('/seeMessages/:id', accessTokenVerify, isUserExistIdBody, (req, res) => {
     const chatId = req.params.id;
     const userId = req.body.user_id;
-    console.log("ga")
     Message.updateMany({ chat_id: chatId, author_id: { $ne: userId } }, {
         seen: true
     }).then((result) =>
@@ -92,5 +91,6 @@ router.post('/seeMessages/:id', accessTokenVerify, isUserExistIdBody, (req, res)
         .catch(err => res.status(500).json({ msg: "Database see messages problem." }))
 
 })
+
 
 module.exports = router;

@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { ClipLoader } from "react-spinners";
+import { setAccessToken } from "../../../accessToken";
 import { api, authenticationHeader } from "../../../config/apiHost";
-import { IRoot } from "../../../store/reducers/rootReducer";
+import { signOut } from "../../../store/actions/authActions";
 import styles from "./editProfile.module.scss";
 
 const DeleteAcc: React.FC = () => {
   const [showWarning, setShowWarning] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
   const deleteAccount = () => {
+    setLoading(true);
     api
       .delete(`http://localhost:5000/api/users/delete/me`, {
         headers: authenticationHeader(),
       })
-      .then((resp) => console.log(resp))
-      .catch((err) => console.log(err));
+      .then((resp) => {
+        setLoading(false);
+        dispatch(signOut());
+      })
+      .catch((resp) => setLoading(false));
   };
 
   return (
@@ -47,6 +58,7 @@ const DeleteAcc: React.FC = () => {
               Nie
             </div>
           </div>
+          {loading && <ClipLoader color={"#276a39"} />}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { ClipLoader } from "react-spinners";
 import { api, authenticationHeader } from "../config/apiHost";
 import Post from "../containers/privatePage/posts/post/post";

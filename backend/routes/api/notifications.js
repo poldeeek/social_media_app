@@ -5,6 +5,7 @@ const { isUserExistIdParams } = require('../../middleware/paramsValidations/isUs
 // Invitation model
 const Invitation = require('../../models/Invitation');
 const Notification = require('../../models/Notification');
+const Chat = require('../../models/Chat');
 
 const router = express.Router();
 
@@ -27,6 +28,19 @@ router.get('/getNotificationsStatus/:id', accessTokenVerify, isUserExistIdParams
             if (resp.length === 0) notifications.invitations = false;
             else notifications.invitations = true;
         })
+
+    await Chat.find({ users: req.params.id })
+    .populate({
+        select: "id",
+        path: "lastMessage", 
+        match: { author_id: { $ne: req.params.id }, seen: false},
+    }).then(resp => {
+        resp.map(chat => {
+            if(chat.lastMessage != null){
+                notifications.messages = true
+            } 
+        })
+    })
 
     res.status(200).json(notifications)
 })

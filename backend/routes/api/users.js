@@ -201,8 +201,66 @@ router.delete('/delete/me', accessTokenVerify, (req, res) => {
     jwt.verify(auth_token[1], process.env.ACCESS_TOKEN_SECRET, async (err, payload) => {
         const id = payload.sub;
 
+        Chat.find({
+            users: id
+        }).then(resp => {
+            resp.map(chat => {
+                Message.deleteMany({ chat_id: chat.id}, (err, result) => {
+                    if(err) return res.status(500).json({error:"Databse deleting user problem."})
+                })
+            })
+        })
+
+        Chat.deleteMany({users: id}, (err, result) => {
+            if(err) return res.status(500).json({error:"Databse deleting user problem."})
+        })
+
+   
+        Post.find({
+            author_id: id
+        }).then(resp => {
+            resp.map(post => {
+                Comment.deleteMany({ post_id: post.id}, (err, result) => {
+                    if(err) return res.status(500).json({error:"Databse deleting user problem."})
+                })
+            })
+        })
+
+        Post.deleteMany({author_id: id}, (err, result) => {
+            if(err) return res.status(500).json({error:"Databse deleting user problem."})
+        })
+
+        Comment.deleteMany({author_id: id}, (err, result) => {
+            if(err) return res.status(500).json({error:"Databse deleting user problem."})
+        })
+
+        Invitation.deleteMany({ $or: [{ user_id: id }, { invited_user_id: id }]} , (err, result) => {
+            if(err) return res.status(500).json({error:"Databse deleting user problem."})
+        })
+
+        Notification.deleteMany({user_id: id}, (err, result) => {
+            if(err) return res.status(500).json({error:"Databse deleting user problem."})
+        })
+
+        await Friends.findOne({user_id: id}).then(resp=> {
+            Friends.updateMany({
+                user_id: resp.firends 
+            }, {
+                $pull: { friends: id }
+            })
+        })        
+        .catch(err => res.status(500).json({error:"Databse deleting user problem."}))
 
 
+        Friends.deleteOne({user_id: id})
+        .catch(err => res.status(500).json({error:"Databse deleting user problem."}))
+
+        User.deleteOne({_id: id})
+        .catch(err => res.status(500).json({error:"Databse deleting user problem."}))
+        
+        res.clearCookie('refreshToken');
+
+        res.status(200).json({msg: "User deleted."})
     })
 })
 module.exports = router;

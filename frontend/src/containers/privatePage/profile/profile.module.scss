@@ -14,8 +14,12 @@
   width: 100%;
   display: grid;
   grid-template-areas: "userInfo" "buttons" "userData";
+  height: calc(100vh - 6rem);
+  position: relative;
 
   @include desktop {
+    height: 100%;
+
     grid-template-columns: 5fr 3.5fr;
     grid-template-areas:
       "userInfo buttons"
