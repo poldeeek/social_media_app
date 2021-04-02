@@ -44,7 +44,7 @@ const ProfilePosts: React.FC = () => {
           if (resp.data.length === 0) {
             setFetchError("");
             setHasMore(false);
-            setPosts(resp.data);
+            setPosts((prevState) => [...prevState, ...resp.data]);
             return;
           }
 

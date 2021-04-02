@@ -26,7 +26,6 @@ export const SocketProvider: Function = ({
       setSocket(newSocket);
 
       return () => {
-        console.log("disconnet");
         disconnectSocket(newSocket);
       };
     }

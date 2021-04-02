@@ -26,7 +26,6 @@ const MessagesIcon: React.FC<IIconParams> = ({ active, changeActive }) => {
 
   useEffect(() => {
     const setSocket = () => {
-      console.log(socket);
       if (socket === null) return;
 
       socket.on("new_message", (msg: string) => {

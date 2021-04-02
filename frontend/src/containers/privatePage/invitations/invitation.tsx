@@ -57,7 +57,6 @@ const Invitation: React.FC<{
 
   // check if user clicked on accpet/reject buttons or not
   const handleNavLinkClick = (event: any) => {
-    console.log(event.target.classList.contains(styles.button));
 
     // don't run NavLink if user clicked on buttons
     if (event.target.classList.contains(styles.button)) {

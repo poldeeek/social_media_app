@@ -13,6 +13,7 @@ export interface IAuth {
   authError: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  signUpError: string | null;
 }
 
 const initState = {
@@ -20,6 +21,7 @@ const initState = {
   authError: null,
   isLoading: true,
   isAuthenticated: false,
+  signUpError: null
 };
 
 const authReducer = (state: IAuth = initState, action: any) => {
@@ -42,18 +44,27 @@ const authReducer = (state: IAuth = initState, action: any) => {
         return {
           user: null,
           authError: action.error,
+          signUpError: null,
           isLoading: false,
           isAuthenticated: false,
         }
     case actions.AUTH_ERROR:
-    case actions.SIGN_UP_ERROR:
     case actions.SIGN_OUT_SUCCESS:
       return {
         user: null,
         authError: null,
         isLoading: false,
         isAuthenticated: false,
+        signUpError: null,
       };
+    case actions.SIGN_UP_ERROR:
+      return {
+        user: null,
+        authError: null,
+        isLoading: false,
+        isAuthenticated: false,
+        signUpError: action.error,
+      }
     case actions.SIGN_OUT_ERROR:
       return state;
     case actions.UPDATE_PROFILE_PHOTO:

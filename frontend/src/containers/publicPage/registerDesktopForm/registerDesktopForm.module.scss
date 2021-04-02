@@ -41,22 +41,32 @@
       display: flex;
     }
 
-    & > button {
-      border-radius: 1.5rem;
-      padding: 1rem;
-      border: none;
-      background-color: color(inputs);
-      color: color(fonts);
-      width: 45%;
-      font-size: 2.2rem;
-      align-self: flex-end;
-      cursor: pointer;
-      border: 2px solid color(inputs);
-      transition-duration: 0.4s;
-    }
+    .submitArea {
+      display: flex;
+      justify-content: space-between;
 
-    & > button:hover {
-      background-color: color(secondary);
+      .error {
+        font-size: 1.5rem;
+        color: #D22E2E;
+      }
+
+      & > button {
+        border-radius: 1.5rem;
+        padding: 1rem;
+        border: none;
+        background-color: color(inputs);
+        color: color(fonts);
+        width: 45%;
+        font-size: 2.2rem;
+        align-self: flex-end;
+        cursor: pointer;
+        border: 2px solid color(inputs);
+        transition-duration: 0.4s;
+      }
+  
+      & > button:hover {
+        background-color: color(secondary);
+      }
     }
   }
 }

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import { ClipLoader } from "react-spinners";
-import { setAccessToken } from "../../../accessToken";
 import { api, authenticationHeader } from "../../../config/apiHost";
 import { signOut } from "../../../store/actions/authActions";
 import styles from "./editProfile.module.scss";

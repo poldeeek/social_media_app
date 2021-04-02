@@ -84,7 +84,7 @@ router.get('/getPosts/:id', accessTokenVerify, isUserExistIdParams, async (req, 
 })
 
 // @route   GET api/posts/getPosts/profile/:id?limit=limit&date=lastPostdate
-// @desc    Get mine and friends posts
+// @desc    Get mine posts
 // @access  Private
 router.get('/getPosts/profile/:id', accessTokenVerify, isUserExistIdParams, async (req, res) => {
     const { id } = req.params;
@@ -171,8 +171,8 @@ router.post('/unlike/:id', accessTokenVerify, isUserExistIdBody, isPostExist, (r
         })
 })
 
-// @route   GET api/posts/getPosts/:id
-// @desc    Get mine and friends posts
+// @route   GET api/posts/getPost/:id
+// @desc    Get one post by id
 // @access  Private
 router.get('/getPost/:id', accessTokenVerify, isPostExist, async (req, res) => {
     const { id } = req.params;

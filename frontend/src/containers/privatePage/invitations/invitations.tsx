@@ -49,7 +49,6 @@ const Invitations: React.FC = ({}) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err.response);
         setLoading(false);
       });
   }, []);

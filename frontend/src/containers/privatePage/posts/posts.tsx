@@ -78,7 +78,6 @@ const Posts: React.FC = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         if (mounted) {
           setFetchError("Problem z pobraniem postów.");
           setIsLoading(false);

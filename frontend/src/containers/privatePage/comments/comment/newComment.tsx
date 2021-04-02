@@ -54,9 +54,6 @@ const NewComment: React.FC<newCommentProps> = ({
           };
           addNewComment(newComment);
         })
-        .catch((err) => {
-          console.log(err);
-        });
   };
 
   return (

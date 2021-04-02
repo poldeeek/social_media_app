@@ -18,7 +18,7 @@ const Notification = require('../../models/Notification');
 const Post = require('../../models/Post');
 
 // @route   GET api/users/search?q=searchingFraze&p=page&limit=perPage
-// @desc    Getting users by id
+// @desc    Getting users by searching fraze
 // @access  Private
 router.get('/search', accessTokenVerify, (req, res) => {
     if (req.query.q === '') return res.status(400).json({ msg: "Invalid searching fraze." });
@@ -109,7 +109,7 @@ router.post('/update/photo/:id', accessTokenVerify, isUserExistIdParams, (req, r
     const photoUrl = req.body.photo;
     if (!photoUrl) res.status(400).json({ msg: "Missing photo." })
     User.findByIdAndUpdate(req.params.id, { avatar: photoUrl }, (err, doc) => {
-        if (err) { console.log(err); res.status(500).json({ msg: "Database updating photo problem." }) }
+        if (err) { ; res.status(500).json({ msg: "Database updating photo problem." }) }
         res.status(200).json({ msg: "Photo has been updated." })
     })
 
@@ -124,8 +124,8 @@ router.post('/update/basic/:id', accessTokenVerify, isUserExistIdParams, (req, r
     if (!name || !surname || !city) res.status(400).json({ msg: "Please enter all fields." })
     if (name.length > 30 || surname.length > 30 || city.length > 30) res.status(400).json({ msg: "Max length is 30 marks." })
     User.findByIdAndUpdate(req.params.id, { name: name, surname: surname, city: city }, (err, doc) => {
-        if (err) { console.log(err); res.status(500).json({ msg: "Database updating basic informations problem." }) }
-        res.status(200).json({ msg: "Informations have been updated." })
+        if (err) { return res.status(500).json({ msg: "Database updating basic informations problem." }) }
+        return res.status(200).json({ msg: "Informations have been updated." })
     })
 
 })
@@ -133,11 +133,11 @@ router.post('/update/basic/:id', accessTokenVerify, isUserExistIdParams, (req, r
 // @route   POST api/users/update/password/:id
 // @desc    Updating user password
 // @access  Private
-router.post('/update/password/:id', accessTokenVerify, (req, res) => {
+router.post('/update/password/:id', accessTokenVerify, isUserExistIdParams, (req, res) => {
     const { oldPassword, newPassword } = req.body;
     if (!oldPassword || !oldPassword) return res.status(400).json({ error: "Please enter all fields." })
 
-    if (newPassword.length < 6) res.status(400).json({ error: "Password is too short (min 6 marks)." })
+    if (newPassword.length < 6) return res.status(400).json({ error: "Password is too short (min 6 marks)." })
 
 
     // Check for existing user
@@ -152,12 +152,11 @@ router.post('/update/password/:id', accessTokenVerify, (req, res) => {
             const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
             await User.findByIdAndUpdate(req.params.id, { password: hashedNewPassword }, (err, doc) => {
-                if (err) { res.status(500).json({ msg: "Database updating password problem." }) }
-                res.status(200).json({ msg: "Password has been updated." })
+                if (err) { return res.status(500).json({ msg: "Database updating password problem." }) }
+                return res.status(200).json({ msg: "Password has been updated." })
             })
 
         }).catch(err => {
-            console.log(err)
             return res.status(500).send({ error: "Database problem." })
         })
 })
@@ -180,12 +179,11 @@ router.post('/update/email/:id', accessTokenVerify, isUserExistIdParams, (req, r
             if (!compare_password) return res.status(401).send({ error: "Wrong password." })
 
             await User.findByIdAndUpdate(req.params.id, { email: email }, (err, doc) => {
-                if (err) { res.status(500).json({ msg: "Database updating e-mail problem." }) }
-                res.status(200).json({ msg: "E-mail has been updated." })
+                if (err) { return res.status(500).json({ msg: "Database updating e-mail problem." }) }
+                return res.status(200).json({ msg: "E-mail has been updated." })
             })
 
         }).catch(err => {
-            console.log(err)
             return res.status(500).send({ error: "Database problem." })
         })
 
@@ -260,7 +258,7 @@ router.delete('/delete/me', accessTokenVerify, (req, res) => {
         
         res.clearCookie('refreshToken');
 
-        res.status(200).json({msg: "User deleted."})
+        return res.status(200).json({msg: "User deleted."})
     })
 })
 module.exports = router;

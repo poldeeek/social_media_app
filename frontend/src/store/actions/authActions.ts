@@ -58,7 +58,6 @@ export const signIn = (creds: ILoginCreds) => (
     )
     .then((response) => {
       setAccessToken(response.data.accessToken);
-      console.log("Zalogowany")
       dispatch({
         type: actions.SIGN_IN_SUCCESS,
         user: response.data.user,
@@ -139,9 +138,9 @@ export const signUp = (creds: ISignUp) => (
       });
     })
     .catch((err) => {
-      console.log("error", err.response);
       dispatch({
         type: actions.SIGN_UP_ERROR,
+        error: err.response.data.error.email
       });
     });
 };
@@ -164,7 +163,7 @@ export const signOut = () => (dispatch: Function, getState: Function) => {
         type: actions.SIGN_OUT_SUCCESS,
       });
       const history = useHistory();
-      history.push("/");
+      history.replace("/");
     })
     .catch((err) => {
       dispatch({

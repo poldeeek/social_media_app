@@ -28,8 +28,6 @@ const interceptor = api.interceptors.response.use(
     if (code && code === 'accessToken/error') {
       originalRequest._retry = true;
 
-      //api.interceptors.response.eject(interceptor);
-
       return fetch("http://localhost:5000/api/auth/refresh", {
         method: "GET",
         mode: "cors",

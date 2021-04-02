@@ -64,7 +64,6 @@ const MoblieNewPost: React.FC = () => {
             .child(fileName)
             .getDownloadURL()
             .then(async (url) => {
-              console.log(url);
               handleUpload(url);
             });
         }

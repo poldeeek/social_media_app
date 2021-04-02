@@ -42,7 +42,6 @@ const ChangePhoto: React.FC = () => {
     if (loading) return;
 
     setLoading(true);
-    console.log("test");
     if (choosenPhoto) {
       const fileName = `${uuidv4()}`;
       const uploadTask = storage.ref(`avatars/${fileName}`).put(choosenPhoto);

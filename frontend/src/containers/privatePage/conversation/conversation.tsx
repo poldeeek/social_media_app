@@ -57,6 +57,7 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
 
       socket.on("new_message", (msg: any) => {
         if (!currentUser) return;
+        if(msg.author_id !== chat.member._id) return;
         const sender = {
           avatar: chat.member.avatar,
           name: chat.member.name,
@@ -64,8 +65,8 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
           _id: chat.member._id,
         };
 
-        let newmessage = JSON.parse(JSON.stringify(msg));
 
+        let newmessage = JSON.parse(JSON.stringify(msg));
         newmessage.author_id = sender;
 
         setMessages((prevState) => [newmessage, ...prevState]);
@@ -159,7 +160,6 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
   };
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("test");
     if (event.target.files) {
       const file = event.target.files[0];
       const fileType = file["type"];
@@ -260,7 +260,6 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
         }
       )
       .then((resp) => {
-        console.log("wiadomosci odczytane");
       });
   };
 
@@ -330,7 +329,6 @@ const MobileConversation: React.FC<IParams> = ({ chat, chatIndex }) => {
             style={{ display: "none" }}
             accept="image/png, image/jpeg, image/jpg"
             onChange={(e) => {
-              console.log("lol");
               handlePhotoChange(e);
             }}
           />

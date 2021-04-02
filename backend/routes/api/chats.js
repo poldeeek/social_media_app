@@ -49,7 +49,7 @@ router.get('/getChats/:id', accessTokenVerify, isUserExistIdParams, (req, res) =
 })
 
 // @route   GET /api/chats/searchChats/:id?search=search&limit=limit&page=page
-// @desc    get all chats by user id
+// @desc    search chat by name or surname of user
 // @access  private
 router.get('/searchChats/:id', accessTokenVerify, isUserExistIdParams, async (req, res) => {
     const { limit, page, search } = req.query;

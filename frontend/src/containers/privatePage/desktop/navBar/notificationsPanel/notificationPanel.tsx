@@ -17,7 +17,6 @@ const NotificationPanel: React.FC = () => {
   const [active, setActive] = useState("");
 
   const changeActive = (value: string) => {
-    console.log(value);
     if (active === value) {
       setActive("");
       return;

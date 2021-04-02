@@ -5,7 +5,8 @@ import { Form, Field } from "react-final-form";
 import { ISignUp, signUp } from "../../../store/actions/authActions";
 
 import * as validation from "../../../validations/registerValidation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { IRoot } from "../../../store/reducers/rootReducer";
 
 const RegisterDesktopForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const RegisterDesktopForm: React.FC = () => {
   const onSubmit = async (values: ISignUp) => {
     dispatch(signUp(values));
   };
+
+  const signUpError = useSelector((state: IRoot) => state.auth.signUpError)
 
   const composeValidators = (...validators: Function[]) => (value: string) =>
     validators.reduce(
@@ -118,9 +121,12 @@ const RegisterDesktopForm: React.FC = () => {
                 validation.textMaxLength
               )}
             />
+            <div className={styles.submitArea}>
+            <div>{ signUpError &&  <span className={styles.error}>*{signUpError}</span>}</div>
             <button type="submit" disabled={submitting || pristine}>
               Załóż konto
             </button>
+            </div>
           </form>
         )}
       />

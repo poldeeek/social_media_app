@@ -71,7 +71,6 @@ export const addFriend = (uid: string) => (
       let friendsCopy = JSON.parse(JSON.stringify(myState.friends.friends));
 
       friendsCopy.push(resp.data);
-      console.log(resp)
       friendsCopy
         .sort((a: IFriend, b: IFriend) => a.name.localeCompare(b.name))
         .sort((a: IFriend, b: IFriend) => a.surname.localeCompare(b.surname))

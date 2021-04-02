@@ -70,7 +70,6 @@ export const setNotification = (action: string, value: boolean, id: string) => (
           });
         })
         .catch((err) => {
-          console.log(err);
           dispatch({
             type: actions.SET_NOTIFICATION_ERROR,
           });

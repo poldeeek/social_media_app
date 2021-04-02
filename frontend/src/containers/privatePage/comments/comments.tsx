@@ -62,7 +62,6 @@ const Comments: React.FC<{ post_id: string; post_author: string }> = ({
   };
 
   const addNewComment = (addedComment: IComment) => {
-    console.log(addedComment);
     const newComments = [...comments];
     newComments.unshift(addedComment);
     setComments(newComments);
