@@ -33,7 +33,7 @@ The aim of the DarkSociety project is to create an application that will allow u
 
 2. Create `.env` file in frontend and backend directories, and set environment variables:
     * For frontend:
-  	  - `REACT_APP_FB_API` - firebase API key (`apiKey` variable in firebase config object)
+  	   - `REACT_APP_FB_API` - firebase API key (`apiKey` variable in firebase config object)
       - `REACT_APP_FB_PROJECT_ID` - firebase project ID (`projectId`  variable in firebase config object)
       - `REACT_APP_FB_APP_ID` - firebase application ID (`appId`  variable in firebase config object)
       - `REACT_APP_FB_MESSAGING_SENDER_ID` - Google Cloud Messaging Sender ID (`messagingSenderId`  variable in firebase config object)
@@ -53,4 +53,6 @@ The aim of the DarkSociety project is to create an application that will allow u
 
 
 ## Screenshots
-
+![Welcome  Page](https://user-images.githubusercontent.com/44229717/118705226-43bb3400-b818-11eb-83aa-afaf35ec66de.png)
+![Desktop](https://user-images.githubusercontent.com/44229717/118705230-4453ca80-b818-11eb-84c0-da822b1d86ed.PNG)
+![Mobile](https://user-images.githubusercontent.com/44229717/118705231-44ec6100-b818-11eb-862f-fbb2d190fba2.PNG)
